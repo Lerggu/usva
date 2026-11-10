@@ -52,6 +52,11 @@ const D = {
     fi: "Ensimmäiset 7 päivää ovat maksuttomat. Tilauksella on 14 päivän peruutusoikeus. Usva on opas, ei terapeutti, eikä se korvaa hoitoa tai vertaistukea. Matka ei lupaa tiettyä lopputulosta.",
     en: "The first 7 days are free. The subscription has a 14-day right of withdrawal. Usva is a guide, not a therapist, and does not replace care or peer support. The journey does not promise a particular outcome.",
   },
+  principle: {
+    fi: "Usva ei ole sitoutunut mihinkään uskonnolliseen, hengelliseen, ideologiseen tai psykologiseen suuntaukseen. Se soveltaa työkaluja ja ohjausta, jotka ovat ajan saatossa osoittautuneet monille toimiviksi. Opas oppii sinusta joka päivä lisää ja sovittaa kysymyksensä siihen, mitä kerrot.",
+    en: "Usva is not committed to any religious, spiritual, ideological or psychological school. It applies tools and guidance that have, over time, proved helpful to many. The guide learns more about you each day and shapes its questions around what you tell it.",
+  },
+  aboutTitle: { fi: "Usvasta", en: "About Usva" },
   obPayNote: {
     fi: "Maksaminen ei ole vielä käytössä tässä versiossa. Sinulta ei veloiteta mitään.",
     en: "Payment is not yet enabled in this version. You will not be charged anything.",
@@ -185,8 +190,8 @@ const D = {
   mistNameLabel: { fi: "Oppaan nimi", en: "Guide's name" },
   dataTitle: { fi: "Tietosi", en: "Your data" },
   dataInfo: {
-    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Oppaan kanssa käyty keskustelu lähetetään tekoälylle vastausta varten, mutta sitä ei tallenneta Usvan palvelimelle.",
-    en: "Your writing is stored on this device only. Conversation with the guide is sent to the AI to produce a reply, but it is not stored on Usva's server.",
+    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle.",
+    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server.",
   },
   exportData: { fi: "Lataa tietoni", en: "Download my data" },
   deleteData: { fi: "Poista kaikki tietoni", en: "Delete all my data" },

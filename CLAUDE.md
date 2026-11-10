@@ -12,8 +12,10 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 6. **Ei rangaistuksia:** valo ei koskaan vähene, putkia ei nollata, ja paluusta palkitaan.
 7. **Tekijänoikeus:** sisältö kirjoitetaan omin sanoin. Ei lainauksia toipumiskirjallisuudesta, hengellisistä kirjoista tai opettajilta, eikä yhteisöjen nimiä tuotteessa.
 8. **Tietosuoja:** kirjoitukset ovat erityisen arkaluonteisia. Niitä ei kirjata lokeihin eikä tallenneta palvelimelle ilman erillistä päätöstä.
-9. **Kielet:** suomi on oletus, englanti rinnalla. Ei kovakoodattuja käyttöliittymätekstejä; kaikki `src/lib/i18n.ts`:n kautta.
-10. **Mobiili ensin:** suuret kosketusalueet, vähän kirjoittamista.
+9. **Sitoutumattomuus:** Usva ei ole sitoutunut mihinkään uskonnolliseen, hengelliseen, ideologiseen tai psykologiseen suuntaukseen. Sisältö ja opas eivät saarnaa eivätkä oleta käyttäjältä mitään vakaumusta.
+10. **Yksilöllisyys:** Usva oppii käyttäjästään ja mukauttaa ohjausta hänelle. Käyttäjälle luvataan vain se, mikä on toteutettu.
+11. **Kielet:** suomi on oletus, englanti rinnalla. Ei kovakoodattuja käyttöliittymätekstejä; kaikki `src/lib/i18n.ts`:n kautta.
+12. **Mobiili ensin:** suuret kosketusalueet, vähän kirjoittamista.
 
 ## Rakenne
 

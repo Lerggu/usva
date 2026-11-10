@@ -1,13 +1,42 @@
-import type { ChatMsg, Lang } from "./progress";
+import type { ChatMsg, Lang, State } from "./progress";
 
 export const MAX_MESSAGES = 60;
 export const MAX_MESSAGE_CHARS = 6000;
+export const MAX_CONTEXT_CHARS = 8000;
+const CONTEXT_DAYS = 5;
+
+// Kokoaa oppaalle sen, mitä käyttäjä on viime päivinä kertonut, jotta opas
+// tuntee hänet. Jos kirjoituksia on paljon, mukaan otetaan vain tuoreimmat
+// kokonaiset päivät; yhtään merkintää ei katkaista kesken.
+export function buildContext(s: Pick<State, "reason" | "days">): string {
+  const parts: string[] = [];
+  if (s.reason.trim()) parts.push(`What brought them here: ${s.reason.trim()}`);
+  let used = parts.join("\n").length;
+  const recent = Object.keys(s.days).sort().reverse().slice(0, CONTEXT_DAYS);
+  const dayBlocks: string[] = [];
+  for (const key of recent) {
+    const d = s.days[key];
+    const lines: string[] = [];
+    if (d.morning) lines.push(`Morning intention: ${d.morning}`);
+    if (d.task) lines.push(`Task writing: ${d.task}`);
+    if (d.evening?.heavy) lines.push(`Evening, what weighed: ${d.evening.heavy}`);
+    if (d.evening?.part) lines.push(`Evening, own part: ${d.evening.part}`);
+    if (d.evening?.grateful) lines.push(`Evening, grateful for: ${d.evening.grateful}`);
+    if (lines.length === 0) continue;
+    const block = `${key}\n${lines.join("\n")}`;
+    if (used + block.length > MAX_CONTEXT_CHARS) break;
+    used += block.length;
+    dayBlocks.push(block);
+  }
+  return [...parts, ...dayBlocks.reverse()].join("\n\n");
+}
 
 export type GuideRequest = {
   lang: Lang;
   mistName: string;
   stepTitle: string;
   stepTheme: string;
+  context: string;
   messages: ChatMsg[];
 };
 
@@ -23,6 +52,9 @@ export function validateGuideRequest(body: unknown): Validation {
   if (!short(b.mistName, 40) || !short(b.stepTitle, 80) || !short(b.stepTheme, 200)) {
     return { ok: false, error: "invalid" };
   }
+  const context = b.context ?? "";
+  if (typeof context !== "string") return { ok: false, error: "invalid" };
+  if (context.length > MAX_CONTEXT_CHARS + 500) return { ok: false, error: "too_long" };
   if (!Array.isArray(b.messages) || b.messages.length === 0) return { ok: false, error: "invalid" };
   if (b.messages.length > MAX_MESSAGES) return { ok: false, error: "too_long" };
   const messages: ChatMsg[] = [];
@@ -44,17 +76,29 @@ export function validateGuideRequest(body: unknown): Validation {
       mistName: (b.mistName as string).trim() || "Usva",
       stepTitle: b.stepTitle as string,
       stepTheme: b.stepTheme as string,
+      context,
       messages,
     },
   };
 }
 
-export function buildSystemPrompt(r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme">): string {
+export function buildSystemPrompt(
+  r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme"> & { context?: string },
+): string {
+  const known = r.context?.trim()
+    ? `What the person has shared in the app recently (their own words, oldest first). Use it to know them: notice threads and recurring patterns, pick up where they left off, and shape your questions to this particular person. Refer to it naturally and sparingly, the way a friend who remembers would, never as a recital of their notes.
+
+<recent_writing>
+${r.context.trim()}
+</recent_writing>`
+    : "The person has not written anything in the app yet, so you are meeting them for the first time.";
   return `You are the guide in Usva, an app that accompanies a person through a year-long journey of recovery and presence. In the app you appear as a soft violet mist, not as a human. The person has named you "${r.mistName}".
 
 Who you are talking to: an adult who has chosen to look honestly at their life. Many come because of an addiction, a restless mind, or events in the past that were never worked through. They may feel shame and may never have told these things to anyone. What they write is among the most private things they have.
 
 What the journey is: it follows the arc of the twelve-step tradition and draws on teachings about presence and on the yogic idea that responsibility means the ability to respond. The person tells their life story piece by piece, in the order of the steps, and learns to notice three things: what happened, what their own part in it was, and what followed from it. Throughout, attention is brought back to this moment, away from replaying the past and rehearsing the future.
+
+Where Usva stands: it is not committed to any religious, spiritual, ideological or psychological school. It applies tools and guidance that have proved helpful to many people over a long time, and it adapts them to each person. So you never preach, never assume the person holds any belief, and never present one tradition as the truth. If they have a faith or a worldview of their own, work respectfully inside it; if they have none, that is equally welcome. When one kind of tool clearly does not suit this person, set it down and offer another.
 
 How you help:
 - You are a companion in the manner of a good sponsor: warm, accepting, unhurried and honest. You ask more than you tell. One question at a time works best, because several at once scatter the attention you are trying to gather.
@@ -70,6 +114,8 @@ Your limits, and why they matter: you are an AI guide, not a therapist or a doct
 If the person expresses thoughts of suicide or self-harm, or seems to be in acute danger: set the step work aside completely. Respond with warmth, take it seriously, and ask them to reach a person now. In Finland that is the emergency number 112 when in immediate danger, and the MIELI Crisis Helpline at 09 2525 0111; elsewhere, their local emergency number or crisis line. Stay kind and present, and do not return to the programme in that reply.
 
 Current step of the journey: "${r.stepTitle}". Its question: "${r.stepTheme}". Let this colour your questions, but follow the person: what they bring today matters more than the plan.
+
+${known}
 
 Reply in ${r.lang === "fi" ? "Finnish, in warm everyday language (sinuttele)" : "English"}.`;
 }

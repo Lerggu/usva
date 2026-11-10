@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_MESSAGES, buildSystemPrompt, validateGuideRequest } from "@/lib/guide";
+import { MAX_CONTEXT_CHARS, MAX_MESSAGES, buildContext, buildSystemPrompt, validateGuideRequest } from "@/lib/guide";
 
 const ok = {
   lang: "fi",
@@ -44,5 +44,37 @@ describe("buildSystemPrompt", () => {
     expect(p).toContain("112");
     expect(p).toContain("09 2525 0111");
     expect(buildSystemPrompt({ lang: "en", mistName: "a", stepTitle: "b", stepTheme: "c" })).toContain("Reply in English");
+  });
+});
+
+describe("buildContext", () => {
+  it("kokoaa syyn ja viimeisimmät kirjoitukset vanhimmasta uusimpaan", () => {
+    const c = buildContext({
+      reason: "Menneisyys painaa",
+      days: { "2026-11-02": { task: "toinen" }, "2026-11-01": { morning: "ensimmäinen" }, "2026-11-03": { moments: 2 } },
+    });
+    expect(c).toContain("Menneisyys painaa");
+    expect(c.indexOf("ensimmäinen")).toBeLessThan(c.indexOf("toinen"));
+    expect(c).not.toContain("2026-11-03");
+  });
+
+  it("jättää vanhemmat päivät pois eikä katkaise merkintää, kun tilaa ei ole", () => {
+    const long = "x".repeat(5000);
+    const c = buildContext({ reason: "", days: { "2026-11-01": { task: `vanha${long}` }, "2026-11-02": { task: `uusi${long}` } } });
+    expect(c.length).toBeLessThanOrEqual(MAX_CONTEXT_CHARS);
+    expect(c).toContain("uusi");
+    expect(c).not.toContain("vanha");
+  });
+
+  it("on tyhjä uudelle käyttäjälle, ja kehote kertoo ensikohtaamisesta", () => {
+    expect(buildContext({ reason: "", days: {} })).toBe("");
+    const p = buildSystemPrompt({ lang: "fi", mistName: "a", stepTitle: "b", stepTheme: "c", context: "" });
+    expect(p).toContain("meeting them for the first time");
+    expect(p).toContain("not committed to any religious");
+  });
+
+  it("kulkee kehotteeseen asti", () => {
+    const p = buildSystemPrompt({ lang: "fi", mistName: "a", stepTitle: "b", stepTheme: "c", context: "Task writing: kauna isää kohtaan" });
+    expect(p).toContain("kauna isää kohtaan");
   });
 });

@@ -8,6 +8,12 @@ Kolme rinnakkaista raidetta:
 - **Purkaminen:** elämäntarina kerrotaan oppaalle vaiheiden järjestyksessä, yksi tapahtuma kerrallaan.
 - **Oma osuus:** jokaisesta tapahtumasta etsitään oma toiminta, sen seuraukset ja se, mihin voi vielä vaikuttaa.
 
+## Sitoutumattomuus ja yksilöllisyys
+
+Usva ei ole sitoutunut mihinkään uskonnolliseen, hengelliseen, ideologiseen tai psykologiseen suuntaukseen. Se soveltaa työkaluja ja ohjausta, jotka ovat ajan saatossa osoittautuneet monille toimiviksi.
+
+Usva oppii käyttäjästään joka päivä lisää ja muokkaa ohjelmarunkoa ja työkaluja jokaiselle yksilöllisesti. Tämä on tavoite, josta ensimmäisessä versiossa toteutuu osa: opas saa käyttäjän viimeisimmät kirjoitukset ja sovittaa keskustelunsa niihin. Päivän tehtävät ovat vielä kaikille samat. Tehtävien ja työkalujen yksilöllinen valinta on listattu kohdassa Tulossa.
+
 ## Matkan 12 vaihetta
 
 | Vaihe | Teema | Työ sovelluksessa |
@@ -67,4 +73,4 @@ Sisältö kirjoitetaan omin sanoin näiden perinteiden periaatteista: kahdentois
 
 ## Tulossa
 
-Maksaminen, käyttäjätilit ja laitteiden välinen synkronointi salattuna, vaiheet 5–12, rakenteinen elämäntarina (aikajana, henkilöt, mallit), harjoituskirjasto.
+Tehtävien ja työkalujen yksilöllinen valinta sen mukaan, mitä käyttäjä kertoo ja mikä häntä auttaa. Maksaminen, käyttäjätilit ja laitteiden välinen synkronointi salattuna, vaiheet 5–12, rakenteinen elämäntarina (aikajana, henkilöt, mallit), harjoituskirjasto.

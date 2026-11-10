@@ -7,7 +7,7 @@ import { CrisisCard } from "@/components/CrisisCard";
 import { useUsva } from "@/lib/store";
 import { currentStepNumber, totalLights, type ChatMsg } from "@/lib/progress";
 import { STEPS } from "@/lib/program";
-import { MAX_MESSAGE_CHARS, MAX_MESSAGES } from "@/lib/guide";
+import { MAX_MESSAGE_CHARS, MAX_MESSAGES, buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
 import type { Key } from "@/lib/i18n";
 
@@ -45,6 +45,7 @@ export default function GuidePage() {
           mistName: state.mistName,
           stepTitle: step.title[state.lang],
           stepTheme: step.theme[state.lang],
+          context: buildContext(state),
           messages,
         }),
       });

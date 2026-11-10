@@ -98,6 +98,7 @@ export function Onboarding() {
             <p className="text-sm text-soft">{t("obTerms")}</p>
             <p className="text-sm text-lilac">{t("obPayNote")}</p>
           </div>
+          <p className="text-sm text-soft">{t("principle")}</p>
           <p className="text-center text-lg">{t("obInvite")}</p>
           <button className="btn btn-primary" onClick={() => setStage("name")}>
             {t("obStart")}

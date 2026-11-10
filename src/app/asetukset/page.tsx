@@ -52,6 +52,11 @@ export default function SettingsPage() {
         </div>
 
         <section className="space-y-3">
+          <h2 className="text-sm uppercase tracking-widest text-soft">{t("aboutTitle")}</h2>
+          <p className="text-soft">{t("principle")}</p>
+        </section>
+
+        <section className="space-y-3">
           <h2 className="text-sm uppercase tracking-widest text-soft">{t("dataTitle")}</h2>
           <p className="text-soft">{t("dataInfo")}</p>
           <button className="btn" onClick={exportData}>
