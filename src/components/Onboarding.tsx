@@ -11,7 +11,7 @@ import type { Key } from "@/lib/i18n";
 type Stage = "reason" | "doing" | "year" | "ask" | "offer" | "name" | "later" | "crisis";
 
 const QUESTIONS: Record<"reason" | "doing" | "year", { q: Key; options: Key[]; next: Stage }> = {
-  reason: { q: "obHello", options: ["obR1", "obR2", "obR3", "obR4"], next: "doing" },
+  reason: { q: "obHello", options: ["obR1", "obR2", "obR3", "obR5", "obR4"], next: "doing" },
   doing: { q: "obDone", options: ["obD1", "obD2", "obD3"], next: "year" },
   year: { q: "obYear", options: ["obY1", "obY2", "obY3"], next: "ask" },
 };

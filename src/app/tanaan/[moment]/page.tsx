@@ -8,6 +8,7 @@ import { CrisisCard } from "@/components/CrisisCard";
 import { useUsva } from "@/lib/store";
 import { taskFor } from "@/lib/progress";
 import { detectCrisis } from "@/lib/safety";
+import { thoughtFor } from "@/lib/thoughts";
 
 type Moment = "aamu" | "tehtava" | "ilta";
 
@@ -74,6 +75,12 @@ export default function MomentPage() {
       >
         {m === "aamu" && (
           <>
+            <figure className="card space-y-2">
+              <figcaption className="text-sm uppercase tracking-widest text-soft">
+                {t("thoughtTitle")} · {thoughtFor(today).theme[lang]}
+              </figcaption>
+              <p className="text-lg leading-relaxed">{thoughtFor(today).text[lang]}</p>
+            </figure>
             <label htmlFor="f-a" className="block text-xl leading-relaxed">
               {t("morningQ")}
             </label>

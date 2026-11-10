@@ -22,6 +22,7 @@ const D = {
   obR1: { fi: "Mieli on levoton", en: "My mind is restless" },
   obR2: { fi: "Menneisyys painaa", en: "The past weighs on me" },
   obR3: { fi: "Jokin riippuvuus tai tapa", en: "An addiction or a habit" },
+  obR5: { fi: "Läheiseni tilanne kuormittaa", en: "A loved one's situation weighs on me" },
   obR4: { fi: "Haluan vain katsella", en: "I just want to look around" },
   obDone: {
     fi: "Kiitos, että kerroit. Mitä olet ajatellut tehdä asialle?",
@@ -109,6 +110,7 @@ const D = {
     fi: "Mikä saisi olla tämän päivän aikomuksesi? Vain tälle päivälle.",
     en: "What might your intention for today be? For this day only.",
   },
+  thoughtTitle: { fi: "Päivän ajatus", en: "Thought for today" },
   morningPh: { fi: "Tänään haluaisin…", en: "Today I would like to…" },
   taskPh: { fi: "Kirjoita vapaasti. Tämä jää vain sinun laitteellesi.", en: "Write freely. This stays on your device only." },
   taskTalk: { fi: "Haluaisin puhua tästä oppaan kanssa", en: "I'd like to talk about this with the guide" },

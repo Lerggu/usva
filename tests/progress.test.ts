@@ -83,3 +83,24 @@ describe("päivämäärät", () => {
     expect(week[6]).toBe("2026-11-10");
   });
 });
+
+import { THOUGHTS, thoughtFor } from "@/lib/thoughts";
+
+describe("päivän ajatus", () => {
+  it("on sama koko päivän ja vaihtuu seuraavana päivänä", () => {
+    expect(thoughtFor("2026-11-10")).toBe(thoughtFor("2026-11-10"));
+    expect(thoughtFor("2026-11-11")).not.toBe(thoughtFor("2026-11-10"));
+  });
+
+  it("kiertää kaikki ajatukset, ja jokainen on molemmilla kielillä", () => {
+    const seen = new Set<unknown>();
+    for (let i = 1; i <= THOUGHTS.length; i++) seen.add(thoughtFor(`2026-01-${String(i).padStart(2, "0")}`));
+    expect(seen.size).toBe(THOUGHTS.length);
+    for (const th of THOUGHTS) {
+      for (const text of [th.theme, th.text]) {
+        expect(text.fi.trim()).not.toBe("");
+        expect(text.en.trim()).not.toBe("");
+      }
+    }
+  });
+});

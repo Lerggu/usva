@@ -69,7 +69,7 @@ Kyselevä, lämmin ja suora kumppani kummin tapaan. Yksi kysymys ja yksi tapahtu
 
 ## Sisältölähteet
 
-Sisältö kirjoitetaan omin sanoin näiden perinteiden periaatteista: kahdentoista askeleen perinne (inventaario, päivittäinen katsaus, vain tämä päivä, hyvitykset), läsnäolon opetukset (ajattelijan havainnointi, hyväksyminen), joogaperinne (vastuu kykynä vastata, hengitys). Alkuperäisteoksia ei lainata, eikä yhteisöjen nimiä käytetä tuotteessa.
+Sisältö kirjoitetaan omin sanoin näiden perinteiden periaatteista: kahdentoista askeleen perinne (inventaario, päivittäinen katsaus, vain tämä päivä, hyvitykset), läsnäolon opetukset (ajattelijan havainnointi, hyväksyminen), joogaperinne (vastuu kykynä vastata, hengitys). Päivän ajatukset (aamun hetkessä) käsittelevät läheisten toipumisen perinteen teemoja: irti päästäminen, rajat, itsestä huolehtiminen, hyväksyminen, päivä kerrallaan. Alkuperäisteoksia ei lainata, eikä yhteisöjen nimiä käytetä tuotteessa.
 
 ## Tulossa
 
