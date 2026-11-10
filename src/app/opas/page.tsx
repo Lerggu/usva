@@ -164,7 +164,7 @@ export default function GuidePage() {
                 type="button"
                 className={`btn ${mic.listening ? "btn-primary" : ""}`}
                 aria-pressed={mic.listening}
-                disabled={waiting}
+                disabled={waiting || mic.busy}
                 onClick={() => {
                   speaker.stop();
                   speaker.prepare();
@@ -172,7 +172,7 @@ export default function GuidePage() {
                   else mic.start();
                 }}
               >
-                {mic.listening ? t("micStop") : `🎙 ${t("micStart")}`}
+                {mic.listening ? t("micStop") : mic.busy ? "…" : `🎙 ${t("micStart")}`}
               </button>
             )}
             <button className="btn btn-primary" type="submit" disabled={waiting || !text.trim()}>

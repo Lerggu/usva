@@ -158,8 +158,8 @@ const D = {
   micStart: { fi: "Puhu", en: "Speak" },
   micStop: { fi: "Kuuntelen. Napauta, kun olet valmis.", en: "I am listening. Tap when you are done." },
   micUnsupported: {
-    fi: "Tämä selain ei osaa kuunnella puhetta. Chrome, Edge ja Safari osaavat. Voit silti kirjoittaa minulle.",
-    en: "This browser cannot listen to speech. Chrome, Edge and Safari can. You can still write to me.",
+    fi: "En pysty vielä kuuntelemaan puhetta tässä selaimessa. Voit silti kirjoittaa minulle.",
+    en: "I cannot yet listen to speech in this browser. You can still write to me.",
   },
   micDenied: {
     fi: "En saa käyttää mikrofonia. Jos haluat puhua, voit sallia mikrofonin selaimen osoiterivin asetuksista.",
@@ -225,8 +225,8 @@ const D = {
   mistNameLabel: { fi: "Oppaan nimi", en: "Guide's name" },
   dataTitle: { fi: "Tietosi", en: "Your data" },
   dataInfo: {
-    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle. Jos puhut oppaalle, selaimesi muuttaa puheesi tekstiksi oman palvelunsa avulla, ja oppaan vastaus muutetaan ääneksi puhepalvelussa.",
-    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server. If you speak to the guide, your browser turns your speech into text using its own service, and the guide's reply is turned into sound by a speech service.",
+    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle. Jos puhut oppaalle, puheesi muutetaan tekstiksi selaimesi omassa palvelussa tai puhepalvelussa, ja oppaan vastaus muutetaan ääneksi puhepalvelussa. Äänitystä ei tallenneta.",
+    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server. If you speak to the guide, your speech is turned into text by your browser's own service or by a speech service, and the guide's reply is turned into sound by a speech service. The recording is not stored.",
   },
   exportData: { fi: "Lataa tietoni", en: "Download my data" },
   deleteData: { fi: "Poista kaikki tietoni", en: "Delete all my data" },

@@ -104,3 +104,20 @@ describe("oppaan ääni", () => {
     expect(validateSpeakRequest({ text: "x".repeat(MAX_SPEAK_CHARS + 1), lang: "en" })).toEqual({ ok: false, error: "too_long" });
   });
 });
+
+import { encodeWav } from "@/lib/wav";
+
+describe("encodeWav", () => {
+  it("kirjoittaa kelvollisen 16-bittisen mono-WAV-otsakkeen ja näytteet", () => {
+    const wav = new DataView(encodeWav(new Float32Array([0, 1, -1, 2]), 16000));
+    const tag = (o: number) => String.fromCharCode(wav.getUint8(o), wav.getUint8(o + 1), wav.getUint8(o + 2), wav.getUint8(o + 3));
+    expect(wav.byteLength).toBe(44 + 8);
+    expect([tag(0), tag(8), tag(12), tag(36)]).toEqual(["RIFF", "WAVE", "fmt ", "data"]);
+    expect(wav.getUint32(4, true)).toBe(36 + 8);
+    expect(wav.getUint16(22, true)).toBe(1);
+    expect(wav.getUint32(24, true)).toBe(16000);
+    expect(wav.getUint16(34, true)).toBe(16);
+    expect(wav.getUint32(40, true)).toBe(8);
+    expect([44, 46, 48, 50].map((o) => wav.getInt16(o, true))).toEqual([0, 32767, -32768, 32767]);
+  });
+});

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Lang } from "./progress";
 import { MAX_SPEAK_CHARS } from "./speech";
+import { LISTEN_SAMPLE_RATE, MAX_LISTEN_SECONDS, encodeWav } from "./wav";
 
 const LOCALES: Record<Lang, string> = { fi: "fi-FI", en: "en-US" };
 
@@ -28,8 +29,35 @@ function recognitionCtor(): RecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-// Puhe tekstiksi selaimen omalla tunnistuksella. onDone saa valmiin tekstin, kun
-// käyttäjä lopettaa puhumisen tai napauttaa mikrofonia uudelleen.
+function canRecord(): boolean {
+  return typeof navigator !== "undefined" && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== "undefined";
+}
+
+// Muuntaa selaimen äänityksen 16 kHz:n mono-WAViksi palvelimen tunnistusta varten.
+async function toWav(recording: Blob): Promise<ArrayBuffer> {
+  const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  const ctx = new Ctx();
+  try {
+    const decoded = await ctx.decodeAudioData(await recording.arrayBuffer());
+    const frames = Math.max(1, Math.ceil(decoded.duration * LISTEN_SAMPLE_RATE));
+    const offline = new OfflineAudioContext(1, frames, LISTEN_SAMPLE_RATE);
+    const source = offline.createBufferSource();
+    source.buffer = decoded;
+    source.connect(offline.destination);
+    source.start();
+    const rendered = await offline.startRendering();
+    return encodeWav(rendered.getChannelData(0), LISTEN_SAMPLE_RATE);
+  } finally {
+    void ctx.close();
+  }
+}
+
+type Recording = { recorder: MediaRecorder; stream: MediaStream; timer: number };
+
+// Puhe tekstiksi. Ensisijaisesti selaimen oma tunnistus; jos sitä ei ole (esim.
+// iPhonen Chrome tai Firefox), puhe äänitetään ja tunnistetaan palvelimella.
+// onDone saa valmiin tekstin, kun käyttäjä lopettaa puhumisen tai napauttaa
+// mikrofonia uudelleen.
 export type MicError = "denied" | "nospeech" | "failed";
 
 export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
@@ -37,16 +65,92 @@ export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
   const [error, setError] = useState<MicError | null>(null);
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
+  const [busy, setBusy] = useState(false);
   const recRef = useRef<Recognition | null>(null);
+  const recordingRef = useRef<Recording | null>(null);
+  const viaServerRef = useRef(false);
   const doneRef = useRef(onDone);
   doneRef.current = onDone;
 
   useEffect(() => {
-    setSupported(recognitionCtor() !== null);
-    return () => recRef.current?.abort();
+    let cancelled = false;
+    if (recognitionCtor() !== null) {
+      setSupported(true);
+    } else if (!canRecord()) {
+      setSupported(false);
+    } else {
+      fetch("/api/listen")
+        .then((r) => r.json() as Promise<{ available?: boolean }>)
+        .then((d) => {
+          if (cancelled) return;
+          viaServerRef.current = d.available === true;
+          setSupported(d.available === true);
+        })
+        .catch(() => !cancelled && setSupported(false));
+    }
+    return () => {
+      cancelled = true;
+      recRef.current?.abort();
+      const rec = recordingRef.current;
+      if (rec) {
+        window.clearTimeout(rec.timer);
+        rec.recorder.onstop = null;
+        rec.stream.getTracks().forEach((t) => t.stop());
+      }
+    };
   }, []);
 
+  const startRecording = useCallback(async () => {
+    if (recordingRef.current) return;
+    setError(null);
+    let stream: MediaStream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch {
+      setError("denied");
+      return;
+    }
+    const chunks: Blob[] = [];
+    const recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0) chunks.push(e.data);
+    };
+    recorder.onstop = async () => {
+      window.clearTimeout(recordingRef.current?.timer);
+      recordingRef.current = null;
+      stream.getTracks().forEach((t) => t.stop());
+      setListening(false);
+      setBusy(true);
+      try {
+        const wav = await toWav(new Blob(chunks, { type: recorder.mimeType }));
+        const res = await fetch(`/api/listen?lang=${lang}`, {
+          method: "POST",
+          headers: { "content-type": "audio/wav" },
+          body: wav,
+        });
+        if (!res.ok) throw new Error("listen failed");
+        const { text } = (await res.json()) as { text?: string };
+        if (text?.trim()) doneRef.current(text.trim());
+        else setError("nospeech");
+      } catch {
+        setError("failed");
+      } finally {
+        setBusy(false);
+      }
+    };
+    // Palvelin tunnistaa enintään minuutin kerrallaan, joten äänitys päättyy
+    // itsestään vähän ennen sitä eikä mitään jää tunnistamatta.
+    const timer = window.setTimeout(() => recorder.state === "recording" && recorder.stop(), MAX_LISTEN_SECONDS * 1000);
+    recordingRef.current = { recorder, stream, timer };
+    setListening(true);
+    recorder.start();
+  }, [lang]);
+
   const start = useCallback(() => {
+    if (viaServerRef.current) {
+      void startRecording();
+      return;
+    }
     const Ctor = recognitionCtor();
     if (!Ctor || recRef.current) return;
     const rec = new Ctor();
@@ -92,11 +196,15 @@ export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
       setListening(false);
       setError("failed");
     }
-  }, [lang]);
+  }, [lang, startRecording]);
 
-  const stop = useCallback(() => recRef.current?.stop(), []);
+  const stop = useCallback(() => {
+    recRef.current?.stop();
+    const rec = recordingRef.current;
+    if (rec && rec.recorder.state === "recording") rec.recorder.stop();
+  }, []);
 
-  return { supported, listening, interim, error, start, stop };
+  return { supported, listening, busy, interim, error, start, stop };
 }
 
 function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {

@@ -45,7 +45,7 @@ Oppaan pyyntörajoitin on muistinvarainen, joten aja aluksi yhtä instanssia.
 
 Oppaalle voi puhua ja se voi vastata ääneen (Opas-näkymän Puhetila).
 
-- **Puhe tekstiksi:** selaimen oma puheentunnistus. Toimii Chromessa, Edgessä ja Safarissa; Firefoxissa mikrofoninappia ei näy.
+- **Puhe tekstiksi:** selaimen oma puheentunnistus, jos selaimessa on sellainen (Chrome ja Edge tietokoneella ja Androidissa, Safari). Muissa selaimissa, kuten iPhonen Chromessa ja Firefoxissa, puhe äänitetään ja tunnistetaan Azure AI Speech -palvelussa, kun alla olevat ympäristömuuttujat on asetettu. Ilman niitä puhuminen ei näissä selaimissa onnistu.
 - **Teksti puheeksi:** Azure AI Speech -palvelun neuroääni, kun ympäristömuuttujat `AZURE_SPEECH_KEY` ja `AZURE_SPEECH_REGION` on asetettu. Muuten käytetään selaimen omaa ääntä.
 
 ## Tarkistukset
