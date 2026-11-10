@@ -35,9 +35,9 @@ npm run dev
 Sovellus on tavallinen Next.js-palvelin, joten se sopii Azure App Serviceen (Linux, Node 22 tai uudempi).
 
 1. Luo Web App: julkaisutapa Code, ajoympäristö Node 22 LTS, käyttöjärjestelmä Linux.
-2. Yhdistä Deployment Centerissä GitHub-repo `Lerggu/usva`, haara `main`. Azure luo julkaisun, joka ajaa `npm install` ja `npm run build`.
+2. Yhdistä Deployment Centerissä GitHub-repo `Lerggu/usva`, haara `main`. Julkaisu on tiedostossa `.github/workflows/main_usva.yml`: se ajaa tarkistukset, kääntää sovelluksen ja vie valmiin paketin Azureen jokaisen `main`-haaran muutoksen jälkeen.
 3. Lisää ympäristömuuttujiin `ANTHROPIC_API_KEY`. Avainta ei tallenneta repoon.
-4. Käynnistyskomento on `npm start`. Next.js kuuntelee Azuren antamaa `PORT`-muuttujaa.
+4. Käynnistyskomento on `npm start` (tai tyhjä). Palvelin kuuntelee Azuren antamaa `PORT`-muuttujaa.
 
 Oppaan pyyntörajoitin on muistinvarainen, joten aja aluksi yhtä instanssia.
 
