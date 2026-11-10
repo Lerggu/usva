@@ -157,6 +157,26 @@ const D = {
   },
   micStart: { fi: "Puhu", en: "Speak" },
   micStop: { fi: "Kuuntelen. Napauta, kun olet valmis.", en: "I am listening. Tap when you are done." },
+  micUnsupported: {
+    fi: "Tämä selain ei osaa kuunnella puhetta. Chrome, Edge ja Safari osaavat. Voit silti kirjoittaa minulle.",
+    en: "This browser cannot listen to speech. Chrome, Edge and Safari can. You can still write to me.",
+  },
+  micDenied: {
+    fi: "En saa käyttää mikrofonia. Jos haluat puhua, voit sallia mikrofonin selaimen osoiterivin asetuksista.",
+    en: "I am not allowed to use the microphone. If you would like to speak, you can allow it in the browser's address bar settings.",
+  },
+  micNoSpeech: {
+    fi: "En kuullut vielä mitään. Voit kokeilla uudelleen, kun olet valmis.",
+    en: "I did not hear anything yet. You can try again when you are ready.",
+  },
+  micFailed: {
+    fi: "Kuunteleminen ei juuri nyt onnistunut. Voit kokeilla uudelleen tai kirjoittaa.",
+    en: "Listening did not work just now. You can try again or write.",
+  },
+  noVoice: {
+    fi: "Tässä laitteessa ei ole suomenkielistä puheääntä, joten en voi vielä puhua ääneen. Vastaukseni näkyy tekstinä.",
+    en: "This device has no voice for this language, so I cannot speak aloud yet. My reply is shown as text.",
+  },
   listen: { fi: "Kuuntele", en: "Listen" },
   stopListening: { fi: "Hiljennä", en: "Quiet" },
   guideNote: {

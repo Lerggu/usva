@@ -15,7 +15,7 @@ type Recognition = {
   interimResults: boolean;
   onresult: ((e: RecognitionEvent) => void) | null;
   onend: (() => void) | null;
-  onerror: (() => void) | null;
+  onerror: ((e: { error?: string }) => void) | null;
   start: () => void;
   stop: () => void;
   abort: () => void;
@@ -30,8 +30,11 @@ function recognitionCtor(): RecognitionCtor | null {
 
 // Puhe tekstiksi selaimen omalla tunnistuksella. onDone saa valmiin tekstin, kun
 // käyttäjä lopettaa puhumisen tai napauttaa mikrofonia uudelleen.
+export type MicError = "denied" | "nospeech" | "failed";
+
 export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
-  const [supported, setSupported] = useState(false);
+  const [supported, setSupported] = useState<boolean | null>(null);
+  const [error, setError] = useState<MicError | null>(null);
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
   const recRef = useRef<Recognition | null>(null);
@@ -47,36 +50,53 @@ export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
     const Ctor = recognitionCtor();
     if (!Ctor || recRef.current) return;
     const rec = new Ctor();
-    let finalText = "";
+    let heard = "";
+    let failure: MicError | null = null;
     rec.lang = LOCALES[lang];
-    rec.continuous = true;
+    // Yksi puheenvuoro kerrallaan: tunnistus päättyy itsestään tauon jälkeen.
+    // Jatkuva tila toimii epäluotettavasti osassa puhelinselaimia.
+    rec.continuous = false;
     rec.interimResults = true;
     rec.onresult = (e) => {
-      let live = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const r = e.results[i];
-        if (r.isFinal) finalText += r[0].transcript;
-        else live += r[0].transcript;
-      }
-      setInterim((finalText + live).trim());
+      // Koko teksti kootaan joka kerta alusta, koska osa selaimista toistaa
+      // aiemmat tulokset uusissa tapahtumissa.
+      let all = "";
+      for (let i = 0; i < e.results.length; i++) all += e.results[i][0].transcript;
+      heard = all.trim();
+      setInterim(heard);
     };
-    rec.onerror = () => rec.stop();
+    rec.onerror = (e) => {
+      if (e.error === "aborted") return;
+      failure =
+        e.error === "not-allowed" || e.error === "service-not-allowed"
+          ? "denied"
+          : e.error === "no-speech"
+            ? "nospeech"
+            : "failed";
+    };
     rec.onend = () => {
       recRef.current = null;
       setListening(false);
-      const spoken = finalText.trim();
       setInterim("");
-      if (spoken) doneRef.current(spoken);
+      if (heard) doneRef.current(heard);
+      else setError(failure ?? "nospeech");
     };
     recRef.current = rec;
     setInterim("");
+    setError(null);
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch {
+      recRef.current = null;
+      setListening(false);
+      setError("failed");
+    }
   }, [lang]);
 
   const stop = useCallback(() => recRef.current?.stop(), []);
 
-  return { supported, listening, interim, start, stop };
+  return { supported, listening, interim, error, start, stop };
 }
 
 function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
@@ -86,8 +106,14 @@ function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
 
 // Teksti puheeksi. Ensisijaisesti palvelimen lämmin neuroääni; jos sitä ei ole
 // määritetty tai teksti on liian pitkä, selaimen oma ääni rauhallisella tahdilla.
+// Lyhyin mahdollinen äänetön WAV. Sen toistaminen napautuksen aikana avaa
+// äänielementin, jotta myöhempi vastaus saa soida myös iPhonessa.
+const SILENCE = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+
 export function useSpeaker(lang: Lang) {
   const [speaking, setSpeaking] = useState<number | null>(null);
+  const [noVoice, setNoVoice] = useState(false);
+  const unlockedRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const urlRef = useRef<string | null>(null);
 
@@ -104,6 +130,17 @@ export function useSpeaker(lang: Lang) {
   // Kutsutaan napautuksen yhteydessä, jotta selain sallii äänen toiston myöhemmin.
   const prepare = useCallback(() => {
     audioRef.current ??= new Audio();
+    if (unlockedRef.current) return;
+    unlockedRef.current = true;
+    const audio = audioRef.current;
+    audio.src = SILENCE;
+    void audio.play().catch(() => {});
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.getVoices();
+      const empty = new SpeechSynthesisUtterance(" ");
+      empty.volume = 0;
+      window.speechSynthesis.speak(empty);
+    }
   }, []);
 
   const speakInBrowser = useCallback(
@@ -116,6 +153,8 @@ export function useSpeaker(lang: Lang) {
       u.lang = LOCALES[lang];
       const voice = pickBrowserVoice(lang);
       if (voice) u.voice = voice;
+      // Jos laitteessa on ääniä mutta ei tälle kielelle, kerrotaan se käyttäjälle.
+      setNoVoice(!voice && window.speechSynthesis.getVoices().length > 0);
       u.rate = 0.88;
       u.pitch = 0.95;
       u.onend = () => setSpeaking((s) => (s === id ? null : s));
@@ -144,6 +183,7 @@ export function useSpeaker(lang: Lang) {
             audio.src = url;
             audio.onended = () => setSpeaking((s) => (s === id ? null : s));
             await audio.play();
+            setNoVoice(false);
             return;
           }
         } catch {
@@ -155,5 +195,5 @@ export function useSpeaker(lang: Lang) {
     [lang, prepare, speakInBrowser, stop],
   );
 
-  return { speaking, speak, stop, prepare };
+  return { speaking, noVoice, speak, stop, prepare };
 }

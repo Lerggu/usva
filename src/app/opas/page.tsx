@@ -34,6 +34,12 @@ export default function GuidePage() {
   const step = STEPS[currentStepNumber(state, today) - 1];
   const tooLong = state.chat.length >= MAX_MESSAGES - 1;
 
+  // Puhetilassa myös ilmoitukset luetaan ääneen, jotta käyttäjä ei jää hiljaisuuteen.
+  function say(key: Key) {
+    setNotice(key);
+    if (state.voiceMode) void speaker.speak(-1, t(key));
+  }
+
   async function send(spoken?: string) {
     const content = (spoken ?? text).trim();
     if (!content || waiting || tooLong) return;
@@ -62,10 +68,10 @@ export default function GuidePage() {
         update((s) => ({ ...s, chat: [...s.chat, { role: "assistant", content: data.text }] }));
         if (state.voiceMode) void speaker.speak(messages.length, data.text);
       } else {
-        setNotice(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
+        say(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
       }
     } catch {
-      setNotice("guideResting");
+      say("guideResting");
     } finally {
       setWaiting(false);
     }
@@ -115,6 +121,13 @@ export default function GuidePage() {
           {mic.listening && mic.interim && <p className="card ml-8 text-soft">{mic.interim}</p>}
           {waiting && <p className="mr-8 px-2 text-soft">…</p>}
           {notice && <p className="card mr-8 text-lilac">{t(notice)}</p>}
+          {speaker.noVoice && <p className="card mr-8 text-soft">{t("noVoice")}</p>}
+          {mic.error && !mic.listening && (
+            <p className="card mr-8 text-soft">
+              {t(mic.error === "denied" ? "micDenied" : mic.error === "nospeech" ? "micNoSpeech" : "micFailed")}
+            </p>
+          )}
+          {mic.supported === false && state.voiceMode && <p className="card mr-8 text-soft">{t("micUnsupported")}</p>}
           {crisis && <CrisisCard />}
           <div ref={endRef} />
         </div>
