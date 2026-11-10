@@ -94,7 +94,11 @@ describe("päivän ajatus", () => {
 
   it("kiertää kaikki ajatukset, ja jokainen on molemmilla kielillä", () => {
     const seen = new Set<unknown>();
-    for (let i = 1; i <= THOUGHTS.length; i++) seen.add(thoughtFor(`2026-01-${String(i).padStart(2, "0")}`));
+    for (let i = 0; i < THOUGHTS.length; i++) {
+      seen.add(thoughtFor(new Date(Date.UTC(2026, 0, 1 + i)).toISOString().slice(0, 10)));
+    }
+    expect(THOUGHTS).toHaveLength(56);
+    expect(THOUGHTS.every(Boolean)).toBe(true);
     expect(seen.size).toBe(THOUGHTS.length);
     for (const th of THOUGHTS) {
       for (const text of [th.theme, th.text]) {

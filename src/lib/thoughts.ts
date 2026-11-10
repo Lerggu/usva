@@ -1,11 +1,12 @@
 import type { L } from "./program";
 
-// Päivän ajatukset. Teemat (irti päästäminen, rajat, itsestä huolehtiminen,
-// hyväksyminen, päivä kerrallaan) ovat läheisten toipumisen perinteestä tuttuja,
-// mutta jokainen teksti on kirjoitettu Usvaa varten omin sanoin.
+// Päivän ajatukset. Teemat ovat tuttuja läheisten toipumisen perinteestä (irti
+// päästäminen, rajat), läsnäolon opetuksista (ajatusten havainnointi, keho
+// ankkurina) ja kahdentoista askeleen hoitoperinteestä (päivä kerrallaan,
+// vertaistuki). Jokainen teksti on kirjoitettu Usvaa varten omin sanoin.
 export type Thought = { theme: L; text: L };
 
-export const THOUGHTS: Thought[] = [
+const LETTING_GO: Thought[] = [
   {
     theme: { fi: "Irti päästäminen", en: "Letting go" },
     text: {
@@ -203,6 +204,215 @@ export const THOUGHTS: Thought[] = [
     },
   },
 ];
+
+const PRESENCE: Thought[] = [
+  {
+    theme: { fi: "Ajatusten katsoja", en: "The watcher of thoughts" },
+    text: {
+      fi: "Sinä et ole ajatuksesi. Olet se, joka huomaa ne. Jo huomaaminen tuo vähän tilaa.",
+      en: "You are not your thoughts. You are the one who notices them. Noticing alone already brings a little space.",
+    },
+  },
+  {
+    theme: { fi: "Kellon aika ja mielen aika", en: "Clock time and mind time" },
+    text: {
+      fi: "Kelloa tarvitaan sovittuihin menoihin. Murehtimiseen ja katumiseen sitä ei tarvita. Kumpaa aikaa elät juuri nyt?",
+      en: "A clock is needed for appointments. It is not needed for worrying or regretting. Which kind of time are you living in right now?",
+    },
+  },
+  {
+    theme: { fi: "Keho ankkurina", en: "The body as an anchor" },
+    text: {
+      fi: "Kun mieli karkaa, keho on yhä tässä. Tunnustele hetki käsiäsi sisältä päin.",
+      en: "When the mind runs off, the body is still here. For a moment, feel your hands from the inside.",
+    },
+  },
+  {
+    theme: { fi: "Vanha kipu", en: "Old pain" },
+    text: {
+      fi: "Joskus tunne on suurempi kuin tilanne. Silloin vanha kipu on herännyt. Sitä voi katsoa lempeästi, eikä sen mukaan tarvitse toimia.",
+      en: "Sometimes the feeling is larger than the situation. Then old pain has woken. It can be watched kindly, and need not be acted on.",
+    },
+  },
+  {
+    theme: { fi: "Vastustus", en: "Resistance" },
+    text: {
+      fi: "Suuri osa kärsimyksestä on sen vastustamista, mikä jo on. Mitä tapahtuu, jos annat tämän hetken olla sellainen kuin se on?",
+      en: "Much suffering is resistance to what already is. What happens if you let this moment be as it is?",
+    },
+  },
+  {
+    theme: { fi: "Odottaminen", en: "Waiting" },
+    text: {
+      fi: "Jonossa, ruuhkassa, odotushuoneessa: jokainen odotus on kutsu palata hengitykseen.",
+      en: "In a queue, in traffic, in a waiting room: every wait is an invitation to return to the breath.",
+    },
+  },
+  {
+    theme: { fi: "Hiljaisuus", en: "Silence" },
+    text: {
+      fi: "Äänten alla on hiljaisuus, josta ne nousevat. Kuuntele sitä hetki. Se on sinussakin.",
+      en: "Beneath the sounds is the silence they rise from. Listen to it for a moment. It is in you too.",
+    },
+  },
+  {
+    theme: { fi: "Yksi asia kerrallaan", en: "One thing at a time" },
+    text: {
+      fi: "Anna yhdelle arkiselle teolle tänään koko huomiosi: käsien pesulle, portaille, kahvikupille.",
+      en: "Give one ordinary act your whole attention today: washing your hands, the stairs, a cup of coffee.",
+    },
+  },
+  {
+    theme: { fi: "Ongelma vai tilanne", en: "A problem or a situation" },
+    text: {
+      fi: "Juuri tässä hetkessä on harvoin ongelmaa. On tilanne, johon joko toimit nyt tai annat sen olla.",
+      en: "In this very moment there is seldom a problem. There is a situation you either act on now or let be.",
+    },
+  },
+  {
+    theme: { fi: "Tarina itsestä", en: "The story of me" },
+    text: {
+      fi: "Mieli kertoo sinusta tarinaa, joka on tehty menneestä. Sinä olet enemmän kuin tarinasi.",
+      en: "The mind tells a story about you made out of the past. You are more than your story.",
+    },
+  },
+  {
+    theme: { fi: "Antautuminen", en: "Surrender" },
+    text: {
+      fi: "Antautuminen ei ole alistumista. Se on kyllän sanomista tälle hetkelle, jotta voit toimia siitä käsin selkeästi.",
+      en: "Surrender is not giving in. It is saying yes to this moment so that you can act from it clearly.",
+    },
+  },
+  {
+    theme: { fi: "Kuunteleminen", en: "Listening" },
+    text: {
+      fi: "Kun kuuntelet toista ilman, että valmistelet vastaustasi, annat hänelle harvinaisen lahjan.",
+      en: "When you listen to someone without preparing your reply, you give them a rare gift.",
+    },
+  },
+  {
+    theme: { fi: "Luonto", en: "Nature" },
+    text: {
+      fi: "Puu ei murehdi eilistä eikä kukka kiirehdi huomiseen. Katso tänään hetki jotakin elävää.",
+      en: "A tree does not fret over yesterday, nor does a flower hurry toward tomorrow. Look at something living for a moment today.",
+    },
+  },
+  {
+    theme: { fi: "Hengitys", en: "The breath" },
+    text: {
+      fi: "Yksi tietoinen hengitys on jo hetki läsnäoloa. Niitä mahtuu päivään enemmän kuin arvaat.",
+      en: "One conscious breath is already a moment of presence. A day has room for more of them than you would guess.",
+    },
+  },
+];
+
+const RECOVERY: Thought[] = [
+  {
+    theme: { fi: "Sairaus, ei häpeä", en: "An illness, not a disgrace" },
+    text: {
+      fi: "Riippuvuus on sairaus, ei luonteen heikkoutta. Sairaudesta toipumista ei tarvitse hävetä.",
+      en: "Addiction is an illness, not a weakness of character. Recovering from an illness is nothing to be ashamed of.",
+    },
+  },
+  {
+    theme: { fi: "Vain tänään", en: "Just today" },
+    text: {
+      fi: "Loppuelämää ei tarvitse luvata. Tänään riittää, että tämä päivä menee toisin.",
+      en: "You need not promise the rest of your life. For today it is enough that this day goes differently.",
+    },
+  },
+  {
+    theme: { fi: "Mieliteko menee ohi", en: "A craving passes" },
+    text: {
+      fi: "Mieliteko nousee kuin aalto ja myös laskee. Sinun ei tarvitse tehdä sille mitään, vain odottaa sen yli.",
+      en: "A craving rises like a wave and also falls. You need not do anything about it, only wait it out.",
+    },
+  },
+  {
+    theme: { fi: "Et ole ainoa", en: "You are not the only one" },
+    text: {
+      fi: "Joku on ollut täsmälleen tässä ja löytänyt tien eteenpäin. Hänen kokemuksensa on sinunkin käytettävissäsi.",
+      en: "Someone has been exactly here and found a way forward. Their experience is there for you to use.",
+    },
+  },
+  {
+    theme: { fi: "Yhdessä", en: "Together" },
+    text: {
+      fi: "Yksin jääminen on toipumisen suurin este. Yksi puhelu tai yksi kohtaaminen tänään voi muuttaa päivän suunnan.",
+      en: "Being left alone is the greatest obstacle to recovery. One call or one meeting today can change the day's direction.",
+    },
+  },
+  {
+    theme: { fi: "Nälkä, väsymys, yksinäisyys", en: "Hungry, tired, lonely" },
+    text: {
+      fi: "Moni vaikea hetki on oikeasti nälkää, väsymystä, kiukkua tai yksinäisyyttä. Mitä kehosi tarvitsee juuri nyt?",
+      en: "Many a hard moment is really hunger, tiredness, anger or loneliness. What does your body need right now?",
+    },
+  },
+  {
+    theme: { fi: "Salaisuudet", en: "Secrets" },
+    text: {
+      fi: "Se, mitä kannat salassa, painaa eniten. Ääneen sanottu asia kevenee jo sanomisesta.",
+      en: "What you carry in secret weighs the most. A thing said aloud grows lighter in the saying.",
+    },
+  },
+  {
+    theme: { fi: "Arjen rytmi", en: "The rhythm of the day" },
+    text: {
+      fi: "Säännöllinen uni, ruoka ja liike eivät ole pieniä asioita. Ne ovat maa, jonka päällä muu toipuminen seisoo.",
+      en: "Regular sleep, food and movement are not small things. They are the ground the rest of recovery stands on.",
+    },
+  },
+  {
+    theme: { fi: "Kompastuminen", en: "Stumbling" },
+    text: {
+      fi: "Kompastuminen ei pyyhi pois yhtään kuljettua päivää. Tärkeintä on, mitä teet seuraavaksi, ja kenelle kerrot.",
+      en: "A stumble does not erase a single day you have walked. What matters is what you do next, and whom you tell.",
+    },
+  },
+  {
+    theme: { fi: "Nöyryys", en: "Humility" },
+    text: {
+      fi: "Nöyryys ei ole itsensä vähättelyä. Se on sen myöntämistä, että tarvitset muita, niin kuin kaikki tarvitsevat.",
+      en: "Humility is not thinking little of yourself. It is admitting that you need others, as everyone does.",
+    },
+  },
+  {
+    theme: { fi: "Läheiset", en: "Those close to you" },
+    text: {
+      fi: "Sairaus koskettaa myös niitä, jotka rakastavat sinua. Heidänkin on lupa toipua omaan tahtiinsa.",
+      en: "The illness also touches those who love you. They too are allowed to recover at their own pace.",
+    },
+  },
+  {
+    theme: { fi: "Vanhat paikat", en: "Old places" },
+    text: {
+      fi: "Jotkin paikat, ihmiset ja tavat vetävät takaisin vanhaan. Niistä saa pysyä poissa ilman selityksiä.",
+      en: "Some places, people and habits pull you back toward the old. You may stay away from them without explaining.",
+    },
+  },
+  {
+    theme: { fi: "Toisen auttaminen", en: "Helping another" },
+    text: {
+      fi: "Kun kuuntelet toista, joka kamppailee, autat samalla itseäsi. Saatu kasvaa, kun sitä antaa eteenpäin.",
+      en: "When you listen to someone who is struggling, you help yourself as well. What you have received grows when you pass it on.",
+    },
+  },
+  {
+    theme: { fi: "Pieni edistys", en: "Small progress" },
+    text: {
+      fi: "Toipuminen on suunta, ei suoritus. Pienikin askel oikeaan suuntaan on tänään kokonainen askel.",
+      en: "Recovery is a direction, not a performance. Even a small step the right way is a whole step today.",
+    },
+  },
+];
+
+// Kolme teemaa vuorottelevat, jotta peräkkäiset päivät ovat erilaisia: irti
+// päästäminen, läsnäolo, irti päästäminen, toipuminen.
+export const THOUGHTS: Thought[] = LETTING_GO.flatMap((thought, i) => [
+  thought,
+  i % 2 === 0 ? PRESENCE[i / 2] : RECOVERY[(i - 1) / 2],
+]);
 
 // Sama päivä antaa aina saman ajatuksen, ja ajatukset kiertävät järjestyksessä.
 export function thoughtFor(dayKey: string): Thought {
