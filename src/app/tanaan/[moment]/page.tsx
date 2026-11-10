@@ -8,7 +8,7 @@ import { CrisisCard } from "@/components/CrisisCard";
 import { useUsva } from "@/lib/store";
 import { taskFor } from "@/lib/progress";
 import { detectCrisis } from "@/lib/safety";
-import { thoughtFor } from "@/lib/thoughts";
+import { openingFor } from "@/lib/thoughts";
 
 type Moment = "aamu" | "tehtava" | "ilta";
 
@@ -28,6 +28,7 @@ export default function MomentPage() {
   const log = state.days[today] ?? {};
   const task = taskFor(state, today);
   const lang = state.lang;
+  const opening = openingFor(today);
 
   function save() {
     setCrisis(detectCrisis(`${a} ${b} ${c}`));
@@ -75,12 +76,30 @@ export default function MomentPage() {
       >
         {m === "aamu" && (
           <>
-            <figure className="card space-y-2">
-              <figcaption className="text-sm uppercase tracking-widest text-soft">
-                {t("thoughtTitle")} · {thoughtFor(today).theme[lang]}
-              </figcaption>
-              <p className="text-lg leading-relaxed">{thoughtFor(today).text[lang]}</p>
-            </figure>
+            <section className="card space-y-4" aria-label={t("openingTitle")}>
+              <div className="space-y-1">
+                <h2 className="text-sm uppercase tracking-widest text-soft">
+                  {t("thoughtTitle")} · {opening.thought.theme[lang]}
+                </h2>
+                <p className="text-lg leading-relaxed">{opening.thought.text[lang]}</p>
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-sm uppercase tracking-widest text-soft">{t("practiceTitle")}</h2>
+                <p className="leading-relaxed">{opening.practice[lang]}</p>
+              </div>
+              <figure className="space-y-1">
+                <h2 className="text-sm uppercase tracking-widest text-soft">{t("quoteTitle")}</h2>
+                <blockquote className="italic leading-relaxed">{opening.quote.text[lang]}</blockquote>
+                <figcaption className="text-sm text-soft">
+                  {opening.quote.author}
+                  {opening.quote.work[lang] && `, ${opening.quote.work[lang]}`}
+                </figcaption>
+              </figure>
+              <div className="space-y-1">
+                <h2 className="text-sm uppercase tracking-widest text-soft">{t("sentenceTitle")}</h2>
+                <p className="text-lg text-lilac">{opening.sentence[lang]}</p>
+              </div>
+            </section>
             <label htmlFor="f-a" className="block text-xl leading-relaxed">
               {t("morningQ")}
             </label>

@@ -84,7 +84,7 @@ describe("päivämäärät", () => {
   });
 });
 
-import { THOUGHTS, thoughtFor } from "@/lib/thoughts";
+import { PRACTICES, QUOTES, SENTENCES, THOUGHTS, openingFor, thoughtFor } from "@/lib/thoughts";
 
 describe("päivän ajatus", () => {
   it("on sama koko päivän ja vaihtuu seuraavana päivänä", () => {
@@ -106,5 +106,24 @@ describe("päivän ajatus", () => {
         expect(text.en.trim()).not.toBe("");
       }
     }
+  });
+});
+
+describe("päivänavaus", () => {
+  it("on erilainen vuoden jokaisena päivänä", () => {
+    const seen = new Set<string>();
+    for (let i = 0; i < 366; i++) {
+      const o = openingFor(new Date(Date.UTC(2026, 0, 1 + i)).toISOString().slice(0, 10));
+      seen.add([THOUGHTS.indexOf(o.thought), PRACTICES.indexOf(o.practice), QUOTES.indexOf(o.quote), SENTENCES.indexOf(o.sentence)].join("-"));
+    }
+    expect(seen.size).toBe(366);
+  });
+
+  it("jokainen osa on molemmilla kielillä, ja lainauksella on tekijä", () => {
+    for (const text of [...PRACTICES, ...SENTENCES, ...QUOTES.map((q) => q.text)]) {
+      expect(text.fi.trim()).not.toBe("");
+      expect(text.en.trim()).not.toBe("");
+    }
+    for (const q of QUOTES) expect(q.author.trim()).not.toBe("");
   });
 });

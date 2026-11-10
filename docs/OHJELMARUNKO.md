@@ -69,7 +69,26 @@ Kyselevä, lämmin ja suora kumppani kummin tapaan. Yksi kysymys ja yksi tapahtu
 
 ## Sisältölähteet
 
-Sisältö kirjoitetaan omin sanoin näiden perinteiden periaatteista: kahdentoista askeleen perinne (inventaario, päivittäinen katsaus, vain tämä päivä, hyvitykset), läsnäolon opetukset (ajattelijan havainnointi, hyväksyminen), joogaperinne (vastuu kykynä vastata, hengitys). Päivän ajatukset avaavat aamun hetken. Niitä on 56, ja kolme teemaa vuorottelee: irti päästäminen ja rajat (läheisten toipumisen perinne), läsnäolo (ajatusten havainnointi, keho ankkurina, hyväksyminen) ja toipuminen sairaudesta päivä kerrallaan (kahdentoista askeleen hoitoperinne). Alkuperäisteoksia ei lainata, eikä yhteisöjen nimiä käytetä tuotteessa.
+Sisältö kirjoitetaan omin sanoin näiden perinteiden periaatteista: kahdentoista askeleen perinne (inventaario, päivittäinen katsaus, vain tämä päivä, hyvitykset), läsnäolon opetukset (ajattelijan havainnointi, hyväksyminen), joogaperinne (vastuu kykynä vastata, hengitys). Päivän ajatukset avaavat aamun hetken. Niitä on 56, ja kolme teemaa vuorottelee: irti päästäminen ja rajat (läheisten toipumisen perinne), läsnäolo (ajatusten havainnointi, keho ankkurina, hyväksyminen) ja toipuminen sairaudesta päivä kerrallaan (kahdentoista askeleen hoitoperinne). 
+
+### Päivänavaus
+
+Aamun hetki alkaa päivänavauksella, jossa on neljä osaa: päivän ajatus (56), hiljentyminen (25), lainaus (13) ja päivän lause (27). Listat kiertävät eri tahtiin, joten sama yhdistelmä ei toistu vuoden aikana.
+
+### Vapaat lähteet
+
+Lainaukset ovat ainoat tekstit, joita ei ole kirjoitettu Usvaa varten. Ne on tarkistettu sanatarkasti Project Gutenbergin laitoksista. Suomennokset ovat omia.
+
+| Teos | Tekijä | Englanninkielinen kääntäjä | Gutenberg |
+|---|---|---|---|
+| Itsetutkiskeluja | Marcus Aurelius | George Long (k. 1879) | #15877 |
+| Käsikirja | Epiktetos | Thomas Wentworth Higginson (k. 1911) | #45109 |
+| Tao Te Ching | Laotse | James Legge (k. 1897) | #216 |
+| Dhammapada | – | F. Max Müller (k. 1900) | #2017 |
+| Walden | Henry David Thoreau (k. 1862) | – | #205 |
+| Esseet (Self-Reliance) | Ralph Waldo Emerson (k. 1882) | – | #16643 |
+
+Kahdentoista askeleen yhteisöjen omaa kirjallisuutta ei lainata: sen suoja-aika on EU:ssa yhä voimassa. Suojattuja teoksia ei lainata, eikä yhteisöjen nimiä käytetä tuotteessa.
 
 ## Tulossa
 

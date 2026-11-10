@@ -10,7 +10,7 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 4. **Hätä ohittaa kaiken:** kriisin merkeistä näytetään tukikortti, eikä tilausta tarjota. Älä heikennä `src/lib/safety.ts`:n tunnistusta.
 5. **Opas, ei terapeutti:** sovellus ei diagnosoi eikä korvaa hoitoa tai vertaistukea.
 6. **Ei rangaistuksia:** valo ei koskaan vähene, putkia ei nollata, ja paluusta palkitaan.
-7. **Tekijänoikeus:** sisältö kirjoitetaan omin sanoin. Ei lainauksia toipumiskirjallisuudesta, hengellisistä kirjoista tai opettajilta, eikä yhteisöjen nimiä tuotteessa.
+7. **Tekijänoikeus:** sisältö kirjoitetaan omin sanoin, eikä yhteisöjen nimiä käytetä tuotteessa. Suora lainaus on sallittu vain teoksesta, jonka tekijän ja kääntäjän kuolemasta on yli 70 vuotta. Lainaus tarkistetaan sanatarkasti lähteestä, tekijä mainitaan, ja lähde kirjataan `docs/OHJELMARUNKO.md`:hen. Ei lainauksia suojatusta toipumiskirjallisuudesta, nykykirjoista tai elävien opettajien teksteistä.
 8. **Tietosuoja:** kirjoitukset ovat erityisen arkaluonteisia. Niitä ei kirjata lokeihin eikä tallenneta palvelimelle ilman erillistä päätöstä.
 9. **Sitoutumattomuus:** Usva ei ole sitoutunut mihinkään uskonnolliseen, hengelliseen, ideologiseen tai psykologiseen suuntaukseen. Sisältö ja opas eivät saarnaa eivätkä oleta käyttäjältä mitään vakaumusta.
 10. **Yksilöllisyys:** Usva oppii käyttäjästään ja mukauttaa ohjausta hänelle. Käyttäjälle luvataan vain se, mikä on toteutettu.

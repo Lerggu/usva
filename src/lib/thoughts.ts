@@ -419,3 +419,103 @@ export function thoughtFor(dayKey: string): Thought {
   const days = Math.floor(Date.parse(`${dayKey}T00:00:00Z`) / 86_400_000);
   return THOUGHTS[((days % THOUGHTS.length) + THOUGHTS.length) % THOUGHTS.length];
 }
+
+// Hiljentymiset: lyhyt kutsu pysähtyä ennen aikomusta.
+export const PRACTICES: L[] = [
+  { fi: "Jos haluat, hengitä kolme kertaa hitaasti ja anna uloshengityksen olla vähän sisäänhengitystä pidempi.", en: "If you like, take three slow breaths and let each out-breath be a little longer than the in-breath." },
+  { fi: "Voit tunnustella jalkapohjiasi lattiaa vasten. Paino lepää niillä ilman, että teet mitään.", en: "You can feel the soles of your feet against the floor. Your weight rests on them without your doing anything." },
+  { fi: "Kuuntele hetki kauimmaista ääntä, jonka erotat. Sitten lähintä.", en: "Listen for a moment to the farthest sound you can make out. Then the nearest." },
+  { fi: "Voit laskea hartiat alas korvista ja antaa leuan pehmetä.", en: "You can let your shoulders drop away from your ears and let your jaw soften." },
+  { fi: "Katso ympärillesi ja nimeä mielessäsi kolme asiaa, jotka näet juuri nyt.", en: "Look around and silently name three things you can see right now." },
+  { fi: "Jos se tuntuu hyvältä, laske käsi rinnalle ja tunne sen lämpö hetken ajan.", en: "If it feels right, lay a hand on your chest and feel its warmth for a moment." },
+  { fi: "Voit seurata yhtä hengitystä alusta loppuun, kuin kuuntelisit aallon tulevan rantaan ja vetäytyvän.", en: "You can follow one breath from beginning to end, as if listening to a wave come ashore and draw back." },
+  { fi: "Tunnustele käsiäsi sisältä päin. Onko niissä lämpöä, kihelmöintiä, painoa?", en: "Feel your hands from the inside. Is there warmth, tingling, weight?" },
+  { fi: "Voit kysyä itseltäsi hiljaa: mitä tunnen juuri nyt? Vastausta ei tarvitse korjata.", en: "You can quietly ask yourself: what am I feeling right now? The answer needs no fixing." },
+  { fi: "Juo seuraava kulaus vettä tai kahvia niin hitaasti, että maistat sen kokonaan.", en: "Take your next sip of water or coffee slowly enough to taste it completely." },
+  { fi: "Jos mieleesi nousee huoli, voit sanoa sille: näen sinut. Ja palata hengitykseen.", en: "If a worry comes up, you can say to it: I see you. And return to the breath." },
+  { fi: "Voit venyttää käsiä kohti kattoa ja antaa niiden laskeutua hitaasti uloshengityksellä.", en: "You can stretch your arms toward the ceiling and let them come down slowly on the out-breath." },
+  { fi: "Katso hetki ikkunasta ulos. Mitä valo tekee juuri nyt?", en: "Look out of a window for a moment. What is the light doing right now?" },
+  { fi: "Tunnustele, missä kohtaa kehoa hengitys tuntuu selvimmin: sieraimissa, rinnassa vai vatsalla.", en: "Notice where in the body the breath is felt most clearly: the nostrils, the chest or the belly." },
+  { fi: "Voit istua minuutin tekemättä mitään. Se ei ole hukkaan heitettyä aikaa.", en: "You can sit for a minute doing nothing. It is not wasted time." },
+  { fi: "Jos jokin kohta kehossa on kireä, voit hengittää sitä kohti ja antaa sen olla.", en: "If some place in your body is tight, you can breathe toward it and let it be." },
+  { fi: "Ajattele hetki yhtä ihmistä, jolle toivot hyvää. Anna toiveen lähteä hänen luokseen.", en: "Think for a moment of one person you wish well. Let the wish travel to them." },
+  { fi: "Voit kävellä seuraavat kymmenen askelta niin, että tunnet jokaisen niistä.", en: "You can walk your next ten steps so that you feel each one." },
+  { fi: "Sulje silmät hetkeksi, jos haluat, ja huomaa, että olet tässä, vaikka et näe mitään.", en: "Close your eyes for a moment, if you like, and notice that you are here even when you see nothing." },
+  { fi: "Voit sanoa itsellesi hiljaa oman nimesi ja sen perään: olen tässä.", en: "You can quietly say your own name to yourself and after it: I am here." },
+  { fi: "Tunnustele vaatteen kosketusta ihollasi. Se on ollut siinä koko ajan.", en: "Feel the touch of your clothing on your skin. It has been there all along." },
+  { fi: "Jos ajatus vie mukanaan, voit huomata sen ja palata. Palaaminen on itse harjoitus.", en: "If a thought carries you off, you can notice it and return. The returning is the practice itself." },
+  { fi: "Voit hengittää sisään laskien neljään ja ulos laskien kuuteen, muutaman kerran.", en: "You can breathe in to a count of four and out to a count of six, a few times." },
+  { fi: "Katso käsiäsi hetki. Ne ovat kantaneet sinua läpi kaiken tähän asti.", en: "Look at your hands for a moment. They have carried you through everything so far." },
+  { fi: "Voit kiittää hiljaa yhdestä asiasta, joka on hyvin juuri nyt, vaikka se olisi pieni.", en: "You can quietly give thanks for one thing that is well right now, however small." },
+];
+
+// Päivän lauseet: yksi lause, jonka voi kantaa mukanaan.
+export const SENTENCES: L[] = [
+  { fi: "Tänään minun ei tarvitse olla valmis.", en: "Today I do not have to be finished." },
+  { fi: "Tänään teen yhden asian kerrallaan.", en: "Today I do one thing at a time." },
+  { fi: "Tänään saan pyytää apua.", en: "Today I may ask for help." },
+  { fi: "Tänään annan toisten elää omaa elämäänsä.", en: "Today I let others live their own lives." },
+  { fi: "Tänään olen itselleni ystävä.", en: "Today I am a friend to myself." },
+  { fi: "Tänään riittää, että olen rehellinen.", en: "Today it is enough that I am honest." },
+  { fi: "Tänään palaan hengitykseen niin monta kertaa kuin tarvitsen.", en: "Today I return to the breath as many times as I need." },
+  { fi: "Tänään saan sanoa ei.", en: "Today I may say no." },
+  { fi: "Tänään annan tunteen tulla ja mennä.", en: "Today I let a feeling come and go." },
+  { fi: "Tänään en kanna huomista.", en: "Today I do not carry tomorrow." },
+  { fi: "Tänään lasken irti yhdestä asiasta, jota en voi muuttaa.", en: "Today I let go of one thing I cannot change." },
+  { fi: "Tänään huolehdin kehostani lempeästi.", en: "Today I look after my body gently." },
+  { fi: "Tänään kuuntelen ennen kuin vastaan.", en: "Today I listen before I answer." },
+  { fi: "Tänään saan levätä.", en: "Today I may rest." },
+  { fi: "Tänään luotan seuraavaan askeleeseen.", en: "Today I trust the next step." },
+  { fi: "Tänään huomaan yhden hyvän asian.", en: "Today I notice one good thing." },
+  { fi: "Tänään en vertaa itseäni muihin.", en: "Today I do not compare myself with others." },
+  { fi: "Tänään olen tässä, missä jalkani ovat.", en: "Today I am here, where my feet are." },
+  { fi: "Tänään annan itselleni anteeksi yhden asian.", en: "Today I forgive myself one thing." },
+  { fi: "Tänään kerron jollekulle, miten oikeasti voin.", en: "Today I tell someone how I really am." },
+  { fi: "Tänään minun ei tarvitse hallita kaikkea.", en: "Today I do not have to control everything." },
+  { fi: "Tänään pieni askel on kokonainen askel.", en: "Today a small step is a whole step." },
+  { fi: "Tänään otan vastaan sen, mitä päivä tuo.", en: "Today I receive what the day brings." },
+  { fi: "Tänään hidastan yhden asian verran.", en: "Today I slow down by one thing." },
+  { fi: "Tänään saan iloita.", en: "Today I may feel joy." },
+  { fi: "Tänään olen kiitollinen siitä, että olen tässä.", en: "Today I am grateful to be here." },
+  { fi: "Tänään aloitan alusta niin monta kertaa kuin tarvitsen.", en: "Today I begin again as many times as I need." },
+];
+
+// Lainaukset ovat ainoat tekstit, joita ei ole kirjoitettu Usvaa varten. Jokainen
+// on tarkistettu sanatarkasti Project Gutenbergin laitoksesta, ja sekä tekijän että
+// englanninkielisen kääntäjän kuolemasta on yli 70 vuotta. Suomennokset ovat omia.
+// Lähteet ja kääntäjät: docs/OHJELMARUNKO.md.
+export type Quote = { text: L; author: string; work: L };
+
+export const QUOTES: Quote[] = [
+  { text: { fi: "Pysy nykyhetkessä.", en: "Confine thyself to the present." }, author: "Marcus Aurelius", work: { fi: "Itsetutkiskeluja", en: "Meditations" } },
+  { text: { fi: "On sinun vallassasi vetäytyä itseesi milloin vain tahdot.", en: "It is in thy power whenever thou shalt choose to retire into thyself." }, author: "Marcus Aurelius", work: { fi: "Itsetutkiskeluja", en: "Meditations" } },
+  { text: { fi: "Älä järkytä itseäsi ajattelemalla koko elämääsi kerralla.", en: "Do not disturb thyself by thinking of the whole of thy life." }, author: "Marcus Aurelius", work: { fi: "Itsetutkiskeluja", en: "Meditations" } },
+  { text: { fi: "Millaisia ovat tavanomaiset ajatuksesi, sellainen on mielesi luonne, sillä ajatukset värjäävät sielun.", en: "Such as are thy habitual thoughts, such also will be the character of thy mind; for the soul is dyed by the thoughts." }, author: "Marcus Aurelius", work: { fi: "Itsetutkiskeluja", en: "Meditations" } },
+  { text: { fi: "On asioita, jotka ovat vallassamme, ja asioita, jotka eivät ole vallassamme.", en: "There are things which are within our power, and there are things which are beyond our power." }, author: "Epiktetos", work: { fi: "Käsikirja", en: "The Enchiridion" } },
+  { text: { fi: "Älä vaadi, että asiat tapahtuvat niin kuin toivot, vaan toivo niiden tapahtuvan niin kuin ne tapahtuvat, niin elämäsi sujuu hyvin.", en: "Demand not that events should happen as you wish; but wish them to happen as they do happen, and you will go on well." }, author: "Epiktetos", work: { fi: "Käsikirja", en: "The Enchiridion" } },
+  { text: { fi: "Tuhannen virstan matka alkoi yhdestä askeleesta.", en: "The journey of a thousand li commenced with a single step." }, author: "Laotse", work: { fi: "Tao Te Ching", en: "Tao Te Ching" } },
+  { text: { fi: "Joka tuntee toiset, on tarkkanäköinen; joka tuntee itsensä, on viisas.", en: "He who knows other men is discerning; he who knows himself is intelligent." }, author: "Laotse", work: { fi: "Tao Te Ching", en: "Tao Te Ching" } },
+  { text: { fi: "Maailman pehmein voittaa kovimman.", en: "The softest thing in the world dashes against and overcomes the hardest." }, author: "Laotse", work: { fi: "Tao Te Ching", en: "Tao Te Ching" } },
+  { text: { fi: "Viha ei milloinkaan lopu vihalla; viha loppuu rakkaudella. Tämä on ikivanha sääntö.", en: "Hatred does not cease by hatred at any time: hatred ceases by love, this is an old rule." }, author: "Dhammapada", work: { fi: "", en: "" } },
+  { text: { fi: "Jos yksi voittaa taistelussa tuhat kertaa tuhat miestä ja toinen voittaa itsensä, on jälkimmäinen voittajista suurin.", en: "If one man conquer in battle a thousand times thousand men, and if another conquer himself, he is the greatest of conquerors." }, author: "Dhammapada", work: { fi: "", en: "" } },
+  { text: { fi: "Menin metsään, koska halusin elää harkiten ja kohdata vain elämän olennaiset tosiasiat.", en: "I went to the woods because I wished to live deliberately, to front only the essential facts of life." }, author: "Henry David Thoreau", work: { fi: "Walden", en: "Walden" } },
+  { text: { fi: "Mikään ei voi tuoda sinulle rauhaa paitsi sinä itse.", en: "Nothing can bring you peace but yourself." }, author: "Ralph Waldo Emerson", work: { fi: "Luota itseesi", en: "Self-Reliance" } },
+];
+
+export type Opening = { thought: Thought; practice: L; quote: Quote; sentence: L };
+
+function pick<T>(items: T[], days: number): T {
+  return items[((days % items.length) + items.length) % items.length];
+}
+
+// Päivänavaus. Neljän listan pituuksilla (56, 25, 13, 27) ei ole yhteisiä
+// tekijöitä, joten sama yhdistelmä ei toistu vuosikymmeniin.
+export function openingFor(dayKey: string): Opening {
+  const days = Math.floor(Date.parse(`${dayKey}T00:00:00Z`) / 86_400_000);
+  return {
+    thought: pick(THOUGHTS, days),
+    practice: pick(PRACTICES, days),
+    quote: pick(QUOTES, days),
+    sentence: pick(SENTENCES, days),
+  };
+}
