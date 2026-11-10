@@ -78,3 +78,29 @@ describe("buildContext", () => {
     expect(p).toContain("kauna isää kohtaan");
   });
 });
+
+import { DEFAULT_VOICES, MAX_SPEAK_CHARS, buildSsml, validateSpeakRequest } from "@/lib/speech";
+
+describe("oppaan ääni", () => {
+  it("rakentaa SSML:n oikealla äänellä ja pehmeällä tahdilla", () => {
+    const ssml = buildSsml("Olen tässä.", "fi");
+    expect(ssml).toContain(DEFAULT_VOICES.fi);
+    expect(ssml).toContain('xml:lang="fi-FI"');
+    expect(ssml).toContain('rate="-10%"');
+    expect(buildSsml("I am here.", "en", "en-GB-SoniaNeural")).toContain("en-GB-SoniaNeural");
+  });
+
+  it("ei päästä tekstiä tai äänen nimeä rikkomaan SSML:ää", () => {
+    const ssml = buildSsml(`<break/> & "lainaus" 'x'`, "fi", 'x"><evil/>');
+    expect(ssml).toContain("&lt;break/&gt; &amp; &quot;lainaus&quot; &apos;x&apos;");
+    expect(ssml).not.toContain("<evil");
+    expect(ssml).toContain(DEFAULT_VOICES.fi);
+  });
+
+  it("tarkistaa pyynnön eikä katkaise liian pitkää tekstiä", () => {
+    expect(validateSpeakRequest({ text: " hei ", lang: "fi" })).toEqual({ ok: true, value: { text: "hei", lang: "fi" } });
+    expect(validateSpeakRequest({ text: "", lang: "fi" }).ok).toBe(false);
+    expect(validateSpeakRequest({ text: "hei", lang: "sv" }).ok).toBe(false);
+    expect(validateSpeakRequest({ text: "x".repeat(MAX_SPEAK_CHARS + 1), lang: "en" })).toEqual({ ok: false, error: "too_long" });
+  });
+});

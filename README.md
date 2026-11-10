@@ -41,6 +41,13 @@ Sovellus on tavallinen Next.js-palvelin, joten se sopii Azure App Serviceen (Lin
 
 Oppaan pyyntörajoitin on muistinvarainen, joten aja aluksi yhtä instanssia.
 
+## Oppaan ääni
+
+Oppaalle voi puhua ja se voi vastata ääneen (Opas-näkymän Puhetila).
+
+- **Puhe tekstiksi:** selaimen oma puheentunnistus. Toimii Chromessa, Edgessä ja Safarissa; Firefoxissa mikrofoninappia ei näy.
+- **Teksti puheeksi:** Azure AI Speech -palvelun neuroääni, kun ympäristömuuttujat `AZURE_SPEECH_KEY` ja `AZURE_SPEECH_REGION` on asetettu. Muuten käytetään selaimen omaa ääntä.
+
 ## Tarkistukset
 
 ```bash

@@ -1,0 +1,159 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Lang } from "./progress";
+import { MAX_SPEAK_CHARS } from "./speech";
+
+const LOCALES: Record<Lang, string> = { fi: "fi-FI", en: "en-US" };
+
+// Selaimen puheentunnistuksen tyypit puuttuvat TypeScriptin vakiokirjastosta.
+type RecognitionResult = { isFinal: boolean; 0: { transcript: string } };
+type RecognitionEvent = { resultIndex: number; results: ArrayLike<RecognitionResult> };
+type Recognition = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: ((e: RecognitionEvent) => void) | null;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+};
+type RecognitionCtor = new () => Recognition;
+
+function recognitionCtor(): RecognitionCtor | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as { SpeechRecognition?: RecognitionCtor; webkitSpeechRecognition?: RecognitionCtor };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
+// Puhe tekstiksi selaimen omalla tunnistuksella. onDone saa valmiin tekstin, kun
+// käyttäjä lopettaa puhumisen tai napauttaa mikrofonia uudelleen.
+export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
+  const [supported, setSupported] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [interim, setInterim] = useState("");
+  const recRef = useRef<Recognition | null>(null);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+
+  useEffect(() => {
+    setSupported(recognitionCtor() !== null);
+    return () => recRef.current?.abort();
+  }, []);
+
+  const start = useCallback(() => {
+    const Ctor = recognitionCtor();
+    if (!Ctor || recRef.current) return;
+    const rec = new Ctor();
+    let finalText = "";
+    rec.lang = LOCALES[lang];
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.onresult = (e) => {
+      let live = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) finalText += r[0].transcript;
+        else live += r[0].transcript;
+      }
+      setInterim((finalText + live).trim());
+    };
+    rec.onerror = () => rec.stop();
+    rec.onend = () => {
+      recRef.current = null;
+      setListening(false);
+      const spoken = finalText.trim();
+      setInterim("");
+      if (spoken) doneRef.current(spoken);
+    };
+    recRef.current = rec;
+    setInterim("");
+    setListening(true);
+    rec.start();
+  }, [lang]);
+
+  const stop = useCallback(() => recRef.current?.stop(), []);
+
+  return { supported, listening, interim, start, stop };
+}
+
+function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
+  const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith(lang));
+  return voices.find((v) => v.localService) ?? voices[0];
+}
+
+// Teksti puheeksi. Ensisijaisesti palvelimen lämmin neuroääni; jos sitä ei ole
+// määritetty tai teksti on liian pitkä, selaimen oma ääni rauhallisella tahdilla.
+export function useSpeaker(lang: Lang) {
+  const [speaking, setSpeaking] = useState<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const urlRef = useRef<string | null>(null);
+
+  const stop = useCallback(() => {
+    audioRef.current?.pause();
+    if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    urlRef.current = null;
+    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    setSpeaking(null);
+  }, []);
+
+  useEffect(() => stop, [stop]);
+
+  // Kutsutaan napautuksen yhteydessä, jotta selain sallii äänen toiston myöhemmin.
+  const prepare = useCallback(() => {
+    audioRef.current ??= new Audio();
+  }, []);
+
+  const speakInBrowser = useCallback(
+    (id: number, text: string) => {
+      if (!("speechSynthesis" in window)) {
+        setSpeaking(null);
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = LOCALES[lang];
+      const voice = pickBrowserVoice(lang);
+      if (voice) u.voice = voice;
+      u.rate = 0.88;
+      u.pitch = 0.95;
+      u.onend = () => setSpeaking((s) => (s === id ? null : s));
+      u.onerror = () => setSpeaking((s) => (s === id ? null : s));
+      window.speechSynthesis.speak(u);
+    },
+    [lang],
+  );
+
+  const speak = useCallback(
+    async (id: number, text: string) => {
+      stop();
+      prepare();
+      setSpeaking(id);
+      if (text.length <= MAX_SPEAK_CHARS) {
+        try {
+          const res = await fetch("/api/speak", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ text, lang }),
+          });
+          if (res.ok) {
+            const url = URL.createObjectURL(await res.blob());
+            urlRef.current = url;
+            const audio = audioRef.current!;
+            audio.src = url;
+            audio.onended = () => setSpeaking((s) => (s === id ? null : s));
+            await audio.play();
+            return;
+          }
+        } catch {
+          // Jatketaan selaimen omalla äänellä.
+        }
+      }
+      speakInBrowser(id, text);
+    },
+    [lang, prepare, speakInBrowser, stop],
+  );
+
+  return { speaking, speak, stop, prepare };
+}

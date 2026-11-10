@@ -10,6 +10,7 @@ import { STEPS } from "@/lib/program";
 import { MAX_MESSAGE_CHARS, MAX_MESSAGES, buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
 import type { Key } from "@/lib/i18n";
+import { useSpeaker, useSpeechInput } from "@/lib/voice";
 
 export default function GuidePage() {
   const { ready, state, today, t, update } = useUsva();
@@ -18,6 +19,12 @@ export default function GuidePage() {
   const [notice, setNotice] = useState<Key | null>(null);
   const [crisis, setCrisis] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const sendRef = useRef<(spoken?: string) => void>(() => {});
+  const speaker = useSpeaker(state.lang);
+  const mic = useSpeechInput(state.lang, (spoken) => {
+    if (state.voiceMode) sendRef.current(spoken);
+    else setText((prev) => (prev ? `${prev} ${spoken}` : spoken));
+  });
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
@@ -27,9 +34,10 @@ export default function GuidePage() {
   const step = STEPS[currentStepNumber(state, today) - 1];
   const tooLong = state.chat.length >= MAX_MESSAGES - 1;
 
-  async function send() {
-    const content = text.trim();
+  async function send(spoken?: string) {
+    const content = (spoken ?? text).trim();
     if (!content || waiting || tooLong) return;
+    speaker.prepare();
     if (detectCrisis(content)) setCrisis(true);
     const messages: ChatMsg[] = [...state.chat, { role: "user", content }];
     update((s) => ({ ...s, chat: messages }));
@@ -52,6 +60,7 @@ export default function GuidePage() {
       if (res.ok) {
         const data = (await res.json()) as { text: string };
         update((s) => ({ ...s, chat: [...s.chat, { role: "assistant", content: data.text }] }));
+        if (state.voiceMode) void speaker.speak(messages.length, data.text);
       } else {
         setNotice(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
       }
@@ -62,22 +71,48 @@ export default function GuidePage() {
     }
   }
 
+  sendRef.current = (spoken) => void send(spoken);
+
   return (
     <Shell>
       <div className="space-y-4">
-        <Mist lights={totalLights(state)} mood={waiting ? "listening" : "calm"} size="8rem" />
+        <Mist lights={totalLights(state)} mood={waiting || mic.listening ? "listening" : "calm"} size="8rem" />
         <p className="text-center text-sm text-soft">{t("guideNote")}</p>
+        <button
+          type="button"
+          className={`btn ${state.voiceMode ? "btn-primary" : ""}`}
+          aria-pressed={state.voiceMode}
+          onClick={() => {
+            if (state.voiceMode) speaker.stop();
+            else speaker.prepare();
+            update((s) => ({ ...s, voiceMode: !s.voiceMode }));
+          }}
+        >
+          {t("voiceMode")}
+          <span className="block text-sm font-normal">{t("voiceModeSub")}</span>
+        </button>
 
         <div className="space-y-3" aria-live="polite">
           <p className="card mr-8">{t("guideHello")}</p>
-          {state.chat.map((m, i) => (
-            <p
-              key={i}
-              className={`card whitespace-pre-wrap ${m.role === "user" ? "ml-8 border-lilac/40 bg-mist/20" : "mr-8"}`}
-            >
-              {m.content}
-            </p>
-          ))}
+          {state.chat.map((m, i) =>
+            m.role === "user" ? (
+              <p key={i} className="card ml-8 whitespace-pre-wrap border-lilac/40 bg-mist/20">
+                {m.content}
+              </p>
+            ) : (
+              <div key={i} className="card mr-8 space-y-2">
+                <p className="whitespace-pre-wrap">{m.content}</p>
+                <button
+                  type="button"
+                  className="min-h-11 text-sm text-lilac"
+                  onClick={() => (speaker.speaking === i ? speaker.stop() : void speaker.speak(i, m.content))}
+                >
+                  {speaker.speaking === i ? `◼ ${t("stopListening")}` : `▶ ${t("listen")}`}
+                </button>
+              </div>
+            ),
+          )}
+          {mic.listening && mic.interim && <p className="card ml-8 text-soft">{mic.interim}</p>}
           {waiting && <p className="mr-8 px-2 text-soft">…</p>}
           {notice && <p className="card mr-8 text-lilac">{t(notice)}</p>}
           {crisis && <CrisisCard />}
@@ -111,6 +146,22 @@ export default function GuidePage() {
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
+            {mic.supported && (
+              <button
+                type="button"
+                className={`btn ${mic.listening ? "btn-primary" : ""}`}
+                aria-pressed={mic.listening}
+                disabled={waiting}
+                onClick={() => {
+                  speaker.stop();
+                  speaker.prepare();
+                  if (mic.listening) mic.stop();
+                  else mic.start();
+                }}
+              >
+                {mic.listening ? t("micStop") : `🎙 ${t("micStart")}`}
+              </button>
+            )}
             <button className="btn btn-primary" type="submit" disabled={waiting || !text.trim()}>
               {t("send")}
             </button>

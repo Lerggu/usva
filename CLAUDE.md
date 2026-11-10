@@ -23,7 +23,8 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 - `src/lib/progress.ts` – tila, valopisteet, tehtävän valinta, merkit
 - `src/lib/guide.ts` – oppaan järjestelmäkehote ja pyynnön tarkistus
 - `src/lib/safety.ts` – kriisin tunnistus
-- `src/app/api/guide/route.ts` – ainoa palvelinreitti (Claude API)
+- `src/app/api/guide/route.ts` – oppaan palvelinreitti (Claude API)
+- `src/app/api/speak/route.ts` – oppaan ääni (Azure AI Speech), `src/lib/voice.ts` – puhe selaimessa
 - `src/components/Mist.tsx` – usvahahmo
 
 API-avaimet tulevat vain ympäristöstä, eivät koskaan tiedostoihin tai commiteihin.

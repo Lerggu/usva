@@ -150,6 +150,15 @@ const D = {
     en: "This conversation has grown long. If you like, you can begin a new one with a clean slate.",
   },
   guideNew: { fi: "Aloita uusi keskustelu", en: "Begin a new conversation" },
+  voiceMode: { fi: "Puhetila", en: "Voice mode" },
+  voiceModeSub: {
+    fi: "Puhu minulle, niin vastaan ääneen",
+    en: "Speak to me and I will answer aloud",
+  },
+  micStart: { fi: "Puhu", en: "Speak" },
+  micStop: { fi: "Kuuntelen. Napauta, kun olet valmis.", en: "I am listening. Tap when you are done." },
+  listen: { fi: "Kuuntele", en: "Listen" },
+  stopListening: { fi: "Hiljennä", en: "Quiet" },
   guideNote: {
     fi: "Opas on tekoäly, ei terapeutti. Keskustelu tallentuu vain laitteellesi.",
     en: "The guide is an AI, not a therapist. The conversation is stored on your device only.",
@@ -196,8 +205,8 @@ const D = {
   mistNameLabel: { fi: "Oppaan nimi", en: "Guide's name" },
   dataTitle: { fi: "Tietosi", en: "Your data" },
   dataInfo: {
-    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle.",
-    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server.",
+    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle. Jos puhut oppaalle, selaimesi muuttaa puheesi tekstiksi oman palvelunsa avulla, ja oppaan vastaus muutetaan ääneksi puhepalvelussa.",
+    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server. If you speak to the guide, your browser turns your speech into text using its own service, and the guide's reply is turned into sound by a speech service.",
   },
   exportData: { fi: "Lataa tietoni", en: "Download my data" },
   deleteData: { fi: "Poista kaikki tietoni", en: "Delete all my data" },
