@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-night: #120d22;
+  --color-dusk: #1c1433;
+  --color-veil: #2a1f4a;
+  --color-lilac: #c9b8ff;
+  --color-mist: #9b7bff;
+  --color-glow: #f3e9ff;
+  --color-soft: #a99cc9;
+}
+
+html,
+body {
+  background: var(--color-night);
+  color: var(--color-glow);
+  min-height: 100%;
+}
+
+body {
+  font-family: ui-rounded, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: radial-gradient(120% 80% at 50% 0%, #2a1f4a 0%, #120d22 60%);
+  background-attachment: fixed;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--color-mist) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-lilac) 35%, transparent);
+  color: var(--color-glow);
+  text-align: center;
+  font-size: 1.05rem;
+  transition: background 0.2s;
+}
+.btn:hover,
+.btn:focus-visible {
+  background: color-mix(in srgb, var(--color-mist) 36%, transparent);
+}
+.btn-primary {
+  background: linear-gradient(135deg, #8f6bff, #b48cff);
+  border-color: transparent;
+  color: #160f2b;
+  font-weight: 600;
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: linear-gradient(135deg, #a183ff, #c4a4ff);
+}
+.btn-quiet {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-soft);
+}
+.card {
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--color-veil) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-lilac) 18%, transparent);
+  padding: 1.1rem;
+}
+.field {
+  width: 100%;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--color-night) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-lilac) 30%, transparent);
+  padding: 0.85rem 1rem;
+  color: var(--color-glow);
+  font-size: 1.05rem;
+}
+.field::placeholder {
+  color: color-mix(in srgb, var(--color-soft) 70%, transparent);
+}
+:focus-visible {
+  outline: 2px solid var(--color-lilac);
+  outline-offset: 2px;
+}
+
+/* Usva */
+.mist {
+  position: relative;
+  width: var(--mist-size, 14rem);
+  height: var(--mist-size, 14rem);
+  margin-inline: auto;
+}
+.mist-body {
+  position: absolute;
+  inset: 0;
+  animation: mist-breathe 10s ease-in-out infinite;
+}
+.mist[data-mood="listening"] .mist-body {
+  animation-duration: 6s;
+}
+.mist[data-mood="soft"] .mist-body {
+  opacity: 0.7;
+}
+.mist[data-breath="in"] .mist-body,
+.mist[data-breath="out"] .mist-body {
+  animation: none;
+  transition: transform var(--breath-ms, 4000ms) ease-in-out;
+}
+.mist[data-breath="in"] .mist-body {
+  transform: scale(1.18);
+}
+.mist[data-breath="out"] .mist-body {
+  transform: scale(0.82);
+}
+.mist-layer {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(22px);
+  mix-blend-mode: screen;
+}
+.mist-layer:nth-child(1) {
+  inset: 12%;
+  background: radial-gradient(circle, #b79cff 0%, #7a55f0 45%, transparent 72%);
+  animation: mist-drift-a 17s ease-in-out infinite;
+}
+.mist-layer:nth-child(2) {
+  inset: 4% 20% 26% 6%;
+  background: radial-gradient(circle, #d7b8ff 0%, #9a63e8 40%, transparent 70%);
+  opacity: 0.7;
+  animation: mist-drift-b 23s ease-in-out infinite;
+}
+.mist-layer:nth-child(3) {
+  inset: 28% 4% 6% 24%;
+  background: radial-gradient(circle, #8fa0ff 0%, #6a4bd6 42%, transparent 70%);
+  opacity: 0.65;
+  animation: mist-drift-c 29s ease-in-out infinite;
+}
+.mist-light {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff8e6;
+  box-shadow: 0 0 8px 2px rgba(255, 240, 200, 0.75);
+  animation: mist-twinkle 5s ease-in-out infinite;
+}
+@keyframes mist-breathe {
+  0%, 100% { transform: scale(0.94); }
+  50% { transform: scale(1.06); }
+}
+@keyframes mist-drift-a {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(3%, -4%); }
+}
+@keyframes mist-drift-b {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-6%, 5%) rotate(20deg); }
+}
+@keyframes mist-drift-c {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(5%, -6%) rotate(-25deg); }
+}
+@keyframes mist-twinkle {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mist-body, .mist-layer, .mist-light {
+    animation: none !important;
+    transition: none !important;
+  }
+}
