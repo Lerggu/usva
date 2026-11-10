@@ -127,7 +127,6 @@ export default function GuidePage() {
               {t(mic.error === "denied" ? "micDenied" : mic.error === "nospeech" ? "micNoSpeech" : "micFailed")}
             </p>
           )}
-          {mic.supported === false && state.voiceMode && <p className="card mr-8 text-soft">{t("micUnsupported")}</p>}
           {crisis && <CrisisCard />}
           <div ref={endRef} />
         </div>
@@ -159,6 +158,7 @@ export default function GuidePage() {
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
+            {mic.supported === false && <p className="card text-soft">{t("micUnsupported")}</p>}
             {mic.supported && (
               <button
                 type="button"
