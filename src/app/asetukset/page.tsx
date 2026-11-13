@@ -1,6 +1,7 @@
 "use client";
 
 import { Shell } from "@/components/Shell";
+import { VoiceField } from "@/components/VoiceField";
 import { useUsva } from "@/lib/store";
 import type { Lang } from "@/lib/progress";
 
@@ -42,12 +43,12 @@ export default function SettingsPage() {
           <label htmlFor="mist-name" className="text-sm uppercase tracking-widest text-soft">
             {t("mistNameLabel")}
           </label>
-          <input
+          <VoiceField
             id="mist-name"
-            className="field"
+            single
             maxLength={24}
             value={state.mistName}
-            onChange={(e) => update((s) => ({ ...s, mistName: e.target.value }))}
+            onChange={(v) => update((s) => ({ ...s, mistName: v }))}
           />
         </div>
 

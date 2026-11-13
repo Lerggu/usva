@@ -5,6 +5,7 @@ import { notFound, useParams } from "next/navigation";
 import { useState } from "react";
 import { Shell } from "@/components/Shell";
 import { CrisisCard } from "@/components/CrisisCard";
+import { VoiceField } from "@/components/VoiceField";
 import { useUsva } from "@/lib/store";
 import { taskFor } from "@/lib/progress";
 import { detectCrisis } from "@/lib/safety";
@@ -103,7 +104,7 @@ export default function MomentPage() {
             <label htmlFor="f-a" className="block text-xl leading-relaxed">
               {t("morningQ")}
             </label>
-            <textarea id="f-a" className="field" rows={3} placeholder={t("morningPh")} value={a} onChange={(e) => setA(e.target.value)} />
+            <VoiceField id="f-a" rows={3} placeholder={t("morningPh")} value={a} onChange={setA} />
           </>
         )}
 
@@ -125,7 +126,7 @@ export default function MomentPage() {
                 {t("openTask")}
               </label>
             )}
-            <textarea id="f-a" className="field" rows={7} placeholder={t("taskPh")} value={a} onChange={(e) => setA(e.target.value)} />
+            <VoiceField id="f-a" rows={7} placeholder={t("taskPh")} value={a} onChange={setA} />
           </>
         )}
 
@@ -134,15 +135,15 @@ export default function MomentPage() {
             <label htmlFor="f-a" className="block text-lg">
               {t("eveHeavy")}
             </label>
-            <textarea id="f-a" className="field" rows={2} value={a} onChange={(e) => setA(e.target.value)} />
+            <VoiceField id="f-a" rows={2} value={a} onChange={setA} />
             <label htmlFor="f-b" className="block text-lg">
               {t("evePart")}
             </label>
-            <textarea id="f-b" className="field" rows={2} value={b} onChange={(e) => setB(e.target.value)} />
+            <VoiceField id="f-b" rows={2} value={b} onChange={setB} />
             <label htmlFor="f-c" className="block text-lg">
               {t("eveGrateful")}
             </label>
-            <textarea id="f-c" className="field" rows={2} value={c} onChange={(e) => setC(e.target.value)} />
+            <VoiceField id="f-c" rows={2} value={c} onChange={setC} />
           </>
         )}
 

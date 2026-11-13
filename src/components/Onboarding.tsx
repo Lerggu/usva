@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Mist } from "./Mist";
 import { CrisisCard } from "./CrisisCard";
+import { VoiceField } from "./VoiceField";
 import { useUsva } from "@/lib/store";
 import { detectCrisis } from "@/lib/safety";
 import type { Key } from "@/lib/i18n";
@@ -68,7 +69,7 @@ export function Onboarding() {
             <label className="block text-sm text-soft" htmlFor="own">
               {t("orWrite")}
             </label>
-            <textarea id="own" className="field" rows={2} value={text} onChange={(e) => setText(e.target.value)} />
+            <VoiceField id="own" rows={2} value={text} onChange={setText} />
             {text.trim() && (
               <button className="btn" type="submit">
                 {t("continue")}
@@ -120,13 +121,7 @@ export function Onboarding() {
           <label className="block text-center text-xl" htmlFor="mist-name">
             {t("obName")}
           </label>
-          <input
-            id="mist-name"
-            className="field text-center"
-            value={name}
-            maxLength={24}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <VoiceField id="mist-name" single center value={name} maxLength={24} onChange={setName} />
           <button className="btn btn-primary" type="submit">
             {t("continue")}
           </button>
