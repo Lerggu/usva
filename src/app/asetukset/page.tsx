@@ -54,6 +54,9 @@ export default function SettingsPage() {
         <section className="space-y-3">
           <h2 className="text-sm uppercase tracking-widest text-soft">{t("aboutTitle")}</h2>
           <p className="text-soft">{t("principle")}</p>
+          <p className="text-sm text-soft">
+            {t("version")} {process.env.NEXT_PUBLIC_BUILD}
+          </p>
         </section>
 
         <section className="space-y-3">

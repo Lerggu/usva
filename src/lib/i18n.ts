@@ -58,6 +58,7 @@ const D = {
     en: "Usva is not committed to any religious, spiritual, ideological or psychological school. It applies tools and guidance that have, over time, proved helpful to many. The guide learns more about you each day and shapes its questions around what you tell it.",
   },
   aboutTitle: { fi: "Usvasta", en: "About Usva" },
+  version: { fi: "Versio", en: "Version" },
   obPayNote: {
     fi: "Maksaminen ei ole vielä käytössä tässä versiossa. Sinulta ei veloiteta mitään.",
     en: "Payment is not yet enabled in this version. You will not be charged anything.",

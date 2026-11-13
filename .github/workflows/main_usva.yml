@@ -76,4 +76,8 @@ jobs:
           app-name: 'Usva'
           slot-name: 'Production'
           package: release.zip
+          # Remove the previous version's files and restart the app, so the
+          # running server can never keep serving an older build.
+          clean: true
+          restart: true
           
