@@ -43,7 +43,7 @@ Oppaan pyyntörajoitin on muistinvarainen, joten aja aluksi yhtä instanssia.
 
 ## Oppaan ääni
 
-Oppaalle voi puhua ja se voi vastata ääneen (Opas-näkymän Puhetila).
+Oppaan kanssa voi keskustella puhumalla (Opas-näkymän "Puhu Usvan kanssa"). Käyttäjä puhuu vapaasti, usva vastaa ääneen noin kahden sekunnin tauon jälkeen ja kuuntelee taas. Puhetta ei näytetä tekstinä, ja usva liikkuu äänen voimakkuuden mukaan. Kirjoitusnäkymässä puheen voi myös sanella tekstikenttään.
 
 - **Puhe tekstiksi:** selaimen oma puheentunnistus, jos selaimessa on sellainen (Chrome ja Edge tietokoneella ja Androidissa, Safari). Muissa selaimissa, kuten iPhonen Chromessa ja Firefoxissa, puhe äänitetään ja tunnistetaan Azure AI Speech -palvelussa, kun alla olevat ympäristömuuttujat on asetettu. Ilman niitä puhuminen ei näissä selaimissa onnistu.
 - **Teksti puheeksi:** Azure AI Speech -palvelun neuroääni, kun ympäristömuuttujat `AZURE_SPEECH_KEY` ja `AZURE_SPEECH_REGION` on asetettu. Muuten käytetään selaimen omaa ääntä.

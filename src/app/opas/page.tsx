@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
@@ -19,12 +20,8 @@ export default function GuidePage() {
   const [notice, setNotice] = useState<Key | null>(null);
   const [crisis, setCrisis] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
-  const sendRef = useRef<(spoken?: string) => void>(() => {});
   const speaker = useSpeaker(state.lang);
-  const mic = useSpeechInput(state.lang, (spoken) => {
-    if (state.voiceMode) sendRef.current(spoken);
-    else setText((prev) => (prev ? `${prev} ${spoken}` : spoken));
-  });
+  const mic = useSpeechInput(state.lang, (spoken) => setText((prev) => (prev ? `${prev} ${spoken}` : spoken)));
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
@@ -34,16 +31,9 @@ export default function GuidePage() {
   const step = STEPS[currentStepNumber(state, today) - 1];
   const tooLong = state.chat.length >= MAX_MESSAGES - 1;
 
-  // Puhetilassa myös ilmoitukset luetaan ääneen, jotta käyttäjä ei jää hiljaisuuteen.
-  function say(key: Key) {
-    setNotice(key);
-    if (state.voiceMode) void speaker.speak(-1, t(key));
-  }
-
-  async function send(spoken?: string) {
-    const content = (spoken ?? text).trim();
+  async function send() {
+    const content = text.trim();
     if (!content || waiting || tooLong) return;
-    speaker.prepare();
     if (detectCrisis(content)) setCrisis(true);
     const messages: ChatMsg[] = [...state.chat, { role: "user", content }];
     update((s) => ({ ...s, chat: messages }));
@@ -66,37 +56,25 @@ export default function GuidePage() {
       if (res.ok) {
         const data = (await res.json()) as { text: string };
         update((s) => ({ ...s, chat: [...s.chat, { role: "assistant", content: data.text }] }));
-        if (state.voiceMode) void speaker.speak(messages.length, data.text);
       } else {
-        say(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
+        setNotice(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
       }
     } catch {
-      say("guideResting");
+      setNotice("guideResting");
     } finally {
       setWaiting(false);
     }
   }
-
-  sendRef.current = (spoken) => void send(spoken);
 
   return (
     <Shell>
       <div className="space-y-4">
         <Mist lights={totalLights(state)} mood={waiting || mic.listening ? "listening" : "calm"} size="8rem" />
         <p className="text-center text-sm text-soft">{t("guideNote")}</p>
-        <button
-          type="button"
-          className={`btn ${state.voiceMode ? "btn-primary" : ""}`}
-          aria-pressed={state.voiceMode}
-          onClick={() => {
-            if (state.voiceMode) speaker.stop();
-            else speaker.prepare();
-            update((s) => ({ ...s, voiceMode: !s.voiceMode }));
-          }}
-        >
+        <Link href="/opas/puhe" className="btn btn-primary">
           {t("voiceMode")}
           <span className="block text-sm font-normal">{t("voiceModeSub")}</span>
-        </button>
+        </Link>
 
         <div className="space-y-3" aria-live="polite">
           <p className="card mr-8">{t("guideHello")}</p>

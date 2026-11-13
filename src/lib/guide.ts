@@ -37,6 +37,7 @@ export type GuideRequest = {
   stepTitle: string;
   stepTheme: string;
   context: string;
+  spoken: boolean;
   messages: ChatMsg[];
 };
 
@@ -77,13 +78,14 @@ export function validateGuideRequest(body: unknown): Validation {
       stepTitle: b.stepTitle as string,
       stepTheme: b.stepTheme as string,
       context,
+      spoken: b.spoken === true,
       messages,
     },
   };
 }
 
 export function buildSystemPrompt(
-  r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme"> & { context?: string },
+  r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme"> & { context?: string; spoken?: boolean },
 ): string {
   const known = r.context?.trim()
     ? `What the person has shared in the app recently (their own words, oldest first). Use it to know them: notice threads and recurring patterns, pick up where they left off, and shape your questions to this particular person. Refer to it naturally and sparingly, the way a friend who remembers would, never as a recital of their notes.
@@ -117,5 +119,9 @@ Current step of the journey: "${r.stepTitle}". Its question: "${r.stepTheme}". L
 
 ${known}
 
-Reply in ${r.lang === "fi" ? "Finnish, in warm everyday language (sinuttele)" : "English"}.`;
+${
+    r.spoken
+      ? "This is a spoken conversation: the person is talking to you aloud and will hear your reply read in a warm voice, with nothing shown on screen. Answer the way you would speak to someone sitting beside you: one to three short sentences, plain words, no numerals or abbreviations that read badly aloud, and at most one question. Their words reach you through speech recognition, so if something looks garbled, gently ask rather than guess.\n\n"
+      : ""
+  }Reply in ${r.lang === "fi" ? "Finnish, in warm everyday language (sinuttele)" : "English"}.`;
 }

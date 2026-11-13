@@ -108,6 +108,13 @@ body {
 .mist[data-breath="out"] .mist-body {
   transform: scale(0.82);
 }
+/* Puhekeskustelussa usva seuraa äänen voimakkuutta (--mist-level, 0–1). */
+.mist[data-live="true"] .mist-body {
+  animation: none;
+  transform: scale(calc(0.88 + var(--mist-level, 0) * 0.4));
+  filter: brightness(calc(1 + var(--mist-level, 0) * 0.45));
+  transition: transform 90ms linear, filter 90ms linear;
+}
 .mist-layer {
   position: absolute;
   border-radius: 50%;

@@ -5,12 +5,12 @@ import type { Lang } from "./progress";
 import { MAX_SPEAK_CHARS } from "./speech";
 import { LISTEN_SAMPLE_RATE, MAX_LISTEN_SECONDS, encodeWav } from "./wav";
 
-const LOCALES: Record<Lang, string> = { fi: "fi-FI", en: "en-US" };
+export const LOCALES: Record<Lang, string> = { fi: "fi-FI", en: "en-US" };
 
 // Selaimen puheentunnistuksen tyypit puuttuvat TypeScriptin vakiokirjastosta.
 type RecognitionResult = { isFinal: boolean; 0: { transcript: string } };
 type RecognitionEvent = { resultIndex: number; results: ArrayLike<RecognitionResult> };
-type Recognition = {
+export type Recognition = {
   lang: string;
   continuous: boolean;
   interimResults: boolean;
@@ -23,18 +23,18 @@ type Recognition = {
 };
 type RecognitionCtor = new () => Recognition;
 
-function recognitionCtor(): RecognitionCtor | null {
+export function recognitionCtor(): RecognitionCtor | null {
   if (typeof window === "undefined") return null;
   const w = window as unknown as { SpeechRecognition?: RecognitionCtor; webkitSpeechRecognition?: RecognitionCtor };
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-function canRecord(): boolean {
+export function canRecord(): boolean {
   return typeof navigator !== "undefined" && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== "undefined";
 }
 
 // Muuntaa selaimen äänityksen 16 kHz:n mono-WAViksi palvelimen tunnistusta varten.
-async function toWav(recording: Blob): Promise<ArrayBuffer> {
+export async function toWav(recording: Blob): Promise<ArrayBuffer> {
   const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
   const ctx = new Ctx();
   try {
@@ -207,7 +207,7 @@ export function useSpeechInput(lang: Lang, onDone: (text: string) => void) {
   return { supported, listening, busy, interim, error, start, stop };
 }
 
-function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
+export function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
   const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith(lang));
   return voices.find((v) => v.localService) ?? voices[0];
 }
@@ -216,7 +216,7 @@ function pickBrowserVoice(lang: Lang): SpeechSynthesisVoice | undefined {
 // määritetty tai teksti on liian pitkä, selaimen oma ääni rauhallisella tahdilla.
 // Lyhyin mahdollinen äänetön WAV. Sen toistaminen napautuksen aikana avaa
 // äänielementin, jotta myöhempi vastaus saa soida myös iPhonessa.
-const SILENCE = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+export const SILENCE = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
 
 export function useSpeaker(lang: Lang) {
   const [speaking, setSpeaking] = useState<number | null>(null);

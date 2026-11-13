@@ -6,6 +6,7 @@ type Props = {
   breath?: "in" | "out";
   breathMs?: number;
   size?: string;
+  live?: boolean;
 };
 
 const MAX_VISIBLE = 72;
@@ -23,14 +24,14 @@ function lightPosition(i: number): { left: string; top: string; delay: string } 
   };
 }
 
-export function Mist({ lights = 0, mood = "calm", breath, breathMs, size }: Props) {
+export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live }: Props) {
   const style = {
     ...(size ? { "--mist-size": size } : {}),
     ...(breathMs ? { "--breath-ms": `${breathMs}ms` } : {}),
   } as CSSProperties;
   const visible = Math.min(lights, MAX_VISIBLE);
   return (
-    <div className="mist" data-mood={mood} data-breath={breath} style={style} aria-hidden="true">
+    <div className="mist" data-mood={mood} data-breath={breath} data-live={live ? "true" : undefined} style={style} aria-hidden="true">
       <div className="mist-body">
         <span className="mist-layer" />
         <span className="mist-layer" />

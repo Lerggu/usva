@@ -121,3 +121,15 @@ describe("encodeWav", () => {
     expect([44, 46, 48, 50].map((o) => wav.getInt16(o, true))).toEqual([0, 32767, -32768, 32767]);
   });
 });
+
+describe("puhuttu keskustelu", () => {
+  it("pyytää lyhyttä, puhuttua vastausta vain puhetilassa", () => {
+    const base = { lang: "fi" as const, mistName: "a", stepTitle: "b", stepTheme: "c" };
+    expect(buildSystemPrompt({ ...base, spoken: true })).toContain("spoken conversation");
+    expect(buildSystemPrompt(base)).not.toContain("spoken conversation");
+    const parsed = validateGuideRequest({ ...ok, spoken: true });
+    expect(parsed.ok && parsed.value.spoken).toBe(true);
+    const plain = validateGuideRequest(ok);
+    expect(plain.ok && plain.value.spoken).toBe(false);
+  });
+});
