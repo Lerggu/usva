@@ -82,7 +82,7 @@ export default function MomentPage() {
                 <h2 className="text-sm uppercase tracking-widest text-soft">
                   {t("thoughtTitle")} · {opening.thought.theme[lang]}
                 </h2>
-                <p className="text-lg leading-relaxed">{opening.thought.text[lang]}</p>
+                <p className="serif text-xl leading-relaxed">{opening.thought.text[lang]}</p>
               </div>
               <div className="space-y-1">
                 <h2 className="text-sm uppercase tracking-widest text-soft">{t("practiceTitle")}</h2>
@@ -90,7 +90,7 @@ export default function MomentPage() {
               </div>
               <figure className="space-y-1">
                 <h2 className="text-sm uppercase tracking-widest text-soft">{t("quoteTitle")}</h2>
-                <blockquote className="italic leading-relaxed">{opening.quote.text[lang]}</blockquote>
+                <blockquote className="serif italic leading-relaxed">{opening.quote.text[lang]}</blockquote>
                 <figcaption className="text-sm text-soft">
                   {opening.quote.author}
                   {opening.quote.work[lang] && `, ${opening.quote.work[lang]}`}
@@ -98,7 +98,7 @@ export default function MomentPage() {
               </figure>
               <div className="space-y-1">
                 <h2 className="text-sm uppercase tracking-widest text-soft">{t("sentenceTitle")}</h2>
-                <p className="text-lg text-lilac">{opening.sentence[lang]}</p>
+                <p className="serif text-xl text-aurora">{opening.sentence[lang]}</p>
               </div>
             </section>
             <label htmlFor="f-a" className="block text-xl leading-relaxed">

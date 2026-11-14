@@ -127,3 +127,20 @@ describe("päivänavaus", () => {
     for (const q of QUOTES) expect(q.author.trim()).not.toBe("");
   });
 });
+
+import { nextMoment } from "@/lib/progress";
+
+describe("seuraava hetki", () => {
+  it("tarjoaa aamua aamulla, tehtävää päivällä ja iltaa illalla", () => {
+    expect(nextMoment(undefined, 8)).toBe("aamu");
+    expect(nextMoment({ morning: "a" }, 8)).toBe("tehtava");
+    expect(nextMoment({ morning: "a", task: "b" }, 12)).toBeNull();
+    expect(nextMoment({ morning: "a", task: "b" }, 19)).toBe("ilta");
+    expect(nextMoment({ morning: "a", task: "b", evening: { heavy: "", part: "", grateful: "x" } }, 21)).toBeNull();
+  });
+
+  it("ei tarjoa väliin jäänyttä aamua enää iltapäivällä", () => {
+    expect(nextMoment({}, 16)).toBe("tehtava");
+    expect(nextMoment({ task: "b" }, 20)).toBe("ilta");
+  });
+});

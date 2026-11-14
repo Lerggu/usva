@@ -125,3 +125,14 @@ export function badges(s: State): Badge[] {
   }
   return out;
 }
+
+export type MomentId = "aamu" | "tehtava" | "ilta";
+
+// Mikä päivän hetki on luontevin seuraavaksi. Koti näyttää vain tämän yhden
+// kutsun, jotta ruudulla on kerrallaan yksi asia. null = kaikki ajankohtainen on tehty.
+export function nextMoment(log: DayLog | undefined, hour: number): MomentId | null {
+  if (!log?.morning && hour < 15) return "aamu";
+  if (!log?.task) return "tehtava";
+  if (!log?.evening && hour >= 17) return "ilta";
+  return null;
+}

@@ -48,6 +48,12 @@ Tehtävä etenee tehtyjen tehtävien mukaan, ei kalenterin. Väliin jäänyt pä
 
 Violetti usva ilman kasvoja, jolle käyttäjä antaa nimen. Se hengittää hitaasti, tiivistyy kuunnellessaan ja kerää valopisteitä matkan edetessä.
 
+## Ilme
+
+Lapin yö: tumma violetti taivas, revontulet, tähdet ja tunturit kuusineen ovat koko sovelluksen tausta. Usvaa kiertää rumpukehä, jossa on kaksitoista merkkiä, yksi matkan jokaiselle vaiheelle; kuljettujen vaiheiden merkit hehkuvat revontulen vihreää.
+
+Merkit on piirretty Usvaa varten pohjoisen luonnon aiheista (aurinko, tunturi, joki, kuusi, kuu, tähti, lintu, tuli, jäljet, kierre, järvi, revontuli). Saamelaisten rumpujen kuvioita ei käytetä eikä jäljitellä: ne ovat elävän kulttuurin pyhää perinnettä.
+
 ## Pelillisyys
 
 Valopisteet, 12 vaiheen polku, viikkonäkymä ja merkit. Putkia ei nollata eikä pisteitä menetetä: katkennut putki ruokkisi häpeää, jota ohjelma yrittää purkaa. Vähintään kolmen päivän tauon jälkeen paluusta saa valoa ja oman merkin.

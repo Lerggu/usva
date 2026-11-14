@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { DrumRing } from "./DrumRing";
 
 type Props = {
   lights?: number;
@@ -7,6 +8,8 @@ type Props = {
   breathMs?: number;
   size?: string;
   live?: boolean;
+  // Rumpukehä usvan ympärille; luku kertoo, monenko vaiheen merkki hehkuu.
+  ring?: number;
 };
 
 const MAX_VISIBLE = 72;
@@ -24,7 +27,7 @@ function lightPosition(i: number): { left: string; top: string; delay: string } 
   };
 }
 
-export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live }: Props) {
+export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live, ring }: Props) {
   const style = {
     ...(size ? { "--mist-size": size } : {}),
     ...(breathMs ? { "--breath-ms": `${breathMs}ms` } : {}),
@@ -32,7 +35,9 @@ export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live }
   const visible = Math.min(lights, MAX_VISIBLE);
   return (
     <div className="mist" data-mood={mood} data-breath={breath} data-live={live ? "true" : undefined} style={style} aria-hidden="true">
+      {ring !== undefined && <DrumRing reached={ring} />}
       <div className="mist-body">
+        <span className="mist-layer" />
         <span className="mist-layer" />
         <span className="mist-layer" />
         <span className="mist-layer" />

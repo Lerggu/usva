@@ -51,7 +51,7 @@ export function Onboarding() {
 
       {(stage === "reason" || stage === "doing" || stage === "year") && (
         <section className="space-y-4" key={stage}>
-          <p className="text-center text-xl leading-relaxed">{t(QUESTIONS[stage].q)}</p>
+          <p className="serif text-center text-2xl leading-relaxed">{t(QUESTIONS[stage].q)}</p>
           <div className="space-y-2">
             {QUESTIONS[stage].options.map((o) => (
               <button key={o} className="btn" onClick={() => answer(stage, t(o), false)}>
@@ -81,7 +81,7 @@ export function Onboarding() {
 
       {stage === "ask" && (
         <section className="space-y-4">
-          <p className="text-center text-xl leading-relaxed">{t("obAsk")}</p>
+          <p className="serif text-center text-2xl leading-relaxed">{t("obAsk")}</p>
           <button className="btn btn-primary" onClick={() => setStage("offer")}>
             {t("obAskYes")}
           </button>
@@ -130,7 +130,7 @@ export function Onboarding() {
 
       {stage === "later" && (
         <section className="space-y-4">
-          <p className="text-center text-xl leading-relaxed">{t("obLaterMsg")}</p>
+          <p className="serif text-center text-2xl leading-relaxed">{t("obLaterMsg")}</p>
           <Link className="btn" href="/hetki">
             {t("presentBtn")}
           </Link>
@@ -142,7 +142,7 @@ export function Onboarding() {
 
       {stage === "crisis" && (
         <section className="space-y-4">
-          <p className="text-center text-xl leading-relaxed">{t("obCrisis")}</p>
+          <p className="serif text-center text-2xl leading-relaxed">{t("obCrisis")}</p>
           <CrisisCard />
           <Link className="btn" href="/hetki">
             {t("presentBtn")}

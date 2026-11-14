@@ -7,21 +7,142 @@
   --color-lilac: #c9b8ff;
   --color-mist: #9b7bff;
   --color-glow: #f3e9ff;
-  --color-soft: #a99cc9;
+  --color-soft: #b4a8d4;
+  --color-aurora: #6effd6;
 }
 
+html {
+  background: #0c0920;
+}
+/* Rungolla ei ole omaa taustaa: muuten se peittäisi taivaan, joka on sisällön takana. */
 html,
 body {
-  background: var(--color-night);
   color: var(--color-glow);
   min-height: 100%;
 }
 
 body {
   font-family: ui-rounded, "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: radial-gradient(120% 80% at 50% 0%, #2a1f4a 0%, #120d22 60%);
-  background-attachment: fixed;
+  font-size: 1.0625rem;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Ajatukset, lainaukset ja usvan sanat: pehmeä antiikva erottaa hiljentymisen tekemisestä. */
+.serif {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  letter-spacing: 0.01em;
+}
+
+/* Taivas */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0a0820 0%, #130d33 45%, #1c1242 78%, #241650 100%);
+}
+.sky-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.5px;
+  height: 1.5px;
+  border-radius: 50%;
+  animation: star-twinkle 7s ease-in-out infinite;
+}
+.sky-stars-bright {
+  width: 2.5px;
+  height: 2.5px;
+  animation-duration: 11s;
+  animation-delay: -4s;
+}
+.aurora {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  mix-blend-mode: screen;
+  filter: blur(20px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 55%, transparent 100%);
+  will-change: transform, opacity;
+}
+.aurora-a {
+  top: -6%;
+  height: 48%;
+  background: linear-gradient(100deg, transparent 8%, rgba(88, 255, 190, 0.5) 30%, rgba(96, 214, 255, 0.28) 52%, rgba(170, 120, 255, 0.34) 72%, transparent 92%);
+  transform: rotate(-9deg);
+  animation: aurora-sway-a 31s ease-in-out infinite alternate;
+}
+.aurora-b {
+  top: 8%;
+  height: 36%;
+  background: linear-gradient(80deg, transparent 15%, rgba(150, 110, 255, 0.36) 38%, rgba(90, 255, 200, 0.34) 60%, transparent 85%);
+  transform: rotate(6deg);
+  animation: aurora-sway-b 43s ease-in-out infinite alternate;
+}
+.aurora-c {
+  top: 2%;
+  height: 30%;
+  background: linear-gradient(95deg, transparent 30%, rgba(110, 255, 214, 0.3) 48%, rgba(255, 140, 220, 0.2) 62%, transparent 78%);
+  transform: rotate(-3deg);
+  animation: aurora-sway-c 57s ease-in-out infinite alternate;
+}
+.sky-fells {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30vh;
+  min-height: 9rem;
+}
+@keyframes aurora-sway-a {
+  0% { transform: rotate(-9deg) translateX(-6%) scaleY(0.9); opacity: 0.75; }
+  50% { opacity: 1; }
+  100% { transform: rotate(-5deg) translateX(7%) scaleY(1.15); opacity: 0.8; }
+}
+@keyframes aurora-sway-b {
+  0% { transform: rotate(6deg) translateX(8%) scaleY(1.1); opacity: 0.55; }
+  100% { transform: rotate(2deg) translateX(-9%) scaleY(0.85); opacity: 0.95; }
+}
+@keyframes aurora-sway-c {
+  0% { transform: rotate(-3deg) translateX(-10%); opacity: 0.4; }
+  100% { transform: rotate(1deg) translateX(10%); opacity: 0.85; }
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+/* Rumpukehä */
+.drum-ring {
+  position: absolute;
+  inset: -9%;
+  width: 118%;
+  height: 118%;
+  animation: drum-turn 240s linear infinite;
+}
+.drum-rim {
+  fill: none;
+  stroke: rgba(201, 184, 255, 0.28);
+  stroke-width: 0.8;
+}
+.drum-rim-inner {
+  stroke: rgba(201, 184, 255, 0.12);
+  stroke-dasharray: 1.5 5;
+}
+.drum-mark {
+  fill: none;
+  stroke: rgba(201, 184, 255, 0.3);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.drum-mark-lit {
+  stroke: #b9ffe6;
+  filter: drop-shadow(0 0 3px rgba(110, 255, 214, 0.9));
+}
+@keyframes drum-turn {
+  to { transform: rotate(360deg); }
 }
 
 .btn {
@@ -41,6 +162,10 @@ body {
 .btn:focus-visible {
   background: color-mix(in srgb, var(--color-mist) 36%, transparent);
 }
+.btn {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
 .btn-primary {
   background: linear-gradient(135deg, #8f6bff, #b48cff);
   border-color: transparent;
@@ -57,10 +182,19 @@ body {
   color: var(--color-soft);
 }
 .card {
-  border-radius: 1.25rem;
-  background: color-mix(in srgb, var(--color-veil) 70%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-lilac) 18%, transparent);
-  padding: 1.1rem;
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, #1b1340 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-lilac) 16%, transparent);
+  padding: 1.15rem;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+/* Päivän tärkein kutsu: revontulen hehku reunassa. */
+.card-next {
+  position: relative;
+  padding: 1.4rem 1.25rem;
+  border-color: color-mix(in srgb, var(--color-aurora) 45%, transparent);
+  box-shadow: 0 0 34px -10px color-mix(in srgb, var(--color-aurora) 55%, transparent), inset 0 0 28px -18px var(--color-aurora);
 }
 .field {
   width: 100%;
@@ -117,26 +251,42 @@ body {
 }
 .mist-layer {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(22px);
+  filter: blur(20px);
   mix-blend-mode: screen;
 }
 .mist-layer:nth-child(1) {
-  inset: 12%;
-  background: radial-gradient(circle, #b79cff 0%, #7a55f0 45%, transparent 72%);
-  animation: mist-drift-a 17s ease-in-out infinite;
+  inset: 14%;
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  background: radial-gradient(circle at 45% 45%, #d9c8ff 0%, #8f6bff 42%, transparent 72%);
+  animation: mist-drift-a 17s ease-in-out infinite, mist-morph 23s ease-in-out infinite;
 }
 .mist-layer:nth-child(2) {
-  inset: 4% 20% 26% 6%;
-  background: radial-gradient(circle, #d7b8ff 0%, #9a63e8 40%, transparent 70%);
+  inset: 4% 22% 28% 6%;
+  border-radius: 60% 40% 45% 55% / 48% 58% 42% 52%;
+  background: radial-gradient(circle, #e3c4ff 0%, #a56bf0 40%, transparent 70%);
   opacity: 0.7;
-  animation: mist-drift-b 23s ease-in-out infinite;
+  animation: mist-drift-b 23s ease-in-out infinite, mist-morph 31s ease-in-out infinite reverse;
 }
 .mist-layer:nth-child(3) {
-  inset: 28% 4% 6% 24%;
-  background: radial-gradient(circle, #8fa0ff 0%, #6a4bd6 42%, transparent 70%);
+  inset: 30% 4% 6% 26%;
+  border-radius: 42% 58% 52% 48% / 58% 46% 54% 42%;
+  background: radial-gradient(circle, #9aa8ff 0%, #6a4bd6 42%, transparent 70%);
   opacity: 0.65;
-  animation: mist-drift-c 29s ease-in-out infinite;
+  animation: mist-drift-c 29s ease-in-out infinite, mist-morph 37s ease-in-out infinite;
+}
+/* Revontulen vihreä häive usvan reunalla. */
+.mist-layer:nth-child(4) {
+  inset: 8% 10% 40% 34%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(110, 255, 214, 0.55) 0%, rgba(90, 220, 255, 0.22) 45%, transparent 72%);
+  opacity: 0.55;
+  filter: blur(26px);
+  animation: mist-drift-b 37s ease-in-out infinite reverse;
+}
+@keyframes mist-morph {
+  0%, 100% { border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; }
+  33% { border-radius: 58% 42% 44% 56% / 44% 56% 46% 54%; }
+  66% { border-radius: 42% 58% 52% 48% / 58% 46% 54% 42%; }
 }
 .mist-light {
   position: absolute;
@@ -168,7 +318,7 @@ body {
   50% { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mist-body, .mist-layer, .mist-light {
+  .mist-body, .mist-layer, .mist-light, .aurora, .sky-stars, .drum-ring {
     animation: none !important;
     transition: none !important;
   }

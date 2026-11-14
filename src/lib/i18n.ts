@@ -86,6 +86,7 @@ const D = {
   welcomeBack: { fi: "Ihana, että tulit takaisin.", en: "It is lovely that you came back." },
   lights: { fi: "valoa", en: "lights" },
   today: { fi: "Tänään", en: "Today" },
+  nextUp: { fi: "Seuraavaksi", en: "Next" },
   momentMorning: { fi: "Aamu", en: "Morning" },
   momentTask: { fi: "Päivän tehtävä", en: "Today's task" },
   momentEvening: { fi: "Ilta", en: "Evening" },
