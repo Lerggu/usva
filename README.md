@@ -51,7 +51,19 @@ Tilit tulevat käyttöön, kun nämä ympäristömuuttujat on asetettu: `SESSION
 
 Paikallisessa kehityksessä `USVA_DEV_AUTH=1` pitää tilit muistissa ja tulostaa koodin palvelimen konsoliin.
 
-Maksaminen ei ole vielä käytössä. Tilillä on kentät kokeilun päättymiselle ja maksetulle ajalle, ja tila (kokeilu, voimassa, päättynyt) lasketaan niistä, mutta päättynyt kokeilu ei vielä rajoita käyttöä.
+## Maksaminen
+
+Tilaus maksetaan Stripen maksusivulla; korttitiedot eivät kulje Usvan kautta. Kun kokeilu on päättynyt, päivän hetket, opas ja polku jatkuvat tilauksella. Koti, hengitys, Tuki, asetukset ja tilaussivu ovat aina auki. Oikeus tarkistetaan myös palvelimella oppaan ja äänen reiteissä.
+
+Maksaminen tulee käyttöön, kun tilit ovat käytössä ja nämä on asetettu: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` ja vähintään toinen hinnoista `STRIPE_PRICE_YEARLY` tai `STRIPE_PRICE_MONTHLY`. Aseta myös `APP_URL`. Ilman näitä päättynyt kokeilu ei rajoita käyttöä.
+
+Stripessä tarvitaan:
+
+1. Tuote ja sille toistuva hinta (vuosi ja/tai kuukausi). Hinnan tunniste (`price_...`) ympäristömuuttujaan. Sovellus näyttää summan suoraan Stripestä.
+2. Webhook osoitteeseen `<APP_URL>/api/billing/webhook` tapahtumille `invoice.paid` ja `charge.refunded`. Sen allekirjoitusavain muuttujaan `STRIPE_WEBHOOK_SECRET`.
+3. Customer portal päälle, jotta käyttäjä voi perua tilauksen itse.
+
+Onnistunut maksu asettaa tilille maksetun ajan laskutusjakson loppuun. Täysi palautus päättää sen heti.
 
 ## Oppaan ääni
 

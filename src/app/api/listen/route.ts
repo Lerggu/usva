@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requestEntitled } from "@/lib/server/billing";
 import { MAX_LISTEN_BYTES } from "@/lib/wav";
 
 export const runtime = "nodejs";
@@ -39,6 +40,7 @@ export function GET() {
 export async function POST(req: Request) {
   const cfg = config();
   if (!cfg) return NextResponse.json({ error: "unavailable" }, { status: 503 });
+  if (!(await requestEntitled())) return NextResponse.json({ error: "subscription" }, { status: 402 });
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (!allow(ip)) return NextResponse.json({ error: "busy" }, { status: 429 });
 

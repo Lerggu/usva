@@ -65,7 +65,9 @@ export default function GuidePage() {
         const data = (await res.json()) as { text: string };
         update((s) => ({ ...s, chat: [...s.chat, { role: "assistant", content: data.text }] }));
       } else {
-        setNotice(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
+        setNotice(
+          res.status === 402 ? "guidePaywall" : res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting",
+        );
       }
     } catch {
       setNotice("guideResting");

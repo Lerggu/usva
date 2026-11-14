@@ -25,7 +25,7 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 - `src/lib/safety.ts` – kriisin tunnistus
 - `src/app/api/guide/route.ts` – oppaan palvelinreitti (Claude API)
 - `src/app/api/speak/route.ts` – oppaan ääni ja `src/app/api/listen/route.ts` – puheen tunnistus (Azure AI Speech), `src/lib/voice.ts` – sanelu ja kuuntelu, `src/lib/live.ts` – puhekeskustelun moottori (`/opas/puhe`)
-- `src/lib/server/` – tilit: `account.ts` (koodi, eväste, tila), `store.ts` (Azure Table Storage), `mail.ts` (sähköposti), `auth.ts`; reitit `src/app/api/auth/*`
+- `src/lib/server/` – tilit: `account.ts` (koodi, eväste, tila), `store.ts` (Azure Table Storage), `mail.ts` (sähköposti), `auth.ts`; reitit `src/app/api/auth/*`; maksaminen: `billing.ts` (Stripe), reitit `src/app/api/billing/*`, sivu `/tilaus`
 - `src/components/Mist.tsx` – usvahahmo
 
 API-avaimet tulevat vain ympäristöstä, eivät koskaan tiedostoihin tai commiteihin.

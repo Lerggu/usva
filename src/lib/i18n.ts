@@ -114,10 +114,58 @@ const D = {
   accTrial: { fi: "Maksuton kokeilu päättyy", en: "Your free trial ends on" },
   accActive: { fi: "Tilauksesi on voimassa", en: "Your subscription is valid until" },
   accExpiredInfo: {
-    fi: "Kokeilujaksosi on päättynyt. Tilaaminen tulee pian mahdolliseksi; siihen asti Usva on käytössäsi kuten ennenkin.",
-    en: "Your trial has ended. Subscribing will be possible soon; until then Usva remains available to you as before.",
+    fi: "Kokeilujaksosi on päättynyt.",
+    en: "Your trial has ended.",
   },
   logout: { fi: "Kirjaudu ulos", en: "Sign out" },
+  subTitle: { fi: "Tilaus", en: "Subscription" },
+  subIntro: {
+    fi: "Maksuton kokeilusi on päättynyt. Jos matka on tuntunut omalta, voit jatkaa sitä tilaamalla Usvan. Kaikki, mitä olet tähän asti kirjoittanut, on tallessa.",
+    en: "Your free trial has ended. If the journey has felt like yours, you can continue it by subscribing to Usva. Everything you have written so far is safe.",
+  },
+  subIntroTrial: {
+    fi: "Kokeilusi on vielä käynnissä. Voit tilata jo nyt tai palata tähän myöhemmin.",
+    en: "Your trial is still running. You can subscribe now or come back to this later.",
+  },
+  subYear: { fi: "vuodessa", en: "a year" },
+  subMonth: { fi: "kuukaudessa", en: "a month" },
+  subPerDay: { fi: "noin {x} päivässä", en: "about {x} a day" },
+  subChooseYear: { fi: "Tilaa vuodeksi", en: "Subscribe for a year" },
+  subChooseMonth: { fi: "Tilaa kuukaudeksi", en: "Subscribe for a month" },
+  subTerms: {
+    fi: "Tilaus uusiutuu jakson lopussa, ja voit perua sen milloin tahansa. Tilauksella on 14 päivän peruutusoikeus. Maksu hoidetaan Stripen suojatulla sivulla; korttitietosi eivät kulje Usvan kautta. Usva on opas, ei terapeutti, eikä matka lupaa tiettyä lopputulosta.",
+    en: "The subscription renews at the end of each period, and you can cancel at any time. It has a 14-day right of withdrawal. Payment is handled on Stripe's secure page; your card details never pass through Usva. Usva is a guide, not a therapist, and the journey does not promise a particular outcome.",
+  },
+  subThanks: {
+    fi: "Kiitos. Tilauksesi on voimassa, ja matka jatkuu.",
+    en: "Thank you. Your subscription is active, and the journey continues.",
+  },
+  subPending: {
+    fi: "Kiitos. Vahvistan maksua vielä hetken.",
+    en: "Thank you. I am still confirming the payment for a moment.",
+  },
+  subManage: { fi: "Hallitse tai peru tilaus", en: "Manage or cancel the subscription" },
+  subFail: {
+    fi: "Maksusivun avaaminen ei juuri nyt onnistunut. Kokeillaan hetken päästä uudelleen.",
+    en: "Opening the payment page did not work just now. Let's try again shortly.",
+  },
+  subAlways: {
+    fi: "Hengitys usvan kanssa ja Tuki ovat aina käytössäsi, tilauksesta riippumatta.",
+    en: "Breathing with the mist and Support are always available to you, with or without a subscription.",
+  },
+  subGate: {
+    fi: "Tämä osa matkaa jatkuu tilauksella.",
+    en: "This part of the journey continues with a subscription.",
+  },
+  subSee: { fi: "Katso tilausvaihtoehdot", en: "See the subscription options" },
+  subSignIn: {
+    fi: "Tilaus liittyy tiliin. Voit luoda tilin tai kirjautua asetuksista.",
+    en: "A subscription belongs to an account. You can create one or sign in from settings.",
+  },
+  guidePaywall: {
+    fi: "Keskustelumme jatkuu tilauksella. Hengitys ja Tuki ovat silti tässä sinua varten.",
+    en: "Our conversation continues with a subscription. Breathing and Support are still here for you.",
+  },
   userNameLabel: { fi: "Nimesi", en: "Your name" },
   tutLink: { fi: "Miten Usva toimii", en: "How Usva works" },
   tut1: {

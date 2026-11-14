@@ -17,6 +17,8 @@ export type Account = {
   createdAt: string;
   trialEndsAt: string;
   paidUntil: string | null;
+  // Maksupalvelun asiakastunniste tilauksen hallintaa varten.
+  stripeCustomerId: string | null;
 };
 
 export type AccountStatus = "trial" | "active" | "expired";
@@ -51,6 +53,7 @@ export function newAccount(email: string, lang: Lang, now = new Date()): Account
     createdAt: now.toISOString(),
     trialEndsAt: new Date(now.getTime() + TRIAL_DAYS * 86_400_000).toISOString(),
     paidUntil: null,
+    stripeCustomerId: null,
   };
 }
 
@@ -100,4 +103,31 @@ export function readSession(token: string | undefined, secret: string, now = Dat
   } catch {
     return null;
   }
+}
+
+// Onnistunut maksu: tilaus on voimassa laskutusjakson loppuun ja päivän yli,
+// jotta uusinnan pieni viive ei katkaise käyttöä. Aiempaa pidempää aikaa ei lyhennetä.
+export function applyPayment(a: Account, periodEndUnix: number, customerId: string | null): Account {
+  const until = new Date(periodEndUnix * 1000 + 86_400_000).toISOString();
+  return {
+    ...a,
+    paidUntil: a.paidUntil && a.paidUntil > until ? a.paidUntil : until,
+    stripeCustomerId: customerId ?? a.stripeCustomerId,
+  };
+}
+
+// Maksun palautus (esimerkiksi 14 päivän peruutusoikeus) päättää maksetun ajan heti.
+export function applyRefund(a: Account): Account {
+  return { ...a, paidUntil: null };
+}
+
+// Saako käyttäjä käyttää maksullisia osia. Ennen kuin tilit ja maksaminen on
+// otettu käyttöön, kaikki on avointa; sen jälkeen tarvitaan voimassa oleva kokeilu tai tilaus.
+export function isEntitled(
+  account: Pick<Account, "trialEndsAt" | "paidUntil"> | null,
+  opts: { accounts: boolean; billing: boolean },
+  now = new Date(),
+): boolean {
+  if (!opts.accounts || !opts.billing) return true;
+  return account !== null && accountStatus(account, now) !== "expired";
 }

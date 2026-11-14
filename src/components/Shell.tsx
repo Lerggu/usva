@@ -22,9 +22,13 @@ const NAV: { href: string; key: Key; icon: keyof typeof ICONS }[] = [
 ];
 
 export function Shell({ children, nav = true }: { children: ReactNode; nav?: boolean }) {
-  const { t, state } = useUsva();
+  const { t, state, billing } = useUsva();
   const path = usePathname();
   const showNav = nav && state.onboarded;
+  // Kokeilun päätyttyä matkan osat jatkuvat tilauksella. Koti, hengitys, tuki,
+  // asetukset ja tilaussivu ovat aina auki: hätä ja lepo eivät ole maksumuurin takana.
+  const paid = ["/tanaan", "/opas", "/polku"].some((p) => path.startsWith(p));
+  const gated = billing && state.account?.status === "expired" && paid;
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4">
       <header className="flex items-center justify-between py-4">
@@ -43,7 +47,17 @@ export function Shell({ children, nav = true }: { children: ReactNode; nav?: boo
         </div>
       </header>
       <main key={path} className={`page-in flex-1 ${showNav ? "pb-28" : "pb-10"}`}>
-        {children}
+        {gated ? (
+          <div className="space-y-5 pt-10 text-center">
+            <p className="serif text-2xl leading-relaxed">{t("subGate")}</p>
+            <Link className="btn btn-primary" href="/tilaus">
+              {t("subSee")}
+            </Link>
+            <p className="text-sm text-soft">{t("subAlways")}</p>
+          </div>
+        ) : (
+          children
+        )}
       </main>
       {showNav && (
         <nav className="fixed inset-x-0 bottom-0 border-t border-lilac/15 bg-[#0c0920]/80 backdrop-blur-md">

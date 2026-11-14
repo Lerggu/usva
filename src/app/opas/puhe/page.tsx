@@ -61,7 +61,9 @@ export default function LivePage() {
         update((prev) => ({ ...prev, chat: [...prev.chat, { role: "assistant", content: text }] }));
         return text;
       }
-      return tr(res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting");
+      return tr(
+        res.status === 402 ? "guidePaywall" : res.status === 429 ? "guideBusy" : res.status === 413 ? "guideLong" : "guideResting",
+      );
     } catch {
       return tr("guideResting");
     }

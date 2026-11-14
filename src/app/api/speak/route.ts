@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requestEntitled } from "@/lib/server/billing";
 import { buildSsml, validateSpeakRequest } from "@/lib/speech";
 
 export const runtime = "nodejs";
@@ -29,6 +30,7 @@ export async function POST(req: Request) {
   if (!key || !region || !REGION.test(region)) {
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
+  if (!(await requestEntitled())) return NextResponse.json({ error: "subscription" }, { status: 402 });
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (!allow(ip)) return NextResponse.json({ error: "busy" }, { status: 429 });
 

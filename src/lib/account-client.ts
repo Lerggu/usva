@@ -21,10 +21,13 @@ async function post<T>(url: string, body: unknown): Promise<{ ok: true; data: T 
   }
 }
 
-export async function fetchMe(): Promise<{ enabled: boolean; account: ServerAccount | null }> {
+export type Me = { enabled: boolean; billing?: boolean; account: ServerAccount | null };
+export type Plan = { id: "yearly" | "monthly"; amount: number; currency: string; interval: "year" | "month" };
+
+export async function fetchMe(): Promise<Me> {
   try {
     const res = await fetch("/api/auth/me");
-    return (await res.json()) as { enabled: boolean; account: ServerAccount | null };
+    return (await res.json()) as Me;
   } catch {
     return { enabled: false, account: null };
   }
@@ -42,4 +45,24 @@ export const signOut = () => post<{ ok: true }>("/api/auth/logout", {});
 
 export function toInfo(a: ServerAccount): AccountInfo {
   return { email: a.email, status: a.status, trialEndsAt: a.trialEndsAt, paidUntil: a.paidUntil };
+}
+
+export async function fetchPlans(): Promise<Plan[]> {
+  try {
+    const res = await fetch("/api/billing/plans");
+    return ((await res.json()) as { plans: Plan[] }).plans ?? [];
+  } catch {
+    return [];
+  }
+}
+
+// Palauttaa Stripen sivun osoitteen, johon käyttäjä ohjataan.
+export async function openCheckout(plan: Plan["id"]): Promise<string | null> {
+  const res = await post<{ url: string }>("/api/billing/checkout", { plan });
+  return res.ok ? res.data.url : null;
+}
+
+export async function openPortal(): Promise<string | null> {
+  const res = await post<{ url: string }>("/api/billing/portal", {});
+  return res.ok ? res.data.url : null;
 }

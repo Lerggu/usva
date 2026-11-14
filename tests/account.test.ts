@@ -80,3 +80,38 @@ describe("muistitallennus", () => {
     expect(await store.getCode("a@b.fi")).toBeNull();
   });
 });
+
+import { applyPayment, applyRefund, isEntitled } from "@/lib/server/account";
+
+describe("tilaus", () => {
+  const now = new Date("2026-12-01T00:00:00Z");
+  const base = newAccount("a@b.fi", "fi", new Date("2026-11-14T10:00:00Z"));
+
+  it("maksu antaa ajan jakson loppuun ja päivän yli, eikä lyhennä pidempää aikaa", () => {
+    const end = Date.UTC(2027, 10, 14) / 1000;
+    const paid = applyPayment(base, end, "cus_1");
+    expect(paid.paidUntil).toBe("2027-11-15T00:00:00.000Z");
+    expect(paid.stripeCustomerId).toBe("cus_1");
+    expect(accountStatus(paid, now)).toBe("active");
+    const earlier = applyPayment(paid, Date.UTC(2027, 0, 1) / 1000, null);
+    expect(earlier.paidUntil).toBe("2027-11-15T00:00:00.000Z");
+    expect(earlier.stripeCustomerId).toBe("cus_1");
+  });
+
+  it("palautus päättää maksetun ajan heti", () => {
+    const refunded = applyRefund(applyPayment(base, Date.UTC(2027, 10, 14) / 1000, "cus_1"));
+    expect(refunded.paidUntil).toBeNull();
+    expect(accountStatus(refunded, now)).toBe("expired");
+    expect(refunded.stripeCustomerId).toBe("cus_1");
+  });
+
+  it("käyttöoikeus: kaikki on auki, kunnes sekä tilit että maksaminen ovat käytössä", () => {
+    const on = { accounts: true, billing: true };
+    expect(isEntitled(null, { accounts: false, billing: false })).toBe(true);
+    expect(isEntitled(base, { accounts: true, billing: false }, now)).toBe(true);
+    expect(isEntitled(null, on, now)).toBe(false);
+    expect(isEntitled(base, on, new Date("2026-11-15T00:00:00Z"))).toBe(true);
+    expect(isEntitled(base, on, now)).toBe(false);
+    expect(isEntitled(applyPayment(base, Date.UTC(2027, 10, 14) / 1000, null), on, now)).toBe(true);
+  });
+});

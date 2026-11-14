@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { requestEntitled } from "@/lib/server/billing";
 import { buildSystemPrompt, validateGuideRequest } from "@/lib/guide";
 
 export const runtime = "nodejs";
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
+  if (!(await requestEntitled())) return NextResponse.json({ error: "subscription" }, { status: 402 });
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (!allow(ip)) return NextResponse.json({ error: "busy" }, { status: 429 });
 

@@ -15,7 +15,7 @@ function greetingKey(hour: number): Key {
 }
 
 export default function HomePage() {
-  const { ready, state, today, t } = useUsva();
+  const { ready, state, today, t, billing } = useUsva();
   if (!ready) return <Shell nav={false}>{null}</Shell>;
   if (!state.onboarded) {
     return (
@@ -44,7 +44,12 @@ export default function HomePage() {
   };
   const nextId = nextMoment(log, hour);
   // Kun päivän ajankohtaiset hetket on tehty, kutsuna on hengähdys usvan kanssa.
-  const next = nextId ? moments[nextId] : { href: "/hetki", title: t("presentBtn"), sub: t("presentSub") };
+  const expired = billing && state.account?.status === "expired";
+  const next = expired
+    ? { href: "/tilaus", title: t("subTitle"), sub: t("subGate") }
+    : nextId
+      ? moments[nextId]
+      : { href: "/hetki", title: t("presentBtn"), sub: t("presentSub") };
 
   return (
     <Shell>

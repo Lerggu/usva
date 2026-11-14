@@ -9,7 +9,7 @@ import type { Lang } from "@/lib/progress";
 import { fetchMe, saveProfile, signOut, toInfo } from "@/lib/account-client";
 
 export default function SettingsPage() {
-  const { state, t, update, reset } = useUsva();
+  const { state, t, update, reset, billing } = useUsva();
 
   // Tilin tila haetaan palvelimelta, jotta kokeilun ja tilauksen päivät ovat ajan tasalla.
   useEffect(() => {
@@ -66,6 +66,11 @@ export default function SettingsPage() {
               {acc.status === "trial" && `${t("accTrial")} ${date(acc.trialEndsAt)}.`}
               {acc.status === "expired" && t("accExpiredInfo")}
             </p>
+            {billing && (
+              <Link className="btn" href="/tilaus">
+                {t("subTitle")}
+              </Link>
+            )}
             <button
               className="btn btn-quiet"
               onClick={() => void signOut().then(() => update((s) => ({ ...s, account: null })))}

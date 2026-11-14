@@ -68,6 +68,7 @@ export class TableStore implements Store {
         createdAt: String(e.createdAt),
         trialEndsAt: String(e.trialEndsAt),
         paidUntil: e.paidUntil ? String(e.paidUntil) : null,
+        stripeCustomerId: e.stripeCustomerId ? String(e.stripeCustomerId) : null,
       };
     } catch (error) {
       if (notFound(error)) return null;
@@ -88,6 +89,7 @@ export class TableStore implements Store {
         createdAt: a.createdAt,
         trialEndsAt: a.trialEndsAt,
         paidUntil: a.paidUntil ?? "",
+        stripeCustomerId: a.stripeCustomerId ?? "",
       },
       "Replace",
     );

@@ -73,7 +73,7 @@ Jos käyttäjä kertoo alussa hädästä, usva näyttää tukikortin eikä tarjo
 
 Rekisteröityminen tapahtuu alkukeskustelun lopussa, kun käyttäjä päättää aloittaa: sähköpostiosoite, kuusinumeroinen koodi, sitten nimi jolla usva kutsuu käyttäjää ja usvan oma nimi. Salasanaa ei ole. Palaava käyttäjä kirjautuu samalla tavalla kohdasta "Minulla on jo tili".
 
-Maksuton kokeilu (7 päivää) alkaa tilin luomisesta. Sen jälkeen käyttö jatkuu tilauksella. Maksupalvelu liitetään tiliin niin, että onnistunut maksu asettaa tilille maksetun ajan päättymispäivän.
+Maksuton kokeilu (7 päivää) alkaa tilin luomisesta, eikä siihen tarvita korttia. Sen jälkeen päivän hetket, opas ja polku jatkuvat tilauksella, joka maksetaan Stripen sivulla. Tilaussivulla näkyvät aina kokonaishinta, uusiutuminen ja 14 päivän peruutusoikeus. Hengitys ja Tuki ovat aina auki, myös ilman tilausta: hätä ja lepo eivät ole maksumuurin takana.
 
 Rekisteröitymisen jälkeen usva kertoo neljällä lyhyellä ruudulla, miten sitä käytetään. Sama esittely löytyy asetuksista.
 
