@@ -118,7 +118,8 @@ export default function LivePage() {
             lights={totalLights(state)}
             mood={live === "thinking" ? "listening" : "calm"}
             live={moving}
-            size="18rem"
+            ring={currentStepNumber(state, today)}
+            size="17rem"
           />
         </button>
         <p className="min-h-8 text-lg text-soft" aria-live="polite">

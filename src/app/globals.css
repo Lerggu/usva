@@ -141,6 +141,86 @@ body {
   stroke: #b9ffe6;
   filter: drop-shadow(0 0 3px rgba(110, 255, 214, 0.9));
 }
+/* Rummun syke hengitysharjoituksessa: kehä sykähtää lyönnin tahdissa. */
+.mist[data-drum="true"] .drum-ring {
+  animation: drum-beat 1.2s ease-out infinite;
+}
+@keyframes drum-beat {
+  0% { transform: scale(1.045); opacity: 1; }
+  35% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* Polku */
+.trail {
+  position: relative;
+}
+.trail-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.trail-ahead,
+.trail-walked {
+  fill: none;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+.trail-ahead {
+  stroke: rgba(201, 184, 255, 0.22);
+  stroke-dasharray: 2 9;
+}
+.trail-walked {
+  stroke: var(--color-aurora);
+  filter: drop-shadow(0 0 4px rgba(110, 255, 214, 0.7));
+}
+.trail-station {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.trail-station-right {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.trail-mark {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 50%;
+  background: #150f33;
+  border: 1px solid rgba(201, 184, 255, 0.28);
+}
+.trail-mark-walked {
+  border-color: rgba(110, 255, 214, 0.5);
+}
+.trail-mark-here {
+  border-color: var(--color-aurora);
+  box-shadow: 0 0 22px -4px var(--color-aurora);
+  animation: here-glow 3.2s ease-in-out infinite;
+}
+@keyframes here-glow {
+  0%, 100% { box-shadow: 0 0 14px -6px var(--color-aurora); }
+  50% { box-shadow: 0 0 26px -2px var(--color-aurora); }
+}
+
+/* Ruudut nousevat esiin pehmeästi kuin usvasta. */
+.page-in {
+  animation: page-in 0.55s ease both;
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
 @keyframes drum-turn {
   to { transform: rotate(360deg); }
 }
@@ -318,7 +398,7 @@ body {
   50% { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mist-body, .mist-layer, .mist-light, .aurora, .sky-stars, .drum-ring {
+  .mist-body, .mist-layer, .mist-light, .aurora, .sky-stars, .drum-ring, .page-in, .trail-mark-here {
     animation: none !important;
     transition: none !important;
   }

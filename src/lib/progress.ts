@@ -24,6 +24,8 @@ export type State = {
   chat: ChatMsg[];
   lastVisit: string | null;
   returns: number;
+  // Soiko rummun syke hengitysharjoituksessa.
+  drum: boolean;
   // Nimi, jolla usva kutsuu käyttäjää. Tyhjä = ei nimeä.
   userName: string;
   // Kirjautuneen tilin tiedot näyttämistä varten; totuus on palvelimella.
@@ -48,6 +50,7 @@ export const INITIAL: State = {
   chat: [],
   lastVisit: null,
   returns: 0,
+  drum: true,
   userName: "",
   account: null,
 };
