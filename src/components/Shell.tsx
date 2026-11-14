@@ -42,7 +42,9 @@ export function Shell({ children, nav = true }: { children: ReactNode; nav?: boo
           </Link>
         </div>
       </header>
-      <main className={`flex-1 ${showNav ? "pb-28" : "pb-10"}`}>{children}</main>
+      <main key={path} className={`page-in flex-1 ${showNav ? "pb-28" : "pb-10"}`}>
+        {children}
+      </main>
       {showNav && (
         <nav className="fixed inset-x-0 bottom-0 border-t border-lilac/15 bg-[#0c0920]/80 backdrop-blur-md">
           <ul className="mx-auto flex max-w-md">

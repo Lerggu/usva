@@ -24,6 +24,7 @@ export type State = {
   chat: ChatMsg[];
   lastVisit: string | null;
   returns: number;
+  drum: boolean;
 };
 
 export const INITIAL: State = {
@@ -37,6 +38,7 @@ export const INITIAL: State = {
   chat: [],
   lastVisit: null,
   returns: 0,
+  drum: true,
 };
 
 export const MAX_MOMENT_LIGHTS = 3;

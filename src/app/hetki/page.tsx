@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
 import { useUsva } from "@/lib/store";
-import { totalLights } from "@/lib/progress";
+import { currentStepNumber, totalLights } from "@/lib/progress";
+import { Drum } from "@/lib/drum";
 
 const IN_MS = 4000;
 const OUT_MS = 6000;
@@ -14,7 +15,8 @@ const CYCLES = 6;
 type Phase = "intro" | "in" | "out" | "end";
 
 export default function PresentMomentPage() {
-  const { t, state, updateToday } = useUsva();
+  const { t, state, today, update, updateToday } = useUsva();
+  const drumRef = useRef<Drum | null>(null);
   const [phase, setPhase] = useState<Phase>("intro");
   const [cycle, setCycle] = useState(0);
 
@@ -40,6 +42,12 @@ export default function PresentMomentPage() {
 
   const breathing = phase === "in" || phase === "out";
 
+  // Rumpu soi vain hengityksen ajan ja vaikenee, kun näkymästä poistutaan.
+  useEffect(() => {
+    if (!breathing) drumRef.current?.stop();
+  }, [breathing]);
+  useEffect(() => () => drumRef.current?.dispose(), []);
+
   return (
     <Shell>
       <div className="flex flex-col items-center gap-8 pt-6 text-center">
@@ -48,8 +56,10 @@ export default function PresentMomentPage() {
           breath={breathing ? phase : undefined}
           breathMs={phase === "in" ? IN_MS : OUT_MS}
           size="16rem"
+          ring={currentStepNumber(state, today)}
+          drum={breathing}
         />
-        <p className="min-h-16 text-2xl leading-relaxed" aria-live="polite">
+        <p className="serif min-h-16 text-3xl leading-relaxed" aria-live="polite">
           {phase === "intro" && t("breatheIntro")}
           {phase === "in" && t("breatheIn")}
           {phase === "out" && t("breatheOut")}
@@ -59,11 +69,25 @@ export default function PresentMomentPage() {
           <button
             className="btn btn-primary"
             onClick={() => {
+              if (state.drum) {
+                drumRef.current ??= new Drum();
+                drumRef.current.start();
+              }
               setCycle(0);
               setPhase("in");
             }}
           >
             {t("breatheStart")}
+          </button>
+        )}
+        {phase === "intro" && (
+          <button
+            type="button"
+            className="btn btn-quiet"
+            aria-pressed={state.drum}
+            onClick={() => update((prev) => ({ ...prev, drum: !prev.drum }))}
+          >
+            {t(state.drum ? "drumOn" : "drumOff")}
           </button>
         )}
         {phase === "end" && (

@@ -21,6 +21,8 @@ export default function MomentPage() {
   const [c, setC] = useState("");
   const [saved, setSaved] = useState(false);
   const [crisis, setCrisis] = useState(false);
+  // Iltakatsaus kulkee yksi kysymys kerrallaan.
+  const [eveStep, setEveStep] = useState(0);
 
   if (moment !== "aamu" && moment !== "tehtava" && moment !== "ilta") notFound();
   const m = moment as Moment;
@@ -72,7 +74,9 @@ export default function MomentPage() {
         className="space-y-5 pt-2"
         onSubmit={(e) => {
           e.preventDefault();
-          if (canSave) save();
+          // Enter ei tallenna kesken iltakatsauksen, vaan vie seuraavaan kysymykseen.
+          if (m === "ilta" && eveStep < 2) setEveStep(eveStep + 1);
+          else if (canSave) save();
         }}
       >
         {m === "aamu" && (
@@ -132,24 +136,47 @@ export default function MomentPage() {
 
         {m === "ilta" && (
           <>
-            <label htmlFor="f-a" className="block text-lg">
-              {t("eveHeavy")}
-            </label>
-            <VoiceField id="f-a" rows={2} value={a} onChange={setA} />
-            <label htmlFor="f-b" className="block text-lg">
-              {t("evePart")}
-            </label>
-            <VoiceField id="f-b" rows={2} value={b} onChange={setB} />
-            <label htmlFor="f-c" className="block text-lg">
-              {t("eveGrateful")}
-            </label>
-            <VoiceField id="f-c" rows={2} value={c} onChange={setC} />
+            <ol className="flex justify-center gap-2" aria-hidden="true">
+              {[0, 1, 2].map((i) => (
+                <li
+                  key={i}
+                  className={`h-2 w-8 rounded-full ${i <= eveStep ? "bg-aurora" : "bg-lilac/25"}`}
+                  style={{ opacity: i === eveStep ? 1 : 0.6 }}
+                />
+              ))}
+            </ol>
+            <div key={eveStep} className="page-in space-y-4">
+              <label htmlFor={`f-${"abc"[eveStep]}`} className="serif block text-2xl leading-relaxed">
+                {t(eveStep === 0 ? "eveHeavy" : eveStep === 1 ? "evePart" : "eveGrateful")}
+              </label>
+              {eveStep === 0 && <VoiceField id="f-a" rows={4} value={a} onChange={setA} />}
+              {eveStep === 1 && <VoiceField id="f-b" rows={4} value={b} onChange={setB} />}
+              {eveStep === 2 && <VoiceField id="f-c" rows={4} value={c} onChange={setC} />}
+            </div>
           </>
         )}
 
-        <button className="btn btn-primary" type="submit" disabled={!canSave} style={{ opacity: canSave ? 1 : 0.5 }}>
-          {t("save")}
-        </button>
+        {m === "ilta" && eveStep < 2 ? (
+          <>
+            <button className="btn btn-primary" type="button" onClick={() => setEveStep(eveStep + 1)}>
+              {t("eveNext")}
+            </button>
+            {eveStep > 0 && (
+              <button className="btn btn-quiet" type="button" onClick={() => setEveStep(eveStep - 1)}>
+                {t("back")}
+              </button>
+            )}
+          </>
+        ) : (
+          <button className="btn btn-primary" type="submit" disabled={!canSave} style={{ opacity: canSave ? 1 : 0.5 }}>
+            {t("save")}
+          </button>
+        )}
+        {m === "ilta" && eveStep === 2 && (
+          <button className="btn btn-quiet" type="button" onClick={() => setEveStep(1)}>
+            {t("back")}
+          </button>
+        )}
         <Link className="btn btn-quiet" href="/">
           {t("skip")}
         </Link>

@@ -10,6 +10,8 @@ type Props = {
   live?: boolean;
   // Rumpukehä usvan ympärille; luku kertoo, monenko vaiheen merkki hehkuu.
   ring?: number;
+  // Kehä sykkii rummun tahdissa.
+  drum?: boolean;
 };
 
 const MAX_VISIBLE = 72;
@@ -27,14 +29,14 @@ function lightPosition(i: number): { left: string; top: string; delay: string } 
   };
 }
 
-export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live, ring }: Props) {
+export function Mist({ lights = 0, mood = "calm", breath, breathMs, size, live, ring, drum }: Props) {
   const style = {
     ...(size ? { "--mist-size": size } : {}),
     ...(breathMs ? { "--breath-ms": `${breathMs}ms` } : {}),
   } as CSSProperties;
   const visible = Math.min(lights, MAX_VISIBLE);
   return (
-    <div className="mist" data-mood={mood} data-breath={breath} data-live={live ? "true" : undefined} style={style} aria-hidden="true">
+    <div className="mist" data-mood={mood} data-breath={breath} data-live={live ? "true" : undefined} data-drum={drum ? "true" : undefined} style={style} aria-hidden="true">
       {ring !== undefined && <DrumRing reached={ring} />}
       <div className="mist-body">
         <span className="mist-layer" />

@@ -105,6 +105,10 @@ const D = {
     en: "Let the breath move at its own pace. Follow the mist if that feels good.",
   },
   breatheStart: { fi: "Aloitetaan", en: "Let's begin" },
+  drumOn: { fi: "Rummun syke: päällä", en: "Drum beat: on" },
+  drumOff: { fi: "Rummun syke: pois", en: "Drum beat: off" },
+  eveNext: { fi: "Jatka", en: "Continue" },
+  eveSkip: { fi: "Ohitan tämän kysymyksen", en: "I'll skip this question" },
   breatheEnd: { fi: "Olet tässä. Juuri nyt kaikki, mitä tarvitset, on tässä.", en: "You are here. Right now, all you need is here." },
 
   // Hetket

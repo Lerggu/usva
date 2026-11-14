@@ -4,7 +4,7 @@
 // Merkit on piirretty Usvaa varten pohjoisen luonnon aiheista. Ne eivät ole
 // saamelaisten rumpujen kuvioita eivätkä jäljittele niitä: ne ovat pyhää
 // perinnettä, joka ei kuulu kaupallisen tuotteen koristeeksi.
-const MARKS: string[] = [
+export const MARKS: string[] = [
   // aurinko
   "M0 -5 A5 5 0 1 0 0.01 -5 M0 -9 V-7 M0 7 V9 M-9 0 H-7 M7 0 H9 M-6.4 -6.4 L-5 -5 M5 5 L6.4 6.4 M-6.4 6.4 L-5 5 M5 -5 L6.4 -6.4",
   // tunturi
@@ -49,6 +49,15 @@ export function DrumRing({ reached = 0 }: { reached?: number }) {
           />
         );
       })}
+    </svg>
+  );
+}
+
+// Yksittäinen vaiheen merkki, esimerkiksi polun varrelle.
+export function StepMark({ index, lit }: { index: number; lit?: boolean }) {
+  return (
+    <svg viewBox="-12 -12 24 24" className="h-7 w-7" aria-hidden="true">
+      <path d={MARKS[index % MARKS.length]} className={lit ? "drum-mark drum-mark-lit" : "drum-mark"} />
     </svg>
   );
 }
