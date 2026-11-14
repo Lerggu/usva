@@ -144,3 +144,29 @@ describe("seuraava hetki", () => {
     expect(nextMoment({ task: "b" }, 20)).toBe("ilta");
   });
 });
+
+describe("kaksitoista vaihetta", () => {
+  it("jokaisella vaiheella on sisältö, oikea numero ja oma merkki", () => {
+    expect(STEPS).toHaveLength(12);
+    STEPS.forEach((step, i) => {
+      expect(step.n).toBe(i + 1);
+      expect(step.title).toBe(STEP_TITLES[i]);
+      for (const text of [step.theme, step.intro]) {
+        expect(text.fi.trim()).not.toBe("");
+        expect(text.en.trim()).not.toBe("");
+      }
+    });
+    const prompts = STEPS.flatMap((s) => s.tasks.map((t) => t.prompt.fi));
+    expect(new Set(prompts).size).toBe(84);
+  });
+
+  it("viimeinen tehtävä on vaiheessa kaksitoista, ja sen jälkeen kirjoitetaan vapaasti", () => {
+    const days: State["days"] = {};
+    for (let i = 0; i < 83; i++) days[`d${i}`] = { task: "x" };
+    const last = taskFor({ ...base, days }, "2027-06-01");
+    expect(last.kind === "task" && last.step.n).toBe(12);
+    days.d83 = { task: "x" };
+    expect(taskFor({ ...base, days }, "2027-06-01").kind).toBe("open");
+    expect(badges({ ...base, days })).toContain("step12");
+  });
+});

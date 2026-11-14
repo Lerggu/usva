@@ -126,7 +126,12 @@ export function registerVisit(s: State, today: string): State {
   return { ...s, lastVisit: today, returns };
 }
 
-export type Badge = "firstLight" | "week" | "month" | "return" | "step1" | "step2" | "step3" | "step4";
+export type Badge =
+  | "firstLight"
+  | "week"
+  | "month"
+  | "return"
+  | `step${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`;
 
 export function badges(s: State): Badge[] {
   const out: Badge[] = [];

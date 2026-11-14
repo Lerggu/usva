@@ -248,8 +248,8 @@ const D = {
   savedTask: { fi: "Kiitos rehellisyydestäsi. Usvaasi syttyi valoa.", en: "Thank you for your honesty. New light appeared in your mist." },
   savedEvening: { fi: "Päivä on nyt katsottu. Saat levätä.", en: "The day has been seen. You may rest." },
   openTask: {
-    fi: "Olet kulkenut tämän version tehtävät loppuun. Seuraavat vaiheet ovat tulossa. Sillä välin voit kirjoittaa vapaasti siitä, mikä on mielessäsi.",
-    en: "You have walked through the tasks in this version. The next steps are on their way. Meanwhile, you can write freely about what is on your mind.",
+    fi: "Olet kulkenut kaikki kaksitoista vaihetta. Matka jatkuu nyt omin askelin: voit kirjoittaa tai puhua vapaasti siitä, mikä on tänään mielessäsi.",
+    en: "You have walked all twelve steps. The journey now continues in your own stride: you can write or speak freely about what is on your mind today.",
   },
   stepLabel: { fi: "Vaihe", en: "Step" },
 
@@ -327,6 +327,14 @@ const D = {
   b_step2: { fi: "Toivo", en: "Hope" },
   b_step3: { fi: "Luottamus", en: "Trust" },
   b_step4: { fi: "Rohkeus", en: "Courage" },
+  b_step5: { fi: "Avoimuus", en: "Openness" },
+  b_step6: { fi: "Valmius", en: "Willingness" },
+  b_step7: { fi: "Nöyryys", en: "Humility" },
+  b_step8: { fi: "Myötätunto", en: "Compassion" },
+  b_step9: { fi: "Vastuu", en: "Responsibility" },
+  b_step10: { fi: "Valppaus", en: "Awareness" },
+  b_step11: { fi: "Hiljaisuus", en: "Stillness" },
+  b_step12: { fi: "Palvelu", en: "Service" },
   stepNow: { fi: "Olet tässä", en: "You are here" },
   stepLater: { fi: "Avautuu myöhemmin", en: "Opens later" },
 
