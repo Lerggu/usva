@@ -73,6 +73,75 @@ const D = {
     fi: "Se sopii hyvin. Olen täällä, kun palaat.",
     en: "That is perfectly fine. I will be here when you return.",
   },
+  obHaveAccount: { fi: "Minulla on jo tili", en: "I already have an account" },
+  accEmailQ: {
+    fi: "Mihin sähköpostiosoitteeseen saan lähettää kirjautumiskoodin?",
+    en: "Which email address may I send your sign-in code to?",
+  },
+  accEmailSub: {
+    fi: "Salasanaa ei tarvita. Osoitetta käytetään vain kirjautumiseen ja tilauksen hoitamiseen.",
+    en: "No password is needed. The address is used only for signing in and for managing your subscription.",
+  },
+  accEmailPh: { fi: "nimi@esimerkki.fi", en: "name@example.com" },
+  accSend: { fi: "Lähetä koodi", en: "Send the code" },
+  accCodeQ: {
+    fi: "Lähetin kuusinumeroisen koodin sähköpostiisi. Voit kirjoittaa sen tähän.",
+    en: "I sent a six-digit code to your email. You can enter it here.",
+  },
+  accResend: { fi: "Lähetä uusi koodi", en: "Send a new code" },
+  accChange: { fi: "Vaihda osoite", en: "Change the address" },
+  accBadEmail: { fi: "Osoite ei näytä vielä aivan valmiilta.", en: "The address does not look quite complete yet." },
+  accWrong: { fi: "Koodi ei aivan täsmännyt. Voit kokeilla uudelleen.", en: "The code did not quite match. You can try again." },
+  accExpired: {
+    fi: "Koodi on ehtinyt vanhentua. Lähetän mielelläni uuden.",
+    en: "The code has expired. I will gladly send a new one.",
+  },
+  accWait: {
+    fi: "Lähetin koodin juuri äsken. Kokeillaan hetken päästä uudelleen.",
+    en: "I sent a code just a moment ago. Let's try again shortly.",
+  },
+  accFail: {
+    fi: "Yhteys ei juuri nyt onnistunut. Kokeillaan hetken päästä uudelleen.",
+    en: "The connection did not work just now. Let's try again shortly.",
+  },
+  accReturnNote: {
+    fi: "Tervetuloa takaisin. Kirjoituksesi ovat tallessa vain sillä laitteella, jolla ne kirjoitit, joten tällä laitteella jatkamme puhtaalta sivulta.",
+    en: "Welcome back. Your writing is kept only on the device where you wrote it, so on this device we continue from a clean page.",
+  },
+  obUserName: { fi: "Millä nimellä saan kutsua sinua?", en: "What name may I call you by?" },
+  obUserNameSub: { fi: "Voit jättää tämän myös tyhjäksi.", en: "You may also leave this empty." },
+  accountTitle: { fi: "Tilisi", en: "Your account" },
+  accTrial: { fi: "Maksuton kokeilu päättyy", en: "Your free trial ends on" },
+  accActive: { fi: "Tilauksesi on voimassa", en: "Your subscription is valid until" },
+  accExpiredInfo: {
+    fi: "Kokeilujaksosi on päättynyt. Tilaaminen tulee pian mahdolliseksi; siihen asti Usva on käytössäsi kuten ennenkin.",
+    en: "Your trial has ended. Subscribing will be possible soon; until then Usva remains available to you as before.",
+  },
+  logout: { fi: "Kirjaudu ulos", en: "Sign out" },
+  userNameLabel: { fi: "Nimesi", en: "Your name" },
+  tutLink: { fi: "Miten Usva toimii", en: "How Usva works" },
+  tut1: {
+    fi: "Joka päivä on kolme pientä hetkeä: aamu, päivän tehtävä ja ilta. Koti näyttää aina, mikä niistä on seuraavaksi.",
+    en: "Each day has three small moments: a morning, the day's task and an evening. Home always shows which comes next.",
+  },
+  tut2: {
+    fi: "Voit puhua minulle aina, kun et halua kirjoittaa. Jokaisen kentän vieressä on mikrofoni, ja Opas-näkymässä voimme keskustella ääneen.",
+    en: "You can speak to me whenever you would rather not write. Every field has a microphone beside it, and in the Guide view we can talk aloud.",
+  },
+  tut3: {
+    fi: "Kuljemme kaksitoista vaihetta, yksi kerrallaan. Minä kysyn, jotta tarinasi pääsee esiin, ja sinä päätät tahdin.",
+    en: "We walk twelve steps, one at a time. I ask, so that your story can come out, and you set the pace.",
+  },
+  tut4: {
+    fi: "Jokaisesta hetkestä syttyy valo. Jos jokin päivä jää väliin, mikään ei katoa. Ja jos olo käy raskaaksi, Tuki on aina alavalikossa.",
+    en: "Every moment lights a light. If a day is missed, nothing is lost. And if things grow heavy, Support is always in the menu below.",
+  },
+  tutStart: { fi: "Aloitetaan", en: "Let's begin" },
+  guideLead: { fi: "Tänään kysyisin sinulta tätä:", en: "Today I would like to ask you this:" },
+  guideLeadDone: {
+    fi: "Kiitos tämän päivän tehtävästä. Haluaisitko kertoa siitä vähän lisää, vai onko mielessäsi jotain muuta?",
+    en: "Thank you for today's task. Would you like to tell me a little more about it, or is something else on your mind?",
+  },
   obName: { fi: "Miksi haluaisit kutsua minua?", en: "What would you like to call me?" },
   obCrisis: {
     fi: "Kuulen, että sinulla on nyt todella raskasta. Tärkeintä on, ettet jää tämän kanssa yksin. Matka ehtii odottaa.",
@@ -233,8 +302,8 @@ const D = {
   mistNameLabel: { fi: "Oppaan nimi", en: "Guide's name" },
   dataTitle: { fi: "Tietosi", en: "Your data" },
   dataInfo: {
-    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle. Jos puhut oppaalle, puheesi muutetaan tekstiksi selaimesi omassa palvelussa tai puhepalvelussa, ja oppaan vastaus muutetaan ääneksi puhepalvelussa. Äänitystä ei tallenneta.",
-    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server. If you speak to the guide, your speech is turned into text by your browser's own service or by a speech service, and the guide's reply is turned into sound by a speech service. The recording is not stored.",
+    fi: "Kirjoituksesi tallentuvat vain tälle laitteelle. Kun keskustelet oppaan kanssa, keskustelu ja viimeisimmät kirjoituksesi lähetetään tekoälylle vastausta varten, jotta opas voi tuntea sinut. Niitä ei tallenneta Usvan palvelimelle. Jos luot tilin, palvelimelle tallentuvat vain sähköpostiosoitteesi, nimesi, usvan nimi ja tilauksesi tila. Jos puhut oppaalle, puheesi muutetaan tekstiksi selaimesi omassa palvelussa tai puhepalvelussa, ja oppaan vastaus muutetaan ääneksi puhepalvelussa. Äänitystä ei tallenneta.",
+    en: "Your writing is stored on this device only. When you talk with the guide, the conversation and your most recent writing are sent to the AI to produce a reply, so that the guide can know you. They are not stored on Usva's server. If you create an account, the server keeps only your email address, your name, the mist's name and your subscription status. If you speak to the guide, your speech is turned into text by your browser's own service or by a speech service, and the guide's reply is turned into sound by a speech service. The recording is not stored.",
   },
   exportData: { fi: "Lataa tietoni", en: "Download my data" },
   deleteData: { fi: "Poista kaikki tietoni", en: "Delete all my data" },

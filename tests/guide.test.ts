@@ -133,3 +133,24 @@ describe("puhuttu keskustelu", () => {
     expect(plain.ok && plain.value.spoken).toBe(false);
   });
 });
+
+describe("aktiivinen opas", () => {
+  const base = { lang: "fi" as const, mistName: "a", stepTitle: "b", stepTheme: "c" };
+
+  it("johtaa keskustelua ja tuntee päivän tehtävän ja nimen", () => {
+    const p = buildSystemPrompt({ ...base, userName: "Markku", taskPrompt: "Mikä vie voimasi?", taskDone: false });
+    expect(p).toContain("You lead the way");
+    expect(p).toContain("Mikä vie voimasi?");
+    expect(p).toContain("not answered it yet");
+    expect(p).toContain('called "Markku"');
+    expect(buildSystemPrompt({ ...base, taskPrompt: "x", taskDone: true })).toContain("already written their answer");
+    expect(buildSystemPrompt(base)).toContain("do not invent one");
+  });
+
+  it("hyväksyy nimen ja tehtävän pyynnössä ja hylkää liian pitkät", () => {
+    const parsed = validateGuideRequest({ ...ok, userName: " Markku ", taskPrompt: "Kysymys", taskDone: true });
+    expect(parsed.ok && [parsed.value.userName, parsed.value.taskPrompt, parsed.value.taskDone]).toEqual(["Markku", "Kysymys", true]);
+    expect(validateGuideRequest({ ...ok, userName: "x".repeat(41) }).ok).toBe(false);
+    expect(validateGuideRequest({ ...ok, taskPrompt: 5 }).ok).toBe(false);
+  });
+});

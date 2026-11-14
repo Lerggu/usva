@@ -6,7 +6,7 @@ import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
 import { CrisisCard } from "@/components/CrisisCard";
 import { useUsva } from "@/lib/store";
-import { currentStepNumber, totalLights, type ChatMsg } from "@/lib/progress";
+import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/progress";
 import { STEPS } from "@/lib/program";
 import { MAX_MESSAGE_CHARS, MAX_MESSAGES, buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
@@ -30,6 +30,11 @@ export default function GuidePage() {
   if (!ready) return <Shell>{null}</Shell>;
   const step = STEPS[currentStepNumber(state, today) - 1];
   const tooLong = state.chat.length >= MAX_MESSAGES - 1;
+  const task = taskFor(state, today);
+  const taskPrompt = task.kind === "task" ? task.task.prompt[state.lang] : "";
+  const taskDone = !!state.days[today]?.task;
+  // Usva avaa keskustelun itse: se kysyy päivän tehtävän eikä odota aihetta käyttäjältä.
+  const opening = !taskPrompt ? t("guideHello") : taskDone ? t("guideLeadDone") : `${t("guideLead")} ${taskPrompt}`;
 
   async function send() {
     const content = text.trim();
@@ -50,6 +55,9 @@ export default function GuidePage() {
           stepTitle: step.title[state.lang],
           stepTheme: step.theme[state.lang],
           context: buildContext(state),
+          userName: state.userName,
+          taskPrompt,
+          taskDone,
           messages,
         }),
       });
@@ -77,7 +85,7 @@ export default function GuidePage() {
         </Link>
 
         <div className="space-y-3" aria-live="polite">
-          <p className="card mr-8">{t("guideHello")}</p>
+          <p className="card serif mr-8 text-lg">{opening}</p>
           {state.chat.map((m, i) =>
             m.role === "user" ? (
               <p key={i} className="card ml-8 whitespace-pre-wrap border-lilac/40 bg-mist/20">

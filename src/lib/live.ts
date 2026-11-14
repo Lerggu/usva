@@ -50,7 +50,10 @@ export class LiveEngine {
   }
 
   // Kutsutaan napautuksesta: selaimet sallivat mikrofonin ja äänen vain silloin.
-  async start() {
+  private opened = false;
+
+  // `opening` on lause, jonka usva sanoo ensin, ennen kuin se alkaa kuunnella.
+  async start(opening?: string) {
     if (this.state === "speaking") {
       this.interrupt();
       return;
@@ -86,6 +89,11 @@ export class LiveEngine {
     if (!this.serverListens && !recognitionCtor()) {
       this.cb.onError("failed");
       return;
+    }
+    if (opening && !this.opened) {
+      this.opened = true;
+      await this.speak(opening, gen);
+      if (gen !== this.gen) return;
     }
     this.listen();
   }

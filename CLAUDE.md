@@ -11,7 +11,7 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 5. **Opas, ei terapeutti:** sovellus ei diagnosoi eikä korvaa hoitoa tai vertaistukea.
 6. **Ei rangaistuksia:** valo ei koskaan vähene, putkia ei nollata, ja paluusta palkitaan.
 7. **Tekijänoikeus:** sisältö kirjoitetaan omin sanoin, eikä yhteisöjen nimiä käytetä tuotteessa. Suora lainaus on sallittu vain teoksesta, jonka tekijän ja kääntäjän kuolemasta on yli 70 vuotta. Lainaus tarkistetaan sanatarkasti lähteestä, tekijä mainitaan, ja lähde kirjataan `docs/OHJELMARUNKO.md`:hen. Ei lainauksia suojatusta toipumiskirjallisuudesta, nykykirjoista tai elävien opettajien teksteistä.
-8. **Tietosuoja:** kirjoitukset ovat erityisen arkaluonteisia. Niitä ei kirjata lokeihin eikä tallenneta palvelimelle ilman erillistä päätöstä.
+8. **Tietosuoja:** kirjoitukset ovat erityisen arkaluonteisia. Niitä ei kirjata lokeihin eikä tallenneta palvelimelle ilman erillistä päätöstä. Tilille tallennetaan vain sähköpostiosoite, nimet, kieli ja tilauksen tila.
 9. **Sitoutumattomuus:** Usva ei ole sitoutunut mihinkään uskonnolliseen, hengelliseen, ideologiseen tai psykologiseen suuntaukseen. Sisältö ja opas eivät saarnaa eivätkä oleta käyttäjältä mitään vakaumusta.
 10. **Yksilöllisyys:** Usva oppii käyttäjästään ja mukauttaa ohjausta hänelle. Käyttäjälle luvataan vain se, mikä on toteutettu.
 11. **Kielet:** suomi on oletus, englanti rinnalla. Ei kovakoodattuja käyttöliittymätekstejä; kaikki `src/lib/i18n.ts`:n kautta.
@@ -25,6 +25,7 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 - `src/lib/safety.ts` – kriisin tunnistus
 - `src/app/api/guide/route.ts` – oppaan palvelinreitti (Claude API)
 - `src/app/api/speak/route.ts` – oppaan ääni ja `src/app/api/listen/route.ts` – puheen tunnistus (Azure AI Speech), `src/lib/voice.ts` – sanelu ja kuuntelu, `src/lib/live.ts` – puhekeskustelun moottori (`/opas/puhe`)
+- `src/lib/server/` – tilit: `account.ts` (koodi, eväste, tila), `store.ts` (Azure Table Storage), `mail.ts` (sähköposti), `auth.ts`; reitit `src/app/api/auth/*`
 - `src/components/Mist.tsx` – usvahahmo
 
 API-avaimet tulevat vain ympäristöstä, eivät koskaan tiedostoihin tai commiteihin.

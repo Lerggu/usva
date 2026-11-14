@@ -51,7 +51,10 @@ export default function HomePage() {
       <div className="space-y-7">
         <div className="pt-2 text-center">
           <Mist lights={lights} ring={currentStepNumber(state, today)} size="15rem" />
-          <h1 className="serif mt-8 text-3xl">{t(greetingKey(hour))}</h1>
+          <h1 className="serif mt-8 text-3xl">
+            {t(greetingKey(hour))}
+            {state.userName && `, ${state.userName}`}
+          </h1>
           <p className="mt-1 text-soft">
             {cameBack ? t("welcomeBack") : `${state.mistName} · ${lights} ${t("lights")}`}
           </p>

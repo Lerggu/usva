@@ -41,6 +41,18 @@ Sovellus on tavallinen Next.js-palvelin, joten se sopii Azure App Serviceen (Lin
 
 Oppaan pyyntörajoitin on muistinvarainen, joten aja aluksi yhtä instanssia.
 
+## Tilit
+
+Käyttäjä rekisteröityy sähköpostiosoitteella ilman salasanaa: Usva lähettää kuusinumeroisen koodin, joka on voimassa kymmenen minuuttia. Tili luodaan ensimmäisellä kirjautumisella, ja 7 päivän maksuton kokeilu alkaa siitä.
+
+Palvelimelle tallentuvat vain sähköpostiosoite, nimi jolla usva kutsuu käyttäjää, usvan nimi, kieli ja tilauksen tila. Käyttäjän kirjoitukset pysyvät hänen laitteellaan.
+
+Tilit tulevat käyttöön, kun nämä ympäristömuuttujat on asetettu: `SESSION_SECRET`, `AZURE_STORAGE_CONNECTION_STRING`, `ACS_CONNECTION_STRING` ja `ACS_SENDER`. Ilman niitä alkukeskustelu ohittaa rekisteröitymisen ja sovellus toimii kuten ennen.
+
+Paikallisessa kehityksessä `USVA_DEV_AUTH=1` pitää tilit muistissa ja tulostaa koodin palvelimen konsoliin.
+
+Maksaminen ei ole vielä käytössä. Tilillä on kentät kokeilun päättymiselle ja maksetulle ajalle, ja tila (kokeilu, voimassa, päättynyt) lasketaan niistä, mutta päättynyt kokeilu ei vielä rajoita käyttöä.
+
 ## Oppaan ääni
 
 Oppaan kanssa voi keskustella puhumalla (Opas-näkymän "Puhu Usvan kanssa"). Käyttäjä puhuu vapaasti, usva vastaa ääneen noin kahden sekunnin tauon jälkeen ja kuuntelee taas. Puhetta ei näytetä tekstinä, ja usva liikkuu äänen voimakkuuden mukaan. Kirjoitusnäkymässä puheen voi myös sanella tekstikenttään.

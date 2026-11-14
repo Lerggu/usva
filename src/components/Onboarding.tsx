@@ -1,15 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Mist } from "./Mist";
 import { CrisisCard } from "./CrisisCard";
 import { VoiceField } from "./VoiceField";
 import { useUsva } from "@/lib/store";
 import { detectCrisis } from "@/lib/safety";
+import { fetchMe, saveProfile, startSignIn, toInfo, verifyCode, type AuthError } from "@/lib/account-client";
+import type { AccountInfo } from "@/lib/progress";
 import type { Key } from "@/lib/i18n";
 
-type Stage = "reason" | "doing" | "year" | "ask" | "offer" | "name" | "later" | "crisis";
+type Stage = "reason" | "doing" | "year" | "ask" | "offer" | "email" | "code" | "names" | "later" | "crisis";
 
 const QUESTIONS: Record<"reason" | "doing" | "year", { q: Key; options: Key[]; next: Stage }> = {
   reason: { q: "obHello", options: ["obR1", "obR2", "obR3", "obR5", "obR4"], next: "doing" },
@@ -17,13 +20,48 @@ const QUESTIONS: Record<"reason" | "doing" | "year", { q: Key; options: Key[]; n
   year: { q: "obYear", options: ["obY1", "obY2", "obY3"], next: "ask" },
 };
 
+const ERRORS: Record<AuthError, Key> = {
+  email: "accBadEmail",
+  wrong: "accWrong",
+  expired: "accExpired",
+  wait: "accWait",
+  fail: "accFail",
+};
+
 // Alkukeskustelu ennen tilausta. Mitään ei käsketä: jokainen kohta tarjoaa
 // vaihtoehtoja, ja "palaan myöhemmin" on aina yhtä arvokas valinta.
 export function Onboarding() {
   const { t, update, today, state } = useUsva();
+  const router = useRouter();
   const [stage, setStage] = useState<Stage>("reason");
   const [text, setText] = useState("");
-  const [name, setName] = useState(state.mistName);
+  const [userName, setUserName] = useState(state.userName);
+  const [mistName, setMistName] = useState(state.mistName);
+  // Tilit ovat käytössä vasta, kun palvelimella on niiden asetukset.
+  const [accounts, setAccounts] = useState(false);
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<AuthError | null>(null);
+  const [account, setAccount] = useState<AccountInfo | null>(null);
+  const [returning, setReturning] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchMe().then((me) => {
+      if (cancelled) return;
+      setAccounts(me.enabled);
+      // Jo kirjautunut käyttäjä uudella laitteella tai tyhjennetyn selaimen jälkeen.
+      if (me.account) {
+        setAccount(toInfo(me.account));
+        setUserName(me.account.name);
+        setMistName(me.account.mistName);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function answer(stageNow: "reason" | "doing" | "year", value: string, free: boolean) {
     if (free && detectCrisis(value)) {
@@ -35,15 +73,65 @@ export function Onboarding() {
     setStage(QUESTIONS[stageNow].next);
   }
 
-  function begin() {
+  async function sendCode() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    const res = await startSignIn(email, state.lang);
+    setBusy(false);
+    if (res.ok) {
+      setCode("");
+      setStage("code");
+    } else setError(res.error);
+  }
+
+  async function checkCode() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    const res = await verifyCode(email, code, state.lang);
+    setBusy(false);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    const acc = res.data.account;
+    setAccount(toInfo(acc));
+    if (res.data.isNew) {
+      setStage("names");
+    } else {
+      // Palaava käyttäjä: nimet tulevat tililtä, eikä niitä kysytä uudelleen.
+      setReturning(true);
+      setUserName(acc.name);
+      setMistName(acc.mistName);
+      finish(acc.name, acc.mistName, toInfo(acc), "/");
+    }
+  }
+
+  function finish(name: string, mist: string, acc: AccountInfo | null, to: string) {
     update((s) => ({
       ...s,
       onboarded: true,
-      startDate: today,
+      startDate: s.startDate ?? today,
       lastVisit: today,
-      mistName: name.trim() || "Usva",
+      userName: name.trim(),
+      mistName: mist.trim() || "Usva",
+      account: acc,
     }));
+    router.push(to);
   }
+
+  async function begin() {
+    if (account) {
+      setBusy(true);
+      await saveProfile({ name: userName.trim(), mistName: mistName.trim() || "Usva", lang: state.lang });
+      setBusy(false);
+    }
+    finish(userName, mistName, account, "/tutustu");
+  }
+
+  // Tilauksen aloittaminen: tili ensin, jos tilit ovat käytössä eikä käyttäjä ole jo kirjautunut.
+  const afterOffer: Stage = accounts && !account ? "email" : "names";
 
   return (
     <div className="space-y-6">
@@ -76,6 +164,17 @@ export function Onboarding() {
               </button>
             )}
           </form>
+          {stage === "reason" && accounts && (
+            <button
+              className="btn btn-quiet"
+              onClick={() => {
+                setReturning(true);
+                setStage(account ? "names" : "email");
+              }}
+            >
+              {t("obHaveAccount")}
+            </button>
+          )}
         </section>
       )}
 
@@ -101,7 +200,7 @@ export function Onboarding() {
           </div>
           <p className="text-sm text-soft">{t("principle")}</p>
           <p className="text-center text-lg">{t("obInvite")}</p>
-          <button className="btn btn-primary" onClick={() => setStage("name")}>
+          <button className="btn btn-primary" onClick={() => setStage(afterOffer)}>
             {t("obStart")}
           </button>
           <button className="btn btn-quiet" onClick={() => setStage("later")}>
@@ -110,19 +209,97 @@ export function Onboarding() {
         </section>
       )}
 
-      {stage === "name" && (
+      {stage === "email" && (
+        <form
+          // Selaimen oma tarkistus pois: kelvottomasta osoitteesta kertoo usva omalla äänellään.
+          noValidate
+          className="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void sendCode();
+          }}
+        >
+          <label className="serif block text-center text-2xl leading-relaxed" htmlFor="email">
+            {t("accEmailQ")}
+          </label>
+          <input
+            id="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            className="field text-center"
+            placeholder={t("accEmailPh")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <p className="text-center text-sm text-soft">{t("accEmailSub")}</p>
+          {error && <p className="card text-soft">{t(ERRORS[error])}</p>}
+          <button className="btn btn-primary" type="submit" disabled={busy || !email.trim()}>
+            {busy ? "…" : t("accSend")}
+          </button>
+          <button className="btn btn-quiet" type="button" onClick={() => setStage(returning ? "reason" : "offer")}>
+            {t("back")}
+          </button>
+        </form>
+      )}
+
+      {stage === "code" && (
         <form
           className="space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
-            begin();
+            void checkCode();
           }}
         >
-          <label className="block text-center text-xl" htmlFor="mist-name">
-            {t("obName")}
+          <label className="serif block text-center text-2xl leading-relaxed" htmlFor="code">
+            {t("accCodeQ")}
           </label>
-          <VoiceField id="mist-name" single center value={name} maxLength={24} onChange={setName} />
-          <button className="btn btn-primary" type="submit">
+          <p className="text-center text-soft">{email}</p>
+          <input
+            id="code"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            className="field text-center text-3xl tracking-[0.4em]"
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+          />
+          {error && <p className="card text-soft">{t(ERRORS[error])}</p>}
+          <button className="btn btn-primary" type="submit" disabled={busy || code.length !== 6}>
+            {busy ? "…" : t("continue")}
+          </button>
+          <button className="btn btn-quiet" type="button" disabled={busy} onClick={() => void sendCode()}>
+            {t("accResend")}
+          </button>
+          <button className="btn btn-quiet" type="button" onClick={() => setStage("email")}>
+            {t("accChange")}
+          </button>
+        </form>
+      )}
+
+      {stage === "names" && (
+        <form
+          className="space-y-5"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void begin();
+          }}
+        >
+          {returning && <p className="card text-soft">{t("accReturnNote")}</p>}
+          <div className="space-y-2">
+            <label className="serif block text-center text-2xl" htmlFor="user-name">
+              {t("obUserName")}
+            </label>
+            <VoiceField id="user-name" single center value={userName} maxLength={24} onChange={setUserName} />
+            <p className="text-center text-sm text-soft">{t("obUserNameSub")}</p>
+          </div>
+          <div className="space-y-2">
+            <label className="serif block text-center text-2xl" htmlFor="mist-name">
+              {t("obName")}
+            </label>
+            <VoiceField id="mist-name" single center value={mistName} maxLength={24} onChange={setMistName} />
+          </div>
+          <button className="btn btn-primary" type="submit" disabled={busy}>
             {t("continue")}
           </button>
         </form>

@@ -69,7 +69,18 @@ Valopisteet, 12 vaiheen polku, viikkonäkymä ja merkit. Putkia ei nollata eikä
 
 Jos käyttäjä kertoo alussa hädästä, usva näyttää tukikortin eikä tarjoa tilausta.
 
+## Tili ja tilaus
+
+Rekisteröityminen tapahtuu alkukeskustelun lopussa, kun käyttäjä päättää aloittaa: sähköpostiosoite, kuusinumeroinen koodi, sitten nimi jolla usva kutsuu käyttäjää ja usvan oma nimi. Salasanaa ei ole. Palaava käyttäjä kirjautuu samalla tavalla kohdasta "Minulla on jo tili".
+
+Maksuton kokeilu (7 päivää) alkaa tilin luomisesta. Sen jälkeen käyttö jatkuu tilauksella. Maksupalvelu liitetään tiliin niin, että onnistunut maksu asettaa tilille maksetun ajan päättymispäivän.
+
+Rekisteröitymisen jälkeen usva kertoo neljällä lyhyellä ruudulla, miten sitä käytetään. Sama esittely löytyy asetuksista.
+
 ## Opas
+
+Opas johtaa keskustelua: se avaa päivän tehtävän kysymyksellä eikä odota aihetta käyttäjältä, ja jokainen vastaus päättyy yhteen kysymykseen, joka vie tehtävää tai vaihetta eteenpäin. Jos käyttäjä sanoo "ei tänään", se hyväksytään lämpimästi.
+
 
 Kyselevä, lämmin ja suora kumppani kummin tapaan. Yksi kysymys ja yksi tapahtuma kerrallaan; raskas keskustelu päättyy maadoitukseen. Opas ei diagnosoi, ei neuvo lääkityksessä eikä korvaa terapiaa, lääkäriä tai vertaisryhmää. Itsetuhoisuuden merkeistä se keskeyttää työskentelyn ja ohjaa avun piiriin (112, MIELI ry:n Kriisipuhelin 09 2525 0111).
 

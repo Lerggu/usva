@@ -6,7 +6,7 @@ import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
 import { CrisisCard } from "@/components/CrisisCard";
 import { useUsva } from "@/lib/store";
-import { currentStepNumber, totalLights, type ChatMsg } from "@/lib/progress";
+import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/progress";
 import { STEPS } from "@/lib/program";
 import { buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
@@ -36,6 +36,7 @@ export default function LivePage() {
     const { state: s, today: day, t: tr } = latest.current;
     if (detectCrisis(spoken)) setCrisis(true);
     const step = STEPS[currentStepNumber(s, day) - 1];
+    const task = taskFor(s, day);
     const messages: ChatMsg[] = [...s.chat, { role: "user", content: spoken }];
     update((prev) => ({ ...prev, chat: messages }));
     try {
@@ -49,6 +50,9 @@ export default function LivePage() {
           stepTheme: step.theme[s.lang],
           context: buildContext(s),
           spoken: true,
+          userName: s.userName,
+          taskPrompt: task.kind === "task" ? task.task.prompt[s.lang] : "",
+          taskDone: !!s.days[day]?.task,
           messages,
         }),
       });
@@ -97,7 +101,18 @@ export default function LivePage() {
           type="button"
           aria-label={t("liveMist")}
           className="rounded-full"
-          onClick={() => void engineRef.current?.start()}
+          onClick={() => {
+            // Ensimmäisellä napautuksella usva puhuu ensin: se kysyy päivän tehtävän.
+            const { state: s, today: day, t: tr } = latest.current;
+            const task = taskFor(s, day);
+            const prompt = task.kind === "task" ? task.task.prompt[s.lang] : "";
+            const opening = !prompt
+              ? tr("guideHello")
+              : s.days[day]?.task
+                ? tr("guideLeadDone")
+                : `${tr("guideLead")} ${prompt}`;
+            void engineRef.current?.start(s.chat.length === 0 ? opening : undefined);
+          }}
         >
           <Mist
             lights={totalLights(state)}

@@ -24,6 +24,17 @@ export type State = {
   chat: ChatMsg[];
   lastVisit: string | null;
   returns: number;
+  // Nimi, jolla usva kutsuu käyttäjää. Tyhjä = ei nimeä.
+  userName: string;
+  // Kirjautuneen tilin tiedot näyttämistä varten; totuus on palvelimella.
+  account: AccountInfo | null;
+};
+
+export type AccountInfo = {
+  email: string;
+  status: "trial" | "active" | "expired";
+  trialEndsAt: string;
+  paidUntil: string | null;
 };
 
 export const INITIAL: State = {
@@ -37,6 +48,8 @@ export const INITIAL: State = {
   chat: [],
   lastVisit: null,
   returns: 0,
+  userName: "",
+  account: null,
 };
 
 export const MAX_MOMENT_LIGHTS = 3;

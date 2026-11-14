@@ -38,6 +38,9 @@ export type GuideRequest = {
   stepTheme: string;
   context: string;
   spoken: boolean;
+  userName: string;
+  taskPrompt: string;
+  taskDone: boolean;
   messages: ChatMsg[];
 };
 
@@ -53,6 +56,8 @@ export function validateGuideRequest(body: unknown): Validation {
   if (!short(b.mistName, 40) || !short(b.stepTitle, 80) || !short(b.stepTheme, 200)) {
     return { ok: false, error: "invalid" };
   }
+  const optional = (v: unknown, max: number) => v === undefined || short(v, max);
+  if (!optional(b.userName, 40) || !optional(b.taskPrompt, 600)) return { ok: false, error: "invalid" };
   const context = b.context ?? "";
   if (typeof context !== "string") return { ok: false, error: "invalid" };
   if (context.length > MAX_CONTEXT_CHARS + 500) return { ok: false, error: "too_long" };
@@ -79,13 +84,22 @@ export function validateGuideRequest(body: unknown): Validation {
       stepTheme: b.stepTheme as string,
       context,
       spoken: b.spoken === true,
+      userName: typeof b.userName === "string" ? b.userName.trim() : "",
+      taskPrompt: typeof b.taskPrompt === "string" ? b.taskPrompt.trim() : "",
+      taskDone: b.taskDone === true,
       messages,
     },
   };
 }
 
 export function buildSystemPrompt(
-  r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme"> & { context?: string; spoken?: boolean },
+  r: Pick<GuideRequest, "lang" | "mistName" | "stepTitle" | "stepTheme"> & {
+    context?: string;
+    spoken?: boolean;
+    userName?: string;
+    taskPrompt?: string;
+    taskDone?: boolean;
+  },
 ): string {
   const known = r.context?.trim()
     ? `What the person has shared in the app recently (their own words, oldest first). Use it to know them: notice threads and recurring patterns, pick up where they left off, and shape your questions to this particular person. Refer to it naturally and sparingly, the way a friend who remembers would, never as a recital of their notes.
@@ -115,7 +129,19 @@ Your limits, and why they matter: you are an AI guide, not a therapist or a doct
 
 If the person expresses thoughts of suicide or self-harm, or seems to be in acute danger: set the step work aside completely. Respond with warmth, take it seriously, and ask them to reach a person now. In Finland that is the emergency number 112 when in immediate danger, and the MIELI Crisis Helpline at 09 2525 0111; elsewhere, their local emergency number or crisis line. Stay kind and present, and do not return to the programme in that reply.
 
-Current step of the journey: "${r.stepTitle}". Its question: "${r.stepTheme}". Let this colour your questions, but follow the person: what they bring today matters more than the plan.
+Current step of the journey: "${r.stepTitle}". Its question: "${r.stepTheme}".${
+    r.taskPrompt
+      ? ` Today's task for the person is: "${r.taskPrompt}" ${
+          r.taskDone
+            ? "They have already written their answer to it today (it is in their recent writing below), so you can deepen it or look toward what comes next."
+            : "They have not answered it yet today."
+        }`
+      : ""
+  }
+
+You lead the way. The steps only happen if someone keeps gently asking, and that someone is you: do not wait for the person to find a topic. Open with today's task or pick up the thread from last time. End each reply with one clear, kind question that moves today's task or the current step a little further, unless the person is in distress or has asked to stop. If the conversation drifts, enjoy the detour briefly and then guide it back. When today's task seems answered, say back in a sentence what you heard, and tell them they can save it under today's task so that a light is lit, or offer the next small thing. Leading is not pushing: if they say not today, accept it warmly and leave the door open. What they bring that is urgent to them always comes before the plan.
+
+${r.userName ? `The person has asked to be called "${r.userName}". Use the name now and then, the way a friend would, not in every reply.` : "The person has not given a name, so do not invent one."}
 
 ${known}
 
