@@ -157,15 +157,18 @@ describe("kaksitoista vaihetta", () => {
       }
     });
     const prompts = STEPS.flatMap((s) => s.tasks.map((t) => t.prompt.fi));
-    expect(new Set(prompts).size).toBe(84);
+    expect(prompts).toHaveLength(360);
+    expect(new Set(prompts).size).toBe(360);
+    const titles = STEPS.map((s) => s.tasks.map((t) => t.title.fi));
+    for (const list of titles) expect(new Set(list).size).toBe(TASKS_PER_STEP);
   });
 
   it("viimeinen tehtävä on vaiheessa kaksitoista, ja sen jälkeen kirjoitetaan vapaasti", () => {
     const days: State["days"] = {};
-    for (let i = 0; i < 83; i++) days[`d${i}`] = { task: "x" };
+    for (let i = 0; i < 359; i++) days[`d${i}`] = { task: "x" };
     const last = taskFor({ ...base, days }, "2027-06-01");
     expect(last.kind === "task" && last.step.n).toBe(12);
-    days.d83 = { task: "x" };
+    days.d359 = { task: "x" };
     expect(taskFor({ ...base, days }, "2027-06-01").kind).toBe("open");
     expect(badges({ ...base, days })).toContain("step12");
   });

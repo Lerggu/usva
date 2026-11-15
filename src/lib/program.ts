@@ -2,11 +2,26 @@
 // perinteen, läsnäolon opetusten ja joogaperinteen periaatteiden pohjalta.
 // Alkuperäisteoksia ei lainata.
 
+import { tasks as more1 } from "./tasks/step01";
+import { tasks as more2 } from "./tasks/step02";
+import { tasks as more3 } from "./tasks/step03";
+import { tasks as more4 } from "./tasks/step04";
+import { tasks as more5 } from "./tasks/step05";
+import { tasks as more6 } from "./tasks/step06";
+import { tasks as more7 } from "./tasks/step07";
+import { tasks as more8 } from "./tasks/step08";
+import { tasks as more9 } from "./tasks/step09";
+import { tasks as more10 } from "./tasks/step10";
+import { tasks as more11 } from "./tasks/step11";
+import { tasks as more12 } from "./tasks/step12";
+
 export type L = { fi: string; en: string };
 export type Task = { title: L; prompt: L };
 export type Step = { n: number; title: L; theme: L; intro: L; tasks: Task[] };
 
-export const TASKS_PER_STEP = 7;
+// Jokaisessa vaiheessa on noin kuukauden tehtävät: seitsemän perustehtävää ja
+// 23 jatkotehtävää kansiosta ./tasks. Kaksitoista vaihetta täyttää näin vuoden.
+export const TASKS_PER_STEP = 30;
 
 export const STEP_TITLES: L[] = [
   { fi: "Rehellisyys", en: "Honesty" },
@@ -23,7 +38,7 @@ export const STEP_TITLES: L[] = [
   { fi: "Eteenpäin antaminen", en: "Passing it on" },
 ];
 
-export const STEPS: Step[] = [
+const BASE_STEPS: Step[] = [
   {
     n: 1,
     title: STEP_TITLES[0],
@@ -745,3 +760,7 @@ export const STEPS: Step[] = [
     ],
   },
 ];
+
+const MORE: Task[][] = [more1, more2, more3, more4, more5, more6, more7, more8, more9, more10, more11, more12];
+
+export const STEPS: Step[] = BASE_STEPS.map((step, i) => ({ ...step, tasks: [...step.tasks, ...MORE[i]] }));

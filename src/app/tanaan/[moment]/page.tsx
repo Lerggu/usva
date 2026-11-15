@@ -8,6 +8,7 @@ import { CrisisCard } from "@/components/CrisisCard";
 import { VoiceField } from "@/components/VoiceField";
 import { useUsva } from "@/lib/store";
 import { taskFor } from "@/lib/progress";
+import { TASKS_PER_STEP } from "@/lib/program";
 import { detectCrisis } from "@/lib/safety";
 import { openingFor } from "@/lib/thoughts";
 
@@ -119,7 +120,7 @@ export default function MomentPage() {
                 <p className="text-sm uppercase tracking-widest text-soft">
                   {t("stepLabel")} {task.step.n} · {task.step.title[lang]}
                 </p>
-                {task.index % 7 === 0 && <p className="card text-soft">{task.step.intro[lang]}</p>}
+                {task.index % TASKS_PER_STEP === 0 && <p className="card text-soft">{task.step.intro[lang]}</p>}
                 <h1 className="text-2xl">{task.task.title[lang]}</h1>
                 <label htmlFor="f-a" className="block text-lg leading-relaxed">
                   {task.task.prompt[lang]}

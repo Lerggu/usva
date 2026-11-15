@@ -7,12 +7,12 @@ Ohjelman runko ja periaatteet: [`docs/OHJELMARUNKO.md`](docs/OHJELMARUNKO.md).
 ## Mitä tässä versiossa on
 
 - Alkukeskustelu usvan kanssa ennen tilausta (vaihtoehtoja, ei käskyjä).
-- Kaikki kaksitoista vaihetta: 84 päivän tehtävät suomeksi ja englanniksi.
+- Kaikki kaksitoista vaihetta: 360 päivän tehtävät suomeksi ja englanniksi, 30 kussakin vaiheessa.
 - Päivän kolme hetkeä, Tämä hetki -hengitys, valopisteet, viikkonäkymä ja merkit.
 - Tekoälyopas (Claude API) ja kriisiohjaus.
 - Tietojen lataus ja poisto. Kirjoitukset tallentuvat vain käyttäjän laitteelle.
 
-Tehtävien jälkeen päivän tehtävä on vapaata kirjoittamista tai puhumista. Vuoden täyttävä sisältö (noin kuukausi vaihetta kohden) on vielä tekemättä.
+Viimeisen tehtävän jälkeen päivän tehtävä on vapaata kirjoittamista tai puhumista.
 
 ## Käynnistys
 

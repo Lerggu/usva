@@ -19,7 +19,7 @@ Usva on toipumisen ja läsnäolon sovellus. Lue `docs/OHJELMARUNKO.md` ennen muu
 
 ## Rakenne
 
-- `src/lib/program.ts` – matkan sisältö (vaiheet ja tehtävät)
+- `src/lib/program.ts` – matkan sisältö (vaiheet ja perustehtävät), `src/lib/tasks/` – vaiheiden jatkotehtävät
 - `src/lib/progress.ts` – tila, valopisteet, tehtävän valinta, merkit
 - `src/lib/guide.ts` – oppaan järjestelmäkehote ja pyynnön tarkistus
 - `src/lib/safety.ts` – kriisin tunnistus

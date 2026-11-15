@@ -31,7 +31,7 @@ Usva oppii käyttäjästään joka päivä lisää ja muokkaa ohjelmarunkoa ja t
 | 11 | Hiljentyminen | Meditaatio- ja hengityskirjasto |
 | 12 | Eteenpäin antaminen | Oman tarinan tiivistys, palvelu, ylläpito |
 
-Tavoite on, että vuosi jakautuu näihin noin kuukausi kerrallaan. Nyt jokaisessa vaiheessa on viikon tehtävät, yhteensä 84 päivää. Sen jälkeen päivän tehtävä on vapaata kirjoittamista tai puhumista oppaan kanssa.
+Vuosi jakautuu näihin noin kuukausi kerrallaan: jokaisessa vaiheessa on 30 tehtävää, yhteensä 360 päivää. Vaiheen seitsemän ensimmäistä tehtävää avaavat aiheen (`src/lib/program.ts`), ja 23 jatkotehtävää syventävät sitä ja vievät sen arkeen (`src/lib/tasks/`). Viimeisen tehtävän jälkeen päivän tehtävä on vapaata kirjoittamista tai puhumista oppaan kanssa.
 
 ## Päivän kolme hetkeä
 
@@ -109,4 +109,4 @@ Kahdentoista askeleen yhteisöjen omaa kirjallisuutta ei lainata: sen suoja-aika
 
 ## Tulossa
 
-Tehtävien ja työkalujen yksilöllinen valinta sen mukaan, mitä käyttäjä kertoo ja mikä häntä auttaa. Lisää tehtäviä jokaiseen vaiheeseen, jotta sisältö täyttää koko vuoden. Laitteiden välinen synkronointi salattuna, rakenteinen elämäntarina (aikajana, henkilöt, mallit), harjoituskirjasto.
+Tehtävien ja työkalujen yksilöllinen valinta sen mukaan, mitä käyttäjä kertoo ja mikä häntä auttaa. Laitteiden välinen synkronointi salattuna, rakenteinen elämäntarina (aikajana, henkilöt, mallit), harjoituskirjasto.
