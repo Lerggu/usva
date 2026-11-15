@@ -26,6 +26,8 @@ export type State = {
   returns: number;
   // Soiko rummun syke hengitysharjoituksessa.
   drum: boolean;
+  // Nimenomaiset suostumukset arkaluonteisten tietojen käsittelyyn: päiväys tai null.
+  consent: { guide: string | null; speech: string | null };
   // Nimi, jolla usva kutsuu käyttäjää. Tyhjä = ei nimeä.
   userName: string;
   // Kirjautuneen tilin tiedot näyttämistä varten; totuus on palvelimella.
@@ -51,6 +53,7 @@ export const INITIAL: State = {
   lastVisit: null,
   returns: 0,
   drum: true,
+  consent: { guide: null, speech: null },
   userName: "",
   account: null,
 };

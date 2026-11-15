@@ -51,6 +51,16 @@ Tilit tulevat käyttöön, kun nämä ympäristömuuttujat on asetettu: `SESSION
 
 Paikallisessa kehityksessä `USVA_DEV_AUTH=1` pitää tilit muistissa ja tulostaa koodin palvelimen konsoliin.
 
+## Tietosuoja, ehdot ja suostumus
+
+Tietosuojaseloste (`/tietosuoja`) ja käyttöehdot (`/ehdot`) ovat tiedostossa `src/lib/legal.ts` suomeksi ja englanniksi. Ne ovat luonnoksia, jotka juristin on luettava ennen myyntiä. Rekisterinpitäjän tiedot täytetään saman tiedoston `CONTROLLER`-kohtaan; tyhjinä sivulla kerrotaan, että tiedot lisätään myöhemmin.
+
+Tekstien pitää vastata sitä, mitä sovellus tekee. Kun tietojen käsittely muuttuu koodissa (uusi palveluntarjoaja, uusi tallennettava tieto), päivitä seloste samassa muutoksessa.
+
+Koska käyttäjän kertoma voi koskea terveyttä, Usva kysyy nimenomaisen suostumuksen ennen kuin mitään lähetetään tekoäly- tai puhepalveluun: oppaalle ennen ensimmäistä keskustelua ja puheelle ennen ensimmäistä mikrofonin käyttöä. Suostumukset näkyvät asetuksissa, ja ne voi perua. Ilman suostumusta sovellus toimii kirjoittamalla ilman opasta.
+
+Asetuksista voi myös poistaa tilin. Se päättää mahdollisen Stripe-tilauksen ja poistaa tilin tiedot palvelimelta.
+
 ## Maksaminen
 
 Tilaus maksetaan Stripen maksusivulla; korttitiedot eivät kulje Usvan kautta. Kun kokeilu on päättynyt, päivän hetket, opas ja polku jatkuvat tilauksella. Koti, hengitys, Tuki, asetukset ja tilaussivu ovat aina auki. Oikeus tarkistetaan myös palvelimella oppaan ja äänen reiteissä.

@@ -43,6 +43,8 @@ export const saveProfile = (profile: { name?: string; mistName?: string; lang?: 
 
 export const signOut = () => post<{ ok: true }>("/api/auth/logout", {});
 
+export const deleteAccount = () => post<{ ok: true }>("/api/auth/delete", {});
+
 export function toInfo(a: ServerAccount): AccountInfo {
   return { email: a.email, status: a.status, trialEndsAt: a.trialEndsAt, paidUntil: a.paidUntil };
 }

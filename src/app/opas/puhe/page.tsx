@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
 import { CrisisCard } from "@/components/CrisisCard";
+import { ConsentCard, type ConsentKind } from "@/components/ConsentCard";
 import { useUsva } from "@/lib/store";
 import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/progress";
 import { STEPS } from "@/lib/program";
@@ -23,6 +25,7 @@ const STATUS: Record<LiveState, Key> = {
 // Puhekeskustelu: käyttäjä puhuu, usva vastaa ääneen, eikä puhetta näytetä tekstinä.
 export default function LivePage() {
   const { ready, state, today, t, update } = useUsva();
+  const router = useRouter();
   const [live, setLive] = useState<LiveState>("idle");
   const [error, setError] = useState<LiveError>(null);
   const [crisis, setCrisis] = useState(false);
@@ -94,6 +97,20 @@ export default function LivePage() {
 
   if (!ready) return <Shell>{null}</Shell>;
   const moving = live === "listening" || live === "speaking";
+  // Puhekeskustelu käyttää sekä opasta että puhetta, joten molempiin tarvitaan suostumus.
+  const missing: ConsentKind[] = [];
+  if (!state.consent.guide) missing.push("guide");
+  if (!state.consent.speech) missing.push("speech");
+  if (missing.length > 0) {
+    return (
+      <Shell>
+        <div className="space-y-5 pt-4">
+          <Mist lights={totalLights(state)} size="10rem" />
+          <ConsentCard kinds={missing} onAccept={() => {}} onDecline={() => router.push("/opas")} />
+        </div>
+      </Shell>
+    );
+  }
 
   return (
     <Shell>

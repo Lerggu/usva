@@ -100,6 +100,15 @@ export default function SubscriptionPage() {
               </div>
             ))}
             <p className="text-sm text-soft">{t("subTerms")}</p>
+            <p className="text-center text-sm">
+              <Link className="text-lilac underline" href="/ehdot" target="_blank">
+                {t("termsTitle")}
+              </Link>
+              {" · "}
+              <Link className="text-lilac underline" href="/tietosuoja" target="_blank">
+                {t("privacyTitle")}
+              </Link>
+            </p>
           </>
         )}
 

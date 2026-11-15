@@ -118,6 +118,52 @@ const D = {
     en: "Your trial has ended.",
   },
   logout: { fi: "Kirjaudu ulos", en: "Sign out" },
+  privacyTitle: { fi: "Tietosuojaseloste", en: "Privacy notice" },
+  termsTitle: { fi: "Käyttöehdot", en: "Terms of use" },
+  legalUpdated: { fi: "Päivitetty", en: "Updated" },
+  legalContact: { fi: "Yhteystiedot", en: "Contact" },
+  legalContactPending: {
+    fi: "Palveluntarjoajan yhteystiedot lisätään tähän ennen kuin Usvaa aletaan myydä.",
+    en: "The service provider's contact details will be added here before Usva goes on sale.",
+  },
+  obLegal: {
+    fi: "Aloittamalla hyväksyt käyttöehdot. Tietosuojaselosteesta näet, miten tietojasi käsitellään.",
+    en: "By beginning you accept the terms of use. The privacy notice tells you how your data is handled.",
+  },
+  consentTitle: { fi: "Ennen kuin jatkamme", en: "Before we go on" },
+  consentGuide: {
+    fi: "Kun keskustelet kanssani, viestisi, nimesi, päivän tehtävä ja viimeisimpien päivien kirjoituksesi lähetetään tekoälypalveluun (Anthropic), joka tuottaa vastaukseni. Se, mitä kerrot, voi koskea terveyttäsi. Usva ei tallenna keskustelua palvelimelleen.",
+    en: "When you talk with me, your messages, your name, the day's task and your writing from the most recent days are sent to an AI service (Anthropic) that produces my replies. What you tell me may concern your health. Usva does not store the conversation on its server.",
+  },
+  consentSpeech: {
+    fi: "Kun puhut, puheesi muutetaan tekstiksi selaimesi omassa palvelussa tai puhepalvelussa (Microsoft Azure), ja vastaukseni muutetaan siellä ääneksi. Se, mitä sanot, voi koskea terveyttäsi. Äänitystä ei tallenneta.",
+    en: "When you speak, your speech is turned into text by your browser's own service or by a speech service (Microsoft Azure), and my reply is turned into sound there. What you say may concern your health. The recording is not stored.",
+  },
+  consentAsk: { fi: "Sopiiko tämä sinulle?", en: "Is this all right with you?" },
+  consentYes: { fi: "Sopii", en: "Yes, that is fine" },
+  consentNo: { fi: "Ei vielä", en: "Not yet" },
+  consentWrite: { fi: "Kirjoitan mieluummin", en: "I would rather write" },
+  consentDeclined: {
+    fi: "Se sopii hyvin. Päivän hetket, polku ja hengitys ovat käytössäsi ilman tätäkin, ja voit muuttaa mielesi milloin tahansa.",
+    en: "That is perfectly fine. The daily moments, the path and breathing are yours to use without this, and you can change your mind at any time.",
+  },
+  consentSettings: { fi: "Suostumukset", en: "Consents" },
+  consentGuideOn: { fi: "Opas: suostumus annettu", en: "Guide: consent given" },
+  consentSpeechOn: { fi: "Puhe: suostumus annettu", en: "Speech: consent given" },
+  consentWithdraw: { fi: "Peru", en: "Withdraw" },
+  consentNone: {
+    fi: "Et ole antanut suostumusta oppaan tai puheen käyttöön. Usva kysyy sitä, kun avaat oppaan tai napautat mikrofonia.",
+    en: "You have not given consent for the guide or for speech. Usva asks for it when you open the guide or tap the microphone.",
+  },
+  deleteAccount: { fi: "Poista tilini", en: "Delete my account" },
+  deleteAccountConfirm: {
+    fi: "Tämä poistaa tilisi palvelimelta ja päättää mahdollisen tilauksen. Laitteellasi olevat kirjoitukset säilyvät. Haluatko varmasti jatkaa?",
+    en: "This removes your account from the server and ends any subscription. The writing on your device is kept. Are you sure you want to continue?",
+  },
+  deleteAccountFail: {
+    fi: "Tilin poistaminen ei juuri nyt onnistunut. Kokeillaan hetken päästä uudelleen.",
+    en: "Deleting the account did not work just now. Let's try again shortly.",
+  },
   subTitle: { fi: "Tilaus", en: "Subscription" },
   subIntro: {
     fi: "Maksuton kokeilusi on päättynyt. Jos matka on tuntunut omalta, voit jatkaa sitä tilaamalla Usvan. Kaikki, mitä olet tähän asti kirjoittanut, on tallessa.",

@@ -199,6 +199,16 @@ export function Onboarding() {
             <p className="text-sm text-lilac">{t("obPayNote")}</p>
           </div>
           <p className="text-sm text-soft">{t("principle")}</p>
+          <p className="text-sm text-soft">
+            {t("obLegal")}{" "}
+            <Link className="text-lilac underline" href="/ehdot" target="_blank">
+              {t("termsTitle")}
+            </Link>
+            {" · "}
+            <Link className="text-lilac underline" href="/tietosuoja" target="_blank">
+              {t("privacyTitle")}
+            </Link>
+          </p>
           <p className="text-center text-lg">{t("obInvite")}</p>
           <button className="btn btn-primary" onClick={() => setStage(afterOffer)}>
             {t("obStart")}

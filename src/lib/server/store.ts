@@ -6,6 +6,7 @@ export type CodeRecord = { hash: string; expiresAt: number; attempts: number; se
 export interface Store {
   getAccount(email: string): Promise<Account | null>;
   putAccount(account: Account): Promise<void>;
+  deleteAccount(email: string): Promise<void>;
   getCode(email: string): Promise<CodeRecord | null>;
   putCode(email: string, record: CodeRecord): Promise<void>;
   deleteCode(email: string): Promise<void>;
@@ -20,6 +21,9 @@ export class MemoryStore implements Store {
   }
   async putAccount(account: Account) {
     this.accounts.set(account.email, account);
+  }
+  async deleteAccount(email: string) {
+    this.accounts.delete(email);
   }
   async getCode(email: string) {
     return this.codes.get(email) ?? null;
@@ -93,6 +97,15 @@ export class TableStore implements Store {
       },
       "Replace",
     );
+  }
+
+  async deleteAccount(email: string): Promise<void> {
+    await this.ensure();
+    try {
+      await this.accounts.deleteEntity(PARTITION, key(email));
+    } catch (error) {
+      if (!notFound(error)) throw error;
+    }
   }
 
   async getCode(email: string): Promise<CodeRecord | null> {

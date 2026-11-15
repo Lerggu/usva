@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/Shell";
 import { Mist } from "@/components/Mist";
 import { CrisisCard } from "@/components/CrisisCard";
+import { ConsentCard } from "@/components/ConsentCard";
 import { useUsva } from "@/lib/store";
 import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/progress";
 import { STEPS } from "@/lib/program";
@@ -19,6 +20,8 @@ export default function GuidePage() {
   const [waiting, setWaiting] = useState(false);
   const [notice, setNotice] = useState<Key | null>(null);
   const [crisis, setCrisis] = useState(false);
+  const [declined, setDeclined] = useState(false);
+  const [askSpeech, setAskSpeech] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const speaker = useSpeaker(state.lang);
   const mic = useSpeechInput(state.lang, (spoken) => setText((prev) => (prev ? `${prev} ${spoken}` : spoken)));
@@ -81,6 +84,19 @@ export default function GuidePage() {
       <div className="space-y-4">
         <Mist lights={totalLights(state)} mood={waiting || mic.listening ? "listening" : "calm"} size="8rem" />
         <p className="text-center text-sm text-soft">{t("guideNote")}</p>
+        {!state.consent.guide ? (
+          declined ? (
+            <div className="space-y-3">
+              <p className="card serif text-lg">{t("consentDeclined")}</p>
+              <button className="btn" onClick={() => setDeclined(false)}>
+                {t("back")}
+              </button>
+            </div>
+          ) : (
+            <ConsentCard kinds={["guide"]} onAccept={() => setDeclined(false)} onDecline={() => setDeclined(true)} />
+          )
+        ) : (
+          <>
         <Link href="/opas/puhe" className="btn btn-primary">
           {t("voiceMode")}
           <span className="block text-sm font-normal">{t("voiceModeSub")}</span>
@@ -146,6 +162,17 @@ export default function GuidePage() {
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
+            {askSpeech && (
+              <ConsentCard
+                kinds={["speech"]}
+                declineKey="consentWrite"
+                onAccept={() => {
+                  setAskSpeech(false);
+                  mic.start();
+                }}
+                onDecline={() => setAskSpeech(false)}
+              />
+            )}
             {mic.supported === false && <p className="card text-soft">{t("micUnsupported")}</p>}
             {mic.supported && (
               <button
@@ -157,6 +184,7 @@ export default function GuidePage() {
                   speaker.stop();
                   speaker.prepare();
                   if (mic.listening) mic.stop();
+                  else if (!state.consent.speech) setAskSpeech(true);
                   else mic.start();
                 }}
               >
@@ -172,6 +200,8 @@ export default function GuidePage() {
               </button>
             )}
           </form>
+        )}
+          </>
         )}
       </div>
     </Shell>

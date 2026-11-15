@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { ConsentCard } from "./ConsentCard";
 import { useUsva } from "@/lib/store";
 import { useSpeechInput } from "@/lib/voice";
 
@@ -23,6 +25,8 @@ export function VoiceField({ id, value, onChange, rows = 3, placeholder, maxLeng
     const next = value.trim() ? `${value.trim()} ${spoken}` : spoken;
     onChange(maxLength ? next.slice(0, maxLength) : next);
   });
+  // Ennen ensimmäistä puhekertaa kysytään suostumus puheen käsittelyyn.
+  const [asking, setAsking] = useState(false);
   const fieldClass = `field min-w-0 flex-1 ${center ? "text-center" : ""}`;
 
   return (
@@ -59,12 +63,27 @@ export function VoiceField({ id, value, onChange, rows = 3, placeholder, maxLeng
               mic.listening ? "btn-primary" : ""
             }`}
             style={{ width: "3.5rem" }}
-            onClick={() => (mic.listening ? mic.stop() : mic.start())}
+            onClick={() => {
+              if (mic.listening) mic.stop();
+              else if (!state.consent.speech) setAsking(true);
+              else mic.start();
+            }}
           >
             <span aria-hidden="true">{mic.listening ? "◼" : mic.busy ? "…" : "🎙"}</span>
           </button>
         )}
       </div>
+      {asking && (
+        <ConsentCard
+          kinds={["speech"]}
+          declineKey="consentWrite"
+          onAccept={() => {
+            setAsking(false);
+            mic.start();
+          }}
+          onDecline={() => setAsking(false)}
+        />
+      )}
       {mic.listening && (
         <p className="text-sm text-lilac" aria-live="polite">
           {mic.interim || t("micStop")}

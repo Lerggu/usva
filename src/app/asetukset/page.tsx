@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Shell } from "@/components/Shell";
 import { VoiceField } from "@/components/VoiceField";
 import { useUsva } from "@/lib/store";
 import type { Lang } from "@/lib/progress";
-import { fetchMe, saveProfile, signOut, toInfo } from "@/lib/account-client";
+import { deleteAccount, fetchMe, saveProfile, signOut, toInfo } from "@/lib/account-client";
 
 export default function SettingsPage() {
   const { state, t, update, reset, billing } = useUsva();
@@ -22,6 +22,16 @@ export default function SettingsPage() {
       cancelled = true;
     };
   }, [update]);
+
+  const [deleteFailed, setDeleteFailed] = useState(false);
+
+  async function removeAccount() {
+    if (!window.confirm(t("deleteAccountConfirm"))) return;
+    setDeleteFailed(false);
+    const res = await deleteAccount();
+    if (res.ok) update((s) => ({ ...s, account: null }));
+    else setDeleteFailed(true);
+  }
 
   const date = (iso: string) => new Intl.DateTimeFormat(state.lang, { dateStyle: "long" }).format(new Date(iso));
   const acc = state.account;
@@ -77,6 +87,10 @@ export default function SettingsPage() {
             >
               {t("logout")}
             </button>
+            <button className="btn btn-quiet" onClick={() => void removeAccount()}>
+              {t("deleteAccount")}
+            </button>
+            {deleteFailed && <p className="text-soft">{t("deleteAccountFail")}</p>}
           </section>
         )}
 
@@ -118,9 +132,36 @@ export default function SettingsPage() {
           <Link className="btn" href="/tutustu">
             {t("tutLink")}
           </Link>
+          <Link className="btn" href="/tietosuoja">
+            {t("privacyTitle")}
+          </Link>
+          <Link className="btn" href="/ehdot">
+            {t("termsTitle")}
+          </Link>
           <p className="text-sm text-soft">
             {t("version")} {process.env.NEXT_PUBLIC_BUILD}
           </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-sm uppercase tracking-widest text-soft">{t("consentSettings")}</h2>
+          {!state.consent.guide && !state.consent.speech && <p className="text-soft">{t("consentNone")}</p>}
+          {(["guide", "speech"] as const).map(
+            (kind) =>
+              state.consent[kind] && (
+                <div key={kind} className="card flex items-center justify-between gap-3">
+                  <span>
+                    {t(kind === "guide" ? "consentGuideOn" : "consentSpeechOn")} {date(state.consent[kind]!)}
+                  </span>
+                  <button
+                    className="min-h-11 shrink-0 px-2 text-lilac underline"
+                    onClick={() => update((s) => ({ ...s, consent: { ...s.consent, [kind]: null } }))}
+                  >
+                    {t("consentWithdraw")}
+                  </button>
+                </div>
+              ),
+          )}
         </section>
 
         <section className="space-y-3">
