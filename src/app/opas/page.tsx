@@ -11,6 +11,7 @@ import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/pro
 import { STEPS } from "@/lib/program";
 import { MAX_MESSAGE_CHARS, MAX_MESSAGES, buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
+import { profileContext } from "@/lib/profile";
 import type { Key } from "@/lib/i18n";
 import { useSpeaker, useSpeechInput } from "@/lib/voice";
 
@@ -58,6 +59,7 @@ export default function GuidePage() {
           stepTitle: step.title[state.lang],
           stepTheme: step.theme[state.lang],
           context: buildContext(state),
+          profile: profileContext(state.profile),
           userName: state.userName,
           taskPrompt,
           taskDone,

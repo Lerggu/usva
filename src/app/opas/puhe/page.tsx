@@ -12,6 +12,7 @@ import { currentStepNumber, taskFor, totalLights, type ChatMsg } from "@/lib/pro
 import { STEPS } from "@/lib/program";
 import { buildContext } from "@/lib/guide";
 import { detectCrisis } from "@/lib/safety";
+import { profileContext } from "@/lib/profile";
 import { LiveEngine, type LiveError, type LiveState } from "@/lib/live";
 import type { Key } from "@/lib/i18n";
 
@@ -52,6 +53,7 @@ export default function LivePage() {
           stepTitle: step.title[s.lang],
           stepTheme: step.theme[s.lang],
           context: buildContext(s),
+          profile: profileContext(s.profile),
           spoken: true,
           userName: s.userName,
           taskPrompt: task.kind === "task" ? task.task.prompt[s.lang] : "",

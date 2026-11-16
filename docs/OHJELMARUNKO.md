@@ -75,7 +75,9 @@ Rekisteröityminen tapahtuu alkukeskustelun lopussa, kun käyttäjä päättää
 
 Maksuton kokeilu (7 päivää) alkaa tilin luomisesta, eikä siihen tarvita korttia. Sen jälkeen päivän hetket, opas ja polku jatkuvat tilauksella, joka maksetaan Stripen sivulla. Tilaussivulla näkyvät aina kokonaishinta, uusiutuminen ja 14 päivän peruutusoikeus. Hengitys ja Tuki ovat aina auki, myös ilman tilausta: hätä ja lepo eivät ole maksumuurin takana.
 
-Rekisteröitymisen jälkeen usva kertoo neljällä lyhyellä ruudulla, miten sitä käytetään. Sama esittely löytyy asetuksista.
+Rekisteröitymisen jälkeen usva tutustuu käyttäjään: kymmenen ohitettavaa kysymystä elämäntilanteesta, avun tarpeesta, tuesta ja toivotusta ohjaustavasta. Vastaukset menevät oppaalle taustatiedoksi. Arkaluonteisimpia asioita, kuten sukupuolta ja seksuaalista suuntautumista, ei kysytä valintalistana, vaan käyttäjä kertoo ne halutessaan itse.
+
+Sen jälkeen usva kertoo neljällä lyhyellä ruudulla, miten sitä käytetään. Sama esittely löytyy asetuksista.
 
 ## Opas
 

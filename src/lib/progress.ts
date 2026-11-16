@@ -1,4 +1,5 @@
 import { STEPS, TASKS_PER_STEP, type Step, type Task } from "./program";
+import type { Profile } from "./profile";
 
 export type Lang = "fi" | "en";
 
@@ -28,6 +29,8 @@ export type State = {
   drum: boolean;
   // Nimenomaiset suostumukset arkaluonteisten tietojen käsittelyyn: päiväys tai null.
   consent: { guide: string | null; speech: string | null };
+  // Tutustumisen vastaukset (src/lib/profile.ts).
+  profile: Profile;
   // Nimi, jolla usva kutsuu käyttäjää. Tyhjä = ei nimeä.
   userName: string;
   // Kirjautuneen tilin tiedot näyttämistä varten; totuus on palvelimella.
@@ -54,6 +57,7 @@ export const INITIAL: State = {
   returns: 0,
   drum: true,
   consent: { guide: null, speech: null },
+  profile: {},
   userName: "",
   account: null,
 };

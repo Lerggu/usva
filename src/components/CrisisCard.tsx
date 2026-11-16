@@ -3,11 +3,13 @@
 import { useUsva } from "@/lib/store";
 
 export function CrisisCard() {
-  const { t } = useUsva();
+  const { t, state } = useUsva();
+  const abroad = state.profile.country === "other";
   return (
     <div className="card space-y-3" role="region" aria-label={t("helpTitle")}>
       <p className="text-lg font-semibold">{t("helpTitle")}</p>
       <p className="text-soft">{t("helpIntro")}</p>
+      {abroad && <p className="text-lg text-aurora">{t("helpAbroad")}</p>}
       <a className="btn btn-primary" href="tel:112">
         {t("helpEmergency")}
         <span className="block text-sm font-normal">{t("helpEmergencySub")}</span>
@@ -16,7 +18,7 @@ export function CrisisCard() {
         {t("helpCrisis")}
         <span className="block text-sm text-soft">{t("helpCrisisSub")}</span>
       </a>
-      <p className="text-sm text-soft">{t("helpAbroad")}</p>
+      {!abroad && <p className="text-sm text-soft">{t("helpAbroad")}</p>}
     </div>
   );
 }

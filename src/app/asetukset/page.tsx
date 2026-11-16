@@ -129,6 +129,9 @@ export default function SettingsPage() {
         <section className="space-y-3">
           <h2 className="text-sm uppercase tracking-widest text-soft">{t("aboutTitle")}</h2>
           <p className="text-soft">{t("principle")}</p>
+          <Link className="btn" href="/profiili">
+            {t("profLink")}
+          </Link>
           <Link className="btn" href="/tutustu">
             {t("tutLink")}
           </Link>

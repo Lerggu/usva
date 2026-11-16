@@ -4,7 +4,7 @@ import type { L } from "./program";
 // kuin palvelua myydään. Tekstin pitää vastata sitä, mitä sovellus oikeasti
 // tekee: kun tietojen käsittely muuttuu koodissa, päivitä myös tämä tiedosto.
 
-export const LEGAL_UPDATED = "2026-11-15";
+export const LEGAL_UPDATED = "2026-11-16";
 
 // Rekisterinpitäjän tiedot. Täytä ennen myynnin aloittamista; tyhjinä sivulla
 // kerrotaan, että tiedot täydentyvät.
@@ -31,16 +31,16 @@ export const PRIVACY: Section[] = [
     title: { fi: "Mitä tietoja käsitellään ja missä", en: "What data is processed, and where" },
     body: [
       {
-        fi: "Laitteellasi (selaimen muistissa): aamun aikomukset, päivän tehtävien vastaukset, iltakatsaukset, keskustelut oppaan kanssa, edistymisesi, nimesi ja usvan nimi sekä asetuksesi. Näitä ei lähetetä Usvan palvelimelle tallennettavaksi.",
-        en: "On your device (in the browser's storage): morning intentions, answers to the day's tasks, evening reviews, conversations with the guide, your progress, your name and the mist's name, and your settings. These are not sent to Usva's server for storage.",
+        fi: "Laitteellasi (selaimen muistissa): aamun aikomukset, päivän tehtävien vastaukset, iltakatsaukset, keskustelut oppaan kanssa, tutustumisen vastauksesi elämäntilanteestasi, edistymisesi, nimesi ja usvan nimi sekä asetuksesi. Näitä ei lähetetä Usvan palvelimelle tallennettavaksi.",
+        en: "On your device (in the browser's storage): morning intentions, answers to the day's tasks, evening reviews, conversations with the guide, your answers about your life situation from getting acquainted, your progress, your name and the mist's name, and your settings. These are not sent to Usva's server for storage.",
       },
       {
         fi: "Tililläsi palvelimella, jos rekisteröidyt: sähköpostiosoite, nimi jolla usva kutsuu sinua, usvan nimi, kieli, tilin luontiaika, kokeilun päättymisaika, tilauksen voimassaolo ja maksupalvelun asiakastunniste. Kirjautumiskoodista tallennetaan vain tiiviste kymmeneksi minuutiksi.",
         en: "On your account on the server, if you register: email address, the name the mist calls you, the mist's name, language, account creation time, trial end time, subscription validity and the payment provider's customer identifier. Only a hash of the sign-in code is stored, for ten minutes.",
       },
       {
-        fi: "Oppaan kanssa keskustellessa: keskustelu, nimesi, päivän tehtävä ja viimeisimpien päivien kirjoituksesi lähetetään tekoälypalveluun vastauksen tuottamista varten. Usva ei tallenna näitä palvelimelleen eikä kirjaa niitä lokeihin.",
-        en: "When talking with the guide: the conversation, your name, the day's task and your writing from the most recent days are sent to an AI service to produce the reply. Usva does not store these on its server or write them to logs.",
+        fi: "Oppaan kanssa keskustellessa: keskustelu, nimesi, tutustumisen vastauksesi, päivän tehtävä ja viimeisimpien päivien kirjoituksesi lähetetään tekoälypalveluun vastauksen tuottamista varten. Usva ei tallenna näitä palvelimelleen eikä kirjaa niitä lokeihin.",
+        en: "When talking with the guide: the conversation, your name, your answers from getting acquainted, the day's task and your writing from the most recent days are sent to an AI service to produce the reply. Usva does not store these on its server or write them to logs.",
       },
       {
         fi: "Puhuessasi: puheesi muutetaan tekstiksi joko selaimesi omassa palvelussa tai puhepalvelussa, ja oppaan vastaus muutetaan ääneksi puhepalvelussa. Usva ei tallenna äänitystä.",

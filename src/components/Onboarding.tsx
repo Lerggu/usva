@@ -12,7 +12,7 @@ import { fetchMe, saveProfile, startSignIn, toInfo, verifyCode, type AuthError }
 import type { AccountInfo } from "@/lib/progress";
 import type { Key } from "@/lib/i18n";
 
-type Stage = "reason" | "doing" | "year" | "ask" | "offer" | "email" | "code" | "names" | "later" | "crisis";
+type Stage = "welcome" | "reason" | "doing" | "year" | "ask" | "offer" | "email" | "code" | "names" | "later" | "crisis";
 
 const QUESTIONS: Record<"reason" | "doing" | "year", { q: Key; options: Key[]; next: Stage }> = {
   reason: { q: "obHello", options: ["obR1", "obR2", "obR3", "obR5", "obR4"], next: "doing" },
@@ -33,7 +33,9 @@ const ERRORS: Record<AuthError, Key> = {
 export function Onboarding() {
   const { t, update, today, state } = useUsva();
   const router = useRouter();
-  const [stage, setStage] = useState<Stage>("reason");
+  const [stage, setStage] = useState<Stage>("welcome");
+  // Ensimmäisen sivun valinnat näytetään vasta, kun tiedetään, ovatko tilit käytössä.
+  const [loaded, setLoaded] = useState(false);
   const [text, setText] = useState("");
   const [userName, setUserName] = useState(state.userName);
   const [mistName, setMistName] = useState(state.mistName);
@@ -51,6 +53,9 @@ export function Onboarding() {
     void fetchMe().then((me) => {
       if (cancelled) return;
       setAccounts(me.enabled);
+      setLoaded(true);
+      // Ilman tilejä ei ole mitään valittavaa, joten mennään suoraan alkukeskusteluun.
+      if (!me.enabled) setStage((st) => (st === "welcome" ? "reason" : st));
       // Jo kirjautunut käyttäjä uudella laitteella tai tyhjennetyn selaimen jälkeen.
       if (me.account) {
         setAccount(toInfo(me.account));
@@ -98,6 +103,8 @@ export function Onboarding() {
     const acc = res.data.account;
     setAccount(toInfo(acc));
     if (res.data.isNew) {
+      // Osoitteella ei ollut tiliä, joten kyseessä on uusi käyttäjä, vaikka hän valitsi kirjautumisen.
+      setReturning(false);
       setStage("names");
     } else {
       // Palaava käyttäjä: nimet tulevat tililtä, eikä niitä kysytä uudelleen.
@@ -127,7 +134,8 @@ export function Onboarding() {
       await saveProfile({ name: userName.trim(), mistName: mistName.trim() || "Usva", lang: state.lang });
       setBusy(false);
     }
-    finish(userName, mistName, account, "/tutustu");
+    // Uusi käyttäjä tutustuu ensin usvaan; palaava menee suoraan kotiin.
+    finish(userName, mistName, account, returning ? "/" : "/profiili?alku=1");
   }
 
   // Tilauksen aloittaminen: tili ensin, jos tilit ovat käytössä eikä käyttäjä ole jo kirjautunut.
@@ -136,6 +144,34 @@ export function Onboarding() {
   return (
     <div className="space-y-6">
       <Mist mood={stage === "crisis" ? "soft" : "listening"} />
+
+      {stage === "welcome" && (
+        <section className="space-y-4">
+          <p className="serif text-center text-2xl leading-relaxed">{t("obWelcome")}</p>
+          {loaded && (
+            <>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setReturning(false);
+                  setStage("reason");
+                }}
+              >
+                {t("obNew")}
+              </button>
+              <button
+                className="btn"
+                onClick={() => {
+                  setReturning(true);
+                  setStage(account ? "names" : "email");
+                }}
+              >
+                {t("obHaveAccount")}
+              </button>
+            </>
+          )}
+        </section>
+      )}
 
       {(stage === "reason" || stage === "doing" || stage === "year") && (
         <section className="space-y-4" key={stage}>
@@ -164,17 +200,6 @@ export function Onboarding() {
               </button>
             )}
           </form>
-          {stage === "reason" && accounts && (
-            <button
-              className="btn btn-quiet"
-              onClick={() => {
-                setReturning(true);
-                setStage(account ? "names" : "email");
-              }}
-            >
-              {t("obHaveAccount")}
-            </button>
-          )}
         </section>
       )}
 
@@ -247,7 +272,7 @@ export function Onboarding() {
           <button className="btn btn-primary" type="submit" disabled={busy || !email.trim()}>
             {busy ? "…" : t("accSend")}
           </button>
-          <button className="btn btn-quiet" type="button" onClick={() => setStage(returning ? "reason" : "offer")}>
+          <button className="btn btn-quiet" type="button" onClick={() => setStage(returning ? "welcome" : "offer")}>
             {t("back")}
           </button>
         </form>

@@ -1,4 +1,5 @@
 import type { ChatMsg, Lang, State } from "./progress";
+import { MAX_PROFILE_CHARS } from "./profile";
 
 export const MAX_MESSAGES = 60;
 export const MAX_MESSAGE_CHARS = 6000;
@@ -41,6 +42,7 @@ export type GuideRequest = {
   userName: string;
   taskPrompt: string;
   taskDone: boolean;
+  profile: string;
   messages: ChatMsg[];
 };
 
@@ -57,7 +59,9 @@ export function validateGuideRequest(body: unknown): Validation {
     return { ok: false, error: "invalid" };
   }
   const optional = (v: unknown, max: number) => v === undefined || short(v, max);
-  if (!optional(b.userName, 40) || !optional(b.taskPrompt, 600)) return { ok: false, error: "invalid" };
+  if (!optional(b.userName, 40) || !optional(b.taskPrompt, 600) || !optional(b.profile, MAX_PROFILE_CHARS)) {
+    return { ok: false, error: "invalid" };
+  }
   const context = b.context ?? "";
   if (typeof context !== "string") return { ok: false, error: "invalid" };
   if (context.length > MAX_CONTEXT_CHARS + 500) return { ok: false, error: "too_long" };
@@ -87,6 +91,7 @@ export function validateGuideRequest(body: unknown): Validation {
       userName: typeof b.userName === "string" ? b.userName.trim() : "",
       taskPrompt: typeof b.taskPrompt === "string" ? b.taskPrompt.trim() : "",
       taskDone: b.taskDone === true,
+      profile: typeof b.profile === "string" ? b.profile.trim() : "",
       messages,
     },
   };
@@ -99,6 +104,7 @@ export function buildSystemPrompt(
     userName?: string;
     taskPrompt?: string;
     taskDone?: boolean;
+    profile?: string;
   },
 ): string {
   const known = r.context?.trim()
@@ -141,7 +147,17 @@ Current step of the journey: "${r.stepTitle}". Its question: "${r.stepTheme}".${
 
 You lead the way. The steps only happen if someone keeps gently asking, and that someone is you: do not wait for the person to find a topic. Open with today's task or pick up the thread from last time. End each reply with one clear, kind question that moves today's task or the current step a little further, unless the person is in distress or has asked to stop. If the conversation drifts, enjoy the detour briefly and then guide it back. When today's task seems answered, say back in a sentence what you heard, and tell them they can save it under today's task so that a light is lit, or offer the next small thing. Leading is not pushing: if they say not today, accept it warmly and leave the door open. What they bring that is urgent to them always comes before the plan.
 
-${r.userName ? `The person has asked to be called "${r.userName}". Use the name now and then, the way a friend would, not in every reply.` : "The person has not given a name, so do not invent one."}
+${
+    r.profile?.trim()
+      ? `What the person told you about their situation when you first got acquainted. Let it shape what you ask and how, without reciting it back or treating it as a label; they are always more than these lines, and anything they say now outweighs it.
+
+<situation>
+${r.profile.trim()}
+</situation>
+
+`
+      : ""
+  }${r.userName ? `The person has asked to be called "${r.userName}". Use the name now and then, the way a friend would, not in every reply.` : "The person has not given a name, so do not invent one."}
 
 ${known}
 

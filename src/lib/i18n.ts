@@ -74,6 +74,23 @@ const D = {
     en: "That is perfectly fine. I will be here when you return.",
   },
   obHaveAccount: { fi: "Minulla on jo tili", en: "I already have an account" },
+  obWelcome: {
+    fi: "Hei. Olen Usva. Kuljen kanssasi kohti tätä hetkeä, omaan tahtiisi.",
+    en: "Hello. I am Usva. I walk with you toward this moment, at your own pace.",
+  },
+  obNew: { fi: "Olen uusi täällä", en: "I am new here" },
+  profIntro: {
+    fi: "Jotta osaan kulkea juuri sinun kanssasi, kysyisin muutaman asian elämästäsi. Jokaisen kysymyksen voi ohittaa.",
+    en: "So that I can walk with you in particular, I would like to ask a few things about your life. Every question can be skipped.",
+  },
+  profSkip: { fi: "Ohitan tämän", en: "I'll skip this one" },
+  profSkipAll: { fi: "Ohitan nämä nyt", en: "I'll skip these for now" },
+  profDone: { fi: "Valmis", en: "Done" },
+  profNote: {
+    fi: "Vastauksesi pysyvät laitteellasi. Opas saa ne taustatiedoksi vain suostumuksellasi, ja voit muuttaa niitä asetuksista.",
+    en: "Your answers stay on your device. The guide receives them as background only with your consent, and you can change them in settings.",
+  },
+  profLink: { fi: "Mitä olen kertonut itsestäni", en: "What I have told about myself" },
   accEmailQ: {
     fi: "Mihin sähköpostiosoitteeseen saan lähettää kirjautumiskoodin?",
     en: "Which email address may I send your sign-in code to?",
@@ -132,8 +149,8 @@ const D = {
   },
   consentTitle: { fi: "Ennen kuin jatkamme", en: "Before we go on" },
   consentGuide: {
-    fi: "Kun keskustelet kanssani, viestisi, nimesi, päivän tehtävä ja viimeisimpien päivien kirjoituksesi lähetetään tekoälypalveluun (Anthropic), joka tuottaa vastaukseni. Se, mitä kerrot, voi koskea terveyttäsi. Usva ei tallenna keskustelua palvelimelleen.",
-    en: "When you talk with me, your messages, your name, the day's task and your writing from the most recent days are sent to an AI service (Anthropic) that produces my replies. What you tell me may concern your health. Usva does not store the conversation on its server.",
+    fi: "Kun keskustelet kanssani, viestisi, nimesi, tutustumisessa kertomasi, päivän tehtävä ja viimeisimpien päivien kirjoituksesi lähetetään tekoälypalveluun (Anthropic), joka tuottaa vastaukseni. Se, mitä kerrot, voi koskea terveyttäsi. Usva ei tallenna keskustelua palvelimelleen.",
+    en: "When you talk with me, your messages, your name, what you told me when we got acquainted, the day's task and your writing from the most recent days are sent to an AI service (Anthropic) that produces my replies. What you tell me may concern your health. Usva does not store the conversation on its server.",
   },
   consentSpeech: {
     fi: "Kun puhut, puheesi muutetaan tekstiksi selaimesi omassa palvelussa tai puhepalvelussa (Microsoft Azure), ja vastaukseni muutetaan siellä ääneksi. Se, mitä sanot, voi koskea terveyttäsi. Äänitystä ei tallenneta.",

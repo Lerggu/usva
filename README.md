@@ -51,6 +51,12 @@ Tilit tulevat käyttöön, kun nämä ympäristömuuttujat on asetettu: `SESSION
 
 Paikallisessa kehityksessä `USVA_DEV_AUTH=1` pitää tilit muistissa ja tulostaa koodin palvelimen konsoliin.
 
+## Aloitus ja tutustuminen
+
+Ensimmäisellä sivulla on kaksi valintaa: "Olen uusi täällä" ja "Minulla on jo tili" (jälkimmäinen näkyy, kun tilit ovat käytössä). Uusi käyttäjä käy alkukeskustelun, rekisteröityy ja antaa nimet, ja sen jälkeen usva kysyy kymmenen kysymystä elämäntilanteesta (`/profiili`): mihin hän hakee apua, kuinka kauan tilanne on jatkunut, mitä tukea hänellä on, onko askeltyö tuttua, ikäryhmä, asuminen, päivien sisältö, toivottu ohjaustapa, asuuko Suomessa ja avoin kysymys. Jokaisen voi ohittaa, ja vastauksia voi muuttaa asetuksista.
+
+Vastaukset pysyvät laitteella ja menevät oppaalle taustatiedoksi (`src/lib/profile.ts`, `profileContext`), joten opas mukautuu niihin. Päivän tehtävät ovat vielä kaikille samat. Sukupuolta ja seksuaalista suuntautumista ei kysytä valintalistana; käyttäjä voi kertoa ne avoimessa kysymyksessä.
+
 ## Tietosuoja, ehdot ja suostumus
 
 Tietosuojaseloste (`/tietosuoja`) ja käyttöehdot (`/ehdot`) ovat tiedostossa `src/lib/legal.ts` suomeksi ja englanniksi. Ne ovat luonnoksia, jotka juristin on luettava ennen myyntiä. Rekisterinpitäjän tiedot täytetään saman tiedoston `CONTROLLER`-kohtaan; tyhjinä sivulla kerrotaan, että tiedot lisätään myöhemmin.
